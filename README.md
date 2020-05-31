@@ -28,11 +28,11 @@ With regards to the concept of Eigenfaces, the concept of a *database* of faces 
 
 Put simply, there are a set of training faces that are used to construct a matrix **T**; each column of **T** is one of the training images. From this set of images, the "average face" **a** is computed and then a new matrix **Phi** = **Ti - a** is formed.
 
-Each column in this new matrix **Phi_i** represents how much a given face vector **Ti** differs from the average face **a**. Basically it is the "average difference" matrix: it describes *how* a given face is different from the mean face.
+Each column in this new matrix **Phi_i** represents how much a given face vector **Ti** differs from the average face **a**. Basically it is the "average difference" matrix: it describes *how* a given face is different from the mean face. The "average face" matrix is called **A** and is composed of these differences **Ai**.
 
 From this point, the computation would be infeasible, but Linear Algebra makes it possible: instead of computing the Eigenvectors of the covariance matrix **C = A*A^T**, we can compute the Eigenvectors of a much smaller matrix **A^T * A**. 
 
-This calculation will form set of "vectors" **V = {Vi,...}** that forms a basis upon which images scraped from a video stream can be "projected". From here, it is a simple calculation to compare how close a **new** image is to a **training** image (i.e an image that is contained in the database).
+This calculation will form set of "vectors" **V = {Vi,...}** that forms a basis upon which images scraped from a video stream can be "projected". From here, it is a simple calculation to compare how close a **new** image is to a **training/known** image (i.e an image that is contained in the database).
 
 Images that are "close enough" are identified. Images that are "far away" are counted as new, turned into vectors (vectorized), placed into a new iteration of the matrix **T** from above, and the calculation is done again - thereby increasing the number of faces that the database (matrix) is capable of recognizing.
 
@@ -41,6 +41,8 @@ See the following for more information:
 [Wikipedia article](https://en.wikipedia.org/wiki/Eigenface)
 
 [Computing Eigenfaces](http://www.scholarpedia.org/article/Eigenfaces)
+
+[Computing Eigenfaces with C++](https://eigen.tuxfamily.org/dox/classEigen_1_1EigenSolver.html)
 
 [Practical implementation; getting faces from ghosts](https://towardsdatascience.com/eigenfaces-recovering-humans-from-ghosts-17606c328184)
 
@@ -52,6 +54,8 @@ See the following for more information:
 
 In order to have vectors to project onto the database (matrix), it will be necessary to gather faces from a video stream. I think there are a lot of libraries and current technologies that will be able to do this.
 
+[Beginner's guide to OpenCV and Video Processing](https://medium.com/@Ralabs/the-beginners-guide-for-video-processing-with-opencv-aa744ec04abb)
+
 [Haar cascade object detection](https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html)
 
 [OpenCV Python face recognition tutorial](https://www.pyimagesearch.com/2018/09/24/opencv-face-recognition/)
@@ -60,9 +64,17 @@ In order to have vectors to project onto the database (matrix), it will be neces
 
 [OpenCV face recognition documentation/tutorial](https://docs.opencv.org/2.4/modules/contrib/doc/facerec/facerec_tutorial.html)
 
+[OpenCV/Haar cascade Example](http://opencv-tutorials-hub.blogspot.com/2016/03/how-to-do-real-time-face-detection-using-haar-cascade.html)
+
+[OpenCV and C++ for Face detection](https://www.geeksforgeeks.org/opencv-c-program-face-detection/)
+
 #### 3. *Scrape* faces from the video stream and turn them into image files
 
 This step will likely be more or less trivial; slicing the "face component" from a larger image and pushing it along the datapath.
+
+[Scraping Faces](https://www.codementor.io/@shashwatjain661/how-detect-faces-using-opencv-and-python-c-nwyssng68)
+
+[Python and images](https://www.pythonforengineers.com/image-and-video-processing-in-python/)
 
 #### 4. *Transform / Scale / Normalize* scraped faces into an MxN matrix of the same size (it's important that all the vectors be of the same length)
 
@@ -76,8 +88,18 @@ When a vector is identified as a face, but is not matched against a face in the 
 
 As new vectors (faces) are added to **T**, we will re-compute the Eigenbasis **V = {Vi}** (FaceSpace) from step #1 above so the program can learn to recognize new people.
 
-## **Implementation/Vertical Prototype ideas**
+## **Implementation / Vertical Prototype ideas**
 
 1. As far as actual implementation/Vertical Prototype is concerned, I propose we use a popular TV show such as *The Office* from which to build our training matrix. It would not be difficult to gather high-quality images from the internet of all the actors in that show.
    
 2. Instead of using a full 30-minute episode, I suggest we use shorter clips that we can download from YouTube along with other commercials that do not feature actors from the show.
+
+## **Production version**
+
+1. In terms of the actual full system, I think a few libraries / languages could be used:
+
+   * C / C++
+   * OpenCV
+   * Linear Algebra Libraries:
+     * [Armadillo](http://arma.sourceforge.net/)
+     * [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page)
