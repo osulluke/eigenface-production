@@ -5,8 +5,5 @@ main: main.cpp img-display.cpp
 	./main
 	./img-display ~/linuxconfig_logo.png
 
-setup:
-
-
 clean:
 	rm main img-display
