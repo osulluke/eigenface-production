@@ -1,6 +1,6 @@
 #! /bin/bash
 
-FILES=./img/faces/*
+FILES=./img/faces/base-faces/*
 rm ./img/faces/scraped-faces/*.jpg
 for f in $FILES
 do
