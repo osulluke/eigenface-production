@@ -2,7 +2,7 @@
 
 ## Listed are the python programs along with a brief overview of what they're supposed to do:
 
-### Image to Array
+### **Image to Array**
 
 > This program is a small demo that shows how the library `Pillow` can convert images to arrays and then save them. It is dependent on `pip install --user Pillow`
 
@@ -18,3 +18,22 @@ python image-to-array.py
 [Pillow Documentation](https://pillow.readthedocs.io/en/stable/reference/Image.html)
 
 [Importing image to array](https://www.pluralsight.com/guides/importing-image-data-into-numpy-arrays)
+
+### **Scan a set of images for Faces**
+
+> This program uses a Haar cascade detector I found on GitHub [here](https://github.com/shantnu/FaceDetect). It will take an image as input and then draw a square around it. I wrote a small script that will loop over all of the files in the `img/faces` folder and show you how it works. Purely a demo at this point.
+
+[GitHub source](https://github.com/rcrespocano/opencv-python/issues/2)
+
+[Fixed the repo code](https://answers.opencv.org/question/216137/attributeerror-module-cv2cv2-has-no-attribute-saliencysolved/)
+
+[OpenCV info](https://docs.opencv.org/2.4/modules/highgui/doc/user_interface.html)
+
+[OpenCV tutorial](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_gui/py_image_display/py_image_display.html)
+
+> In order to see it run, execute the following command in your terminal (make sure it's executable in your shell):
+```
+./scan-faces.sc
+```
+
+We'll need something similar in operation to the above script that will take a video slice (an image), captures a face in it and then save that face as a separate image. There are a couple of interesting cases in the current set of face images wherein there are multiple faces found when there is only one per image.
