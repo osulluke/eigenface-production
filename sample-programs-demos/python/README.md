@@ -37,3 +37,13 @@ python image-to-array.py
 ```
 
 We'll need something similar in operation to the above script that will take a video slice (an image), captures a face in it and then save that face as a separate image. There are a couple of interesting cases in the current set of face images wherein there are multiple faces found when there is only one per image.
+
+### **Scale Image Set**
+
+> Ultimately, in order to create the set of Eigenfaces, we'll have to ensure that all of the images are of the same size. Hence, the following script takes the set of faces that were scraped from the image set and scales them to the same size, saving them in the folder `img/faces/scaled-faces/`
+
+```
+python scale-image-set.py
+```
+
+From here, all of the faces are equal in dimension and we can start to make a first attempt at a set of Eigenfaces.
