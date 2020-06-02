@@ -47,3 +47,12 @@ python scale-image-set.py
 ```
 
 From here, all of the faces are equal in dimension and we can start to make a first attempt at a set of Eigenfaces.
+
+### **Create a matrix of images**
+
+The first task is to simply make a matrix of faces from the scaled images.
+
+```
+python make-image-matrix.py
+```
+
