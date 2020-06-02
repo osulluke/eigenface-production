@@ -4,10 +4,10 @@
 
 ### **Image to Array**
 
-> This program is a small demo that shows how the library `Pillow` can convert images to arrays and then save them. It is dependent on `pip install --user Pillow`
+> This program is a small demo that shows how the library `Pillow` can convert images to arrays and then save them. It is dependent on `pip3 install --user Pillow`
 
 ```
-python image-to-array.py
+python3 image-to-array.py
 ```
 [Converting to 1D array](https://stackoverflow.com/questions/15612373/convert-image-png-to-matrix-and-then-to-1d-array)
 
@@ -43,7 +43,7 @@ We'll need something similar in operation to the above script that will take a v
 > Ultimately, in order to create the set of Eigenfaces, we'll have to ensure that all of the images are of the same size. Hence, the following script takes the set of faces that were scraped from the image set and scales them to the same size, saving them in the folder `img/faces/scaled-faces/`
 
 ```
-python scale-image-set.py
+python3 scale-image-set.py
 ```
 
 From here, all of the faces are equal in dimension and we can start to make a first attempt at a set of Eigenfaces.
@@ -53,6 +53,6 @@ From here, all of the faces are equal in dimension and we can start to make a fi
 The first task is to simply make a matrix of faces from the scaled images.
 
 ```
-python make-image-matrix.py
+python3 make-image-matrix.py
 ```
 
