@@ -58,9 +58,15 @@ Now, the script will save the 'average' face to a new folder `img/faces/average-
 
 Before constructing the matrix of 'average' differences, each difference must be calculated.
 
-### **Create a matrix of images**
+```
+python3 make-average-faces.py
+```
 
-The first task is to simply make a matrix of faces from the scaled images.
+This script saves all the *differences from the average* of each of the faces. One difference here, from the example given in the textbook, is these are color images (instead of the grayscale shown in the book). This is the raw data from which we can begin to create the covariance matrix, C.
+
+### **Create a covariance matrix of images**
+
+The first task is to simply construct a covariance matrix of faces from the average-difference images.
 
 ```
 python3 make-image-matrix.py
