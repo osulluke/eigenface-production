@@ -4,6 +4,7 @@ import numpy as np
 
 read_path = 'img/faces/scraped-faces/'
 save_path = 'img/faces/scaled-faces/'
+save_average_face = 'img/faces/average-face/'
 entries = os.listdir(read_path)
 print(entries)
 
@@ -23,4 +24,5 @@ average = np.round(average)
 average = average.astype('uint8') # convert back into datatype appropriate for images
 
 average_face = Image.fromarray(average)
+average_face.save(save_average_face + 'average-face.jpg')
 average_face.show()
