@@ -48,6 +48,8 @@ python3 scale-image-set.py
 
 From here, all of the faces are equal in dimension and we can start to make a first attempt at a set of Eigenfaces.
 
+Update: this script will now create the average faces from all of the faces that were scraped from the image set; at this point, it doesn't save it anywhere - only for display.
+
 ### **Create a matrix of images**
 
 The first task is to simply make a matrix of faces from the scaled images.
