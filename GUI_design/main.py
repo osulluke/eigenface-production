@@ -26,7 +26,7 @@ class ScreenTwo(Screen):
 
 class ScreenOne(Screen):
     def selectFile(self, btn):
-        sp.run('py filechooser.py')
+        sp.run(['python', 'filechooser.py'])
         with open('filechooser_result','r') as f:
             path = f.read()
         os.remove('filechooser_result')
