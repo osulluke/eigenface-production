@@ -48,9 +48,25 @@ python3 scale-image-set.py
 
 From here, all of the faces are equal in dimension and we can start to make a first attempt at a set of Eigenfaces.
 
-### **Create a matrix of images**
+Update: this script will now create the average faces from all of the faces that were scraped from the image set; ~~at this point, it doesn't save it anywhere - only for display.~~
 
-The first task is to simply make a matrix of faces from the scaled images.
+Now, the script will save the 'average' face to a new folder `img/faces/average-face`; it's calculated from all of the scaled-faces:
+
+![Average Face](img/faces/average-face/average-face.jpg)
+
+### **Calculate the difference of each face from the average face**
+
+Before constructing the matrix of 'average' differences, each difference must be calculated.
+
+```
+python3 make-average-faces.py
+```
+
+This script saves all the *differences from the average* of each of the faces. One difference here, from the example given in the textbook, is these are color images (instead of the grayscale shown in the book). This is the raw data from which we can begin to create the covariance matrix, C.
+
+### **Create a covariance matrix of images**
+
+The first task is to simply construct a covariance matrix of faces from the average-difference images.
 
 ```
 python3 make-image-matrix.py

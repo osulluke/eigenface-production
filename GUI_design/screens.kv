@@ -1,0 +1,94 @@
+#:kivy 1.9.0
+
+<ScreenOne>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'bkg_test.jpg'
+    name: "screen1"
+    GridLayout:
+        name: "screen1"
+        cols: 4
+        padding: 0
+        spacing: 0
+        #size_hint: None, None
+
+        size_hint_y: None
+        height: self.minimum_height
+
+        Button:
+            text: "Open Files"
+            background_color: (0.502, 0, 0.502, 0.6) if self.state == 'normal' else (0.502, 0, 0.502, .75)
+            on_release: root.selectFile(self)
+            size: 200, 50
+            size_hint: None, None
+            pos: 20, 20
+                #size_hint: (.5, .1)  
+                #pos_hint:{'left':0, 'bottom':0}
+
+        Button:
+            text: "Show Results"
+            background_color: (0.502, 0.502, 0, 0.6) if self.state == 'normal' else (0.502, 0.502, 0, .75)
+            #on_release: app.stop()
+            size: 200, 50
+            size_hint: None, None  
+            pos: 220, 20
+            pos_hint: None, None
+
+        Button:
+            text: "Producers"
+            background_color: (0, 0.502, 0.502, 0.6) if self.state == 'normal' else (0, 0.502, 0.502, .75)
+            #on_release: app.stop()
+            size: 200, 50
+            size_hint: None, None  
+            pos: 420, 20
+            pos_hint: None, None
+
+        Button:
+            text: "Quit"
+            background_color: (0, 0, 1, 0.6) if self.state == 'normal' else (0, 0, 1,.75)
+            on_release: app.stop()
+            size: 200, 50
+            size_hint: None, None  
+            pos: 620, 20
+            pos_hint: None, None
+
+
+<ScreenTwo>:
+    GridLayout:
+        name: "ScreenGrid"
+        pos_hint: {'top': 1}
+        cols:1
+        rows:2
+        ActionBar:
+            pos_hint: {'top': 1}
+            height:'100sp'
+            ActionView:
+                ActionPrevious:
+                    with_previous: True
+                    on_release: root.onBackBtn()
+
+<Manager>:
+    id: screen_manager
+
+    screen_one: screen_one
+    screen_two: screen_two
+
+    ScreenOne:
+        id: screen_one
+        name: 'screen1'
+        manager: screen_manager
+
+    ScreenTwo:
+        id: screen_two
+        name: 'screen2'
+        manager: screen_manager
+
+<VideoPlayer>:
+    options: {'eos': 'loop'}
+    allow_stretch:True
+
+<Button>:
+    height: '100sp'
+    size_hint_y: None
