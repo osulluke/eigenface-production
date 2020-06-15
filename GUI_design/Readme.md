@@ -12,8 +12,9 @@ pip install kivy
 OR
 
 pip install kivy[base] kivy_examples --pre --extra-index-url https://kivy.org/downloads/simple/
-
+```
 Ensure that XLAUNCH is running and that display variable is set
+```
 sudo apt update
 sudo apt upgrade
 sudo apt install x11-apps python3-pip python3-virtualenvwrapper python3-tkpython3-venv
