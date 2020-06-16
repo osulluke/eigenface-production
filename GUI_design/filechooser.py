@@ -66,7 +66,7 @@ class InterfaceWidget(FloatLayout):
             type_button.text = self.type_list[i]['text']
             type_button.index = i
             self.dropdown.add_widget(type_button)
-        self.receive_path('.')
+        self.receive_path('../sample-programs-demos/python/img/faces/')
 
         #self.fb = self.search_class(self, 'FileBar')
 
