@@ -1,12 +1,10 @@
-import kivy
 import subprocess as sp
 import os
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.properties import ObjectProperty
 from kivy.uix.videoplayer import VideoPlayer
-from kivy.uix.actionbar import ActionBar
-from kivy.uix.button import Button
+import Features.media_in as features
 
 class ScreenTwo(Screen):
     def test_on_enter(self, vidname):
@@ -51,6 +49,7 @@ class Manager(ScreenManager):
         self.list_of_prev_screens = []
 
 class ScreensApp(App):
+    help = features.get_frame()
     def build(self):
         return Manager()
 
