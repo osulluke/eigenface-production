@@ -3,8 +3,10 @@ from templates import *
 from database import *
 from media_player import *
 from webstreaming import *
+from datetime import timedelta
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=3) 
 
 @app.route("/")
 def home():
@@ -13,12 +15,12 @@ def home():
     if url_get == 'set_video':
         return get_page(url_get)
     if url_get == 'more_info':
-        return get_page(url_get)
+        return get_page('more_info')
     if url_get == 'view_data':
         return get_page('data_page')
     else:
         return get_page('')
-
+ 
 if __name__ == "__main__":
     app.run(debug=True)
 
