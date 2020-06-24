@@ -8,7 +8,7 @@ imagePath = sys.argv[1]
 print(imagePath)
 file_name = imagePath.split('/')[-1].split('.')[0]
 file_name += '-face.jpg'
-cascPath = "FaceDetect-master/haarcascade_frontalface_default.xml"
+cascPath = "FaceDetect/haarcascade_frontalface_default.xml"
 print(file_name)
 
 # Create the haar cascade
