@@ -1,12 +1,11 @@
-import kivy
 import subprocess as sp
 import os
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.properties import ObjectProperty
 from kivy.uix.videoplayer import VideoPlayer
-from kivy.uix.actionbar import ActionBar
-from kivy.uix.button import Button
+from Features import media_in
+from Features import sqllite
 
 class ScreenTwo(Screen):
     def test_on_enter(self, vidname):
@@ -51,8 +50,11 @@ class Manager(ScreenManager):
         self.list_of_prev_screens = []
 
 class ScreensApp(App):
+    uml_diagram_test = media_in.Media_in("aaa","aaa")
+    print(uml_diagram_test.array)
     def build(self):
         return Manager()
 
 if __name__ == "__main__":
+    database = sqllite.create_connection()
     ScreensApp().run()
