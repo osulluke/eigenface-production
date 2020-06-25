@@ -144,5 +144,5 @@ def view_data_page():
     doc, tag, text, line = Doc().ttl()
 
     with tag('div', id='photo-container'):
-        doc.stag('img', src=url_for('static', filename='test_show.png'), klass="photo")
+        doc.stag('img', src=url_for('video_feed'), klass="photo")
     return doc.getvalue()
