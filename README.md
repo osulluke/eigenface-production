@@ -1,6 +1,19 @@
 # **EigenFace Filter**
-# Test
 
+## **Usage**
+
+First, you need to get the environment set up to be able to run the code:
+```
+pip3 install --user -r requirements.txt
+```
+
+Once that is complete, navigate to the `Flask_UI` folder and then start the webserver:
+
+```
+cd Flask_UI
+python3 main.py
+```
+Once the server is running, navigate to http://localhost:5000/. From this point, you should be able to interact with our program.
 ## **Purpose**
 
 At a high level, this project's purpose is to be able to compare the image of a face against a *database* of known faces for identification. Specifically, the vision I have for the way this project will be implemented is to take a video stream and "scrape" faces from it, turn them into X x Y images, then into a vector (XY x 1), and then measure the Euclidean distance between that face and all others in the database. Novel vectors that are outside a certain distance from known faces/vectors (i.e. faces that are in the database) will be classified as not recognized, and vectors that are within the distance will be classified as a certain individual contained within the database. This step could likely be implemented using K-means.
