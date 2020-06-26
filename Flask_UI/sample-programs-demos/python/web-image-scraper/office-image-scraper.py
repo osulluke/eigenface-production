@@ -10,7 +10,7 @@ for l in file:
 
 # Scrape each link
 for link in links:
-    time.sleep(2.5)
+    time.sleep(4.5)
     file_name = 'collected-img/' + link.split('/')[-1].replace('\n','.jpg')
     image = requests.get(link.replace('\n','')).content
     with open(file_name, 'wb') as handler:
