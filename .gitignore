@@ -1,2 +1,9 @@
 .idea/
-Flask_UI/templates/__pycache__/*
+Flask_UI/sample-programs-demos/python/img/faces/scraped-faces/*.jpg
+Flask_UI/__pycache__/*.pyc
+Flask_UI/database/__pycache__/*.pyc
+Flask_UI/media_player/__pycache__/*.pyc
+Flask_UI/pyimagesearch/__pycache__/*.pyc
+Flask_UI/pyimagesearch/motion_detection/__pycache__/*.pyc
+Flask_UI/templates/__pycache__/*.pyc
+*.pyc
