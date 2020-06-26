@@ -1,4 +1,5 @@
 from yattag import Doc
+from flask import url_for
 
 def get_page(page_name):
     doc, tag, text, line = Doc().ttl()
@@ -21,6 +22,7 @@ def get_page(page_name):
                          '#button1:hover {background:linear-gradient(to bottom, #77a809 5%, #89c403 100%); background-color:#77a809;} '
                          '#button2{background:linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%); background-color:#3d94f6; border:1px solid #337fed;} '
                          '#button2:hover {background:linear-gradient(to bottom, #1e62d0 5%, #3d94f6 100%); background-color:#1e62d0;} '
+                         '#button2:active '
                          '#button3{background:linear-gradient(to bottom, #ffec64 5%, #ffab23 100%); background-color:#ffec64; border:1px solid #ffaa22;} '
                          '#button3:hover {background:linear-gradient(to bottom, #ffab23 5%, #ffec64 100%); background-color:#ffab23;} '                         
                          '#test{display: none;} '
@@ -30,13 +32,18 @@ def get_page(page_name):
                          '#display_info{font-size:10px; font-weight:normal; text-align: justify;}'
                          '#button3:active + #more_info {display: block;} '
                          '')
-    doc.asis(home_page())
-
-    if page_name != "data_page":
+    
+    
+    if page_name == "data_page":
+        doc.asis(home_page())
+        doc.asis(view_data_page())
+    elif page_name == "more_info":
+        doc.asis(home_page())
         doc.asis(buttons())
-
-        if page_name == "more_info":
-            doc.asis(info_page())
+        doc.asis(info_page())
+    else:
+        doc.asis(home_page())
+        doc.asis(buttons())        
 
     doc.asis(footer())
 
@@ -124,10 +131,18 @@ def buttons():
             with tag('form', id='menu'):
                 doc.asis('<label id="button1" for="test" > SELECT MEDIA FILE </label><br>')
                 doc.asis('<input type="file" id="test" accept="image/png, image/jpeg, video/mp4">')
-                doc.asis('<label id="button2">')
-                doc.asis('<a href="?content=view_data"> VIEW DATA </a>')
-                doc.asis('</label></br>')
+            with tag('form', id='menu'):
+                doc.asis('<button type="submit" id="button2" value="view_dat"> VIEW DATA </button>')
+                doc.asis('<textarea name="content" id="hide" method="post">view_data</textarea>')
+            with tag('form', id='menu'):
                 doc.asis('<button type="submit" id="button3" value="more_info"> MORE INFO </button>')
                 doc.asis('<textarea name="content" id="hide" method="post">more_info</textarea>')
 
+    return doc.getvalue()
+
+def view_data_page():    
+    doc, tag, text, line = Doc().ttl()
+
+    with tag('div', id='photo-container'):
+        doc.stag('img', src=url_for('video_feed'), klass="photo")
     return doc.getvalue()
