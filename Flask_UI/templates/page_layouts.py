@@ -112,10 +112,12 @@ def buttons():
     with tag('div', id='container'):
         with tag('div', id='photo-container'):
             with tag('form', id='menu'):
-                doc.asis('<label id="button1" for="test" > SELECT MEDIA FILE </label><br>')
+                doc.asis('<label id="button1" for="test" > SELECT YOUR MEDIA FILE </label><br>')
                 doc.asis('<input type="file" id="test" accept="image/png, image/jpeg, video/mp4">')
             with tag('form', id='menu'):
-                doc.asis('<button type="submit" id="button2" value="view_data"> MEDIA PLAYER SAMPLE </button>')
+                doc.asis('<label id="checkboxlabel" for="vehicle1" > MUTE COMMERCIALS </label>')
+                doc.asis('<input type="checkbox" id="vehicle1" name="vehicle1" value="Mute"></br></br>')
+                doc.asis('<button type="submit" id="button2" value="view_data"> PLAY MEDIA </button>')
                 doc.asis('<textarea name="content" id="hide" method="post">data_page</textarea>')
             with tag('form', id='menu'):
                 doc.asis('<button type="submit" id="button4" value="learn_data"> LEARN FACE </button>')
