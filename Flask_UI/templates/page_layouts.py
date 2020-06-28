@@ -13,6 +13,7 @@ from flask import url_for
 import urllib.parse
 import os
 import sys
+import pandas as pd
 
 def get_page(page_name):
     doc, tag, text, line = Doc().ttl()
@@ -28,6 +29,14 @@ def get_page(page_name):
     else:
         doc.asis(buttons())        
 
+    doc.asis(footer())
+    return doc.getvalue()
+
+def data_page(datatable):
+    doc, tag, text, line = Doc().ttl()
+    doc.asis(header())
+    html = datatable.to_html()
+    doc.asis(html)
     doc.asis(footer())
     return doc.getvalue()
 

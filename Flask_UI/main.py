@@ -37,7 +37,10 @@ def allowed_file(filename):
 @app.route("/")
 def home():
     url_get = request.args.get('content')
-    return get_page(url_get)
+    if url_get == 'database':
+        return data_page(get_data())
+    else:
+        return get_page(url_get)
 
 def gen(camera):
     while True:
