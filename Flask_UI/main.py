@@ -19,6 +19,7 @@ from datetime import timedelta
 from camera import VideoCamera
 from filestore import *
 from facedetect import *
+from db_functions import *
 from werkzeug.utils import secure_filename
 import base64
 
@@ -46,7 +47,7 @@ def gen(camera):
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen(VideoCamera('LibertyMutualInsuranceCommercial.mp4')),
+    return Response(gen(VideoCamera('https://ohmypy-summer2020.s3.amazonaws.com/videos/LibertyMutualInsuranceCommercial.mp4')),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # this is a test for facial recognition
@@ -59,7 +60,8 @@ def process():
     output_array = image_binary(image, image_path)
 
     image_name = 'Steve Carell'
-    return eval_face(output_array["html"], image_name, output_array["output_count"])
+    insert_face(output_array["image"], image_name)
+    return eval_face(output_array["html"], image_name, output_array["num_face"])
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -90,7 +92,8 @@ def uploaded_file(filename,name,filetype):
     image = facesquare(image_file)
     output_array = image_binary(image, filename)
 
-    return eval_face(output_array["html"], name, output_array["output_count"])
+    insert_face(output_array["image"], name)
+    return eval_face(output_array["html"], name, output_array["num_face"])
 
 if __name__ == "__main__":
     app.run(debug=True)

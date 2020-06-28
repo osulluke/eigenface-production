@@ -39,9 +39,9 @@ def facesquare(image):
     endx = 0
     starty = 0
     endy = 0
+    face = image
     # Draw a rectangle around the faces
     for (x, y, w, h) in faces:
-        print("rect:", (x, y, w, h))
         startx = x
         starty = y
         endx = x + w
@@ -70,8 +70,8 @@ def image_binary(cv_imagearray, image_path):
     html = "<html><img id='return_image' src='data:image/"+get_fileext(image_path)+";base64," + str(jpg_as_text) + "/></html>"
 
     img = {"html":html,
-        "output_face":output_face,
-        "output_img":output_img,
-        "output_count":output_count}
+        "face":output_face,
+        "image":output_img,
+        "num_face":output_count}
 
     return img
