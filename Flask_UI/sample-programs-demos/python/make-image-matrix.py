@@ -8,7 +8,7 @@ print(entries)
 
 x = []
 for f in entries:
-    im = Image.open(read_path + f)
+    im = Image.open(read_path + f).convert('LA')
     np_im = np.array(im)
     #print(np_im.shape)
     im_flat = np_im.ravel()
