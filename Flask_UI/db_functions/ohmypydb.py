@@ -84,15 +84,17 @@ def get_name_id(name):
     else:
         cursor = mydb.cursor()
         if len(name) > 100:
-            t = input("hello")
+            name = input("Name Error")
         cursor.execute("INSERT INTO name_data (full_name) VALUES ('" + name + "')")
         mydb.commit()
         cursor.close()
         return get_name_id(name)
 
 def insert_face(face_vector, name):
-    name_id = get_name_id(str(name))
-    face_id = get_face_id(str(face_vector), name_id)
+    print(str(name))
+    print(str(face_vector))
+    #name_id = get_name_id(str(name))
+    #face_id = get_face_id(str(face_vector), name_id)
     return 1
 
 def get_data():
