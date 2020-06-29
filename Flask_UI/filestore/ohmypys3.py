@@ -19,12 +19,12 @@ import appconfig as cfg
 client = boto3.client(
     's3',
     aws_access_key_id=cfg.s3["key_id"] ,
-    aws_secret_access_key=cfg.s3["secret_key"]
+    aws_secret_access_key="jD+o2rroHspTs35b0rpo6GLqIZAPtyfPiuhMH+mE"
 )
 
 session = boto3.Session(
     aws_access_key_id=cfg.s3["key_id"] ,
-    aws_secret_access_key=cfg.s3["secret_key"]
+    aws_secret_access_key="jD+o2rroHspTs35b0rpo6GLqIZAPtyfPiuhMH+mE"
 )
 
 # return all files in s3
