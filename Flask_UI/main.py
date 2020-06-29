@@ -14,7 +14,6 @@ import cv2
 import os
 import appconfig as cfg
 from templates import *
-from database import *
 from datetime import timedelta
 from camera import VideoCamera
 from filestore import *
