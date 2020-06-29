@@ -2,9 +2,9 @@
 ## FileName: page_layouts.py
 ##################################################
 ## Author: RDinmore
-## Date: 2020.06.22
-## Purpose: return html to be displayed
-## Libs: yattag, flask, urllib
+# Date: 2020.06.22
+# Purpose: return html to be displayed
+# Libs: yattag, flask, urllib
 ## Path: Flask_UI/templates
 ##################################################
 
@@ -16,12 +16,17 @@ import sys
 from video import get_videos
 import pandas as pd
 
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'mp4'}
+
+
 def get_page(page_name):
     doc, tag, text, line = Doc().ttl()
     doc.asis(header())
 
     if page_name == "data_page":
         doc.asis(view_data_page())
+    elif page_name == "upload_files":
+        doc.asis(upload_files())
     elif page_name == "choose_video":
         doc.asis(choose_video())
     elif page_name == "more_info":
@@ -30,10 +35,11 @@ def get_page(page_name):
     elif page_name == "learn_face":
         doc.asis(learn_face())
     else:
-        doc.asis(buttons())        
+        doc.asis(buttons())
 
     doc.asis(footer())
     return doc.getvalue()
+
 
 def data_page(datatable):
     doc, tag, text, line = Doc().ttl()
@@ -43,12 +49,14 @@ def data_page(datatable):
     doc.asis(footer())
     return doc.getvalue()
 
+
 def video_page(videoname):
     doc, tag, text, line = Doc().ttl()
     doc.asis(header())
     doc.asis(view_data_page(videoname))
     doc.asis(footer())
     return doc.getvalue()
+
 
 def eval_face(response, image_name, output_count):
     doc, tag, text, line = Doc().ttl()
@@ -60,7 +68,7 @@ def eval_face(response, image_name, output_count):
             doc.asis(response)
             doc.asis('</br>')
             doc.asis('</br>')
-            text("Name: " +  urllib.parse.unquote_plus(image_name))
+            text("Name: " + urllib.parse.unquote_plus(image_name))
             doc.asis('</br>')
             text("Face count: " + str(output_count))
             doc.asis('</br>')
@@ -68,12 +76,14 @@ def eval_face(response, image_name, output_count):
     doc.asis(footer())
     return doc.getvalue()
 
+
 def info_page():
     doc, tag, text, line = Doc().ttl()
     with tag('div'):
         with tag('div', id='container'):
             with tag('div', id='display_info'):
-                doc.asis('<div class="alert"><span class="closebtn" onclick="this.parentElement.style.display='+"'none'"+';">x</span>')
+                doc.asis(
+                    '<div class="alert"><span class="closebtn" onclick="this.parentElement.style.display='+"'none'"+';">x</span>')
                 text("This is a facial recognition media player. After selecting a media file the software will parse facial images and insert them into the database. ")
                 text("These images will then be compared to current images and highlighted if recognized. The images will also be used to continue to grow the facial ")
                 text("recognition data set.")
@@ -83,6 +93,7 @@ def info_page():
                 doc.asis('</div>')
 
     return doc.getvalue()
+
 
 def footer():
     doc, tag, text, line = Doc().ttl()
@@ -94,13 +105,15 @@ def footer():
                     with tag('p'):
                         text("Developed for CIS4390")
                         doc.asis("<br>")
-                        text("Developers: Remee A., Martin L., Luke O., Zihan S., Xinxin W.")
+                        text(
+                            "Developers: Remee A., Martin L., Luke O., Zihan S., Xinxin W.")
 
     return doc.getvalue()
 
+
 def header():
     doc, tag, text, line = Doc().ttl()
-    stylesheet = open(os.path.join(sys.path[0],"templates/stylesheet.txt"))
+    stylesheet = open(os.path.join(sys.path[0], "templates/stylesheet.txt"))
 
     with tag('html'):
         with tag('head'):
@@ -113,10 +126,12 @@ def header():
     with tag('div', id='container'):
         doc.asis('<a href="'+url_for('home')+'"')
         with tag('div', id='photo-container'):
-            doc.stag('img', src='https://raw.githubusercontent.com/remeeliz/ohmypy/master/header.JPG', id="header")
+            doc.stag(
+                'img', src='https://raw.githubusercontent.com/remeeliz/ohmypy/master/header.JPG', id="header")
         doc.asis('</a>')
 
     return doc.getvalue()
+
 
 def buttons():
     doc, tag, text, line = Doc().ttl()
@@ -124,24 +139,50 @@ def buttons():
     with tag('div', id='container'):
         with tag('div', id='photo-container'):
             with tag('form', id='menu'):
-                doc.asis('<label id="button1" for="test"  class="tooltip"> SELECT YOUR MEDIA FILE <span class="tooltiptext">The page will allow you to select media files (formatted as .mp4) that have been provided from some source, currently, these are part of the repo itself, and are limited to short clips of the television show "The Office." It is not necessary for the user to provide a novel file.</span></label><br>')
-                doc.asis('<input type="file" id="test" accept="image/png, image/jpeg, video/mp4">')
+                doc.asis('<button id="button1" type="submit" value="upload_files" class="tooltip"> SELECT YOUR MEDIA FILE <span class="tooltiptext">The page will allow you to select media files (formatted as .mp4) that have been provided from some source, currently, these are part of the repo itself, and are limited to short clips of the television show "The Office." It is not necessary for the user to provide a novel file.</span></button><br>')
+                doc.asis(
+                    '<textarea name="content" id="hide" method="post">upload_files</textarea>')
+                # doc.asis('<input type="file" id="test" accept="image/png, image/jpeg, video/mp4">')
             with tag('form', id='menu'):
-                doc.asis('<label id="checkboxlabel" for="mute" > MUTE COMMERCIALS </label>')
-                doc.asis('<input type="checkbox" id="mute" name="mute" value="Mute"></br></br>')
+                doc.asis(
+                    '<label id="checkboxlabel" for="mute" > MUTE COMMERCIALS </label>')
+                doc.asis(
+                    '<input type="checkbox" id="mute" name="mute" value="Mute"></br></br>')
                 doc.asis('<button type="submit" id="button2" value="view_data" class="tooltip"> PLAY MEDIA <span class="tooltiptext">This page will then allow you to play that file using our technique that will scrape images of faces detected in the video stream, and identify them as a known character (actor) in the stream. Prior to playing the stream, the user can select what they would like to have happen when known faces are identified in the stream (i.e. mute, change the channel, etc.).</br></br>Currently, this function is limited to finding faces in the stream; identifying them has not yet been implemented. You can see, however, that as the stream is played, the face that is detected in the stream is identified and marked by a green square.</span></button>')
-                doc.asis('<textarea name="content" id="hide" method="post">choose_video</textarea>')
+                doc.asis(
+                    '<textarea name="content" id="hide" method="post">choose_video</textarea>')
             with tag('form', id='menu'):
                 doc.asis('<button type="submit" id="button4" value="learn_data" class="tooltip"> LEARN FACE <span class="tooltiptext">In terms of the capabilities of the program, it will be initially trained on an image set derived from main characters in the show "The Office." As the program runs, however, and more faces are discovered, they should allow the model that identifies faces to be updated with these new faces so they can be categorized appropriately (as new characters, or commercial actors). On this page</br></br>, this is simply a mechanism to directly provide the model itself a novel face for incorporation into the model. Ultimately this will be a function that operates automatically during stream playback.</span></button>')
-                doc.asis('<textarea name="content" id="hide" method="post">learn_face</textarea>')
+                doc.asis(
+                    '<textarea name="content" id="hide" method="post">learn_face</textarea>')
             with tag('form', id='menu'):
                 doc.asis('<button type="submit" id="button5" value="database" class="tooltip"> VIEW DATA <span class="tooltiptext">This provides a view that our data API is actually working with; it will eventually provide more visibility in order to ensure data is uniform (correctly dimensioned, colored greyscale, etc).</span></button>')
-                doc.asis('<textarea name="content" id="hide" method="post">database</textarea>')
+                doc.asis(
+                    '<textarea name="content" id="hide" method="post">database</textarea>')
             with tag('form', id='menu'):
-                doc.asis('<button type="submit" id="button3" value="more_info" > MORE INFO </button>')
-                doc.asis('<textarea name="content" id="hide" method="post">more_info</textarea>')
+                doc.asis(
+                    '<button type="submit" id="button3" value="more_info" > MORE INFO </button>')
+                doc.asis(
+                    '<textarea name="content" id="hide" method="post">more_info</textarea>')
 
     return doc.getvalue()
+
+
+def upload_files():
+    doc, tag, text, line = Doc().ttl()
+    with tag('div'):
+        text("Upload new File")
+        doc.asis('<form method=post enctype=multipart/form-data>')
+        doc.asis(
+            '<label for="file-upload" class="custom-file-upload"><i class="fa fa-cloud-upload"></i>Choose File</label></br>')
+        doc.asis(
+            '<input type="file" name="file" id="file-upload" accept="image/*, video/*" required></br></br>')
+        doc.asis('</br></br>')
+        doc.asis(
+            '<button type="submit" id="eval_button" value="Upload"> Upload </button>')
+        doc.asis('</form>')
+    return doc.getvalue()
+
 
 def choose_video():
     doc, tag, text, line = Doc().ttl()
@@ -152,15 +193,20 @@ def choose_video():
                 for video in videolist:
                     videoname = (video[7:])[:-4]
                     if len(videoname) > 0:
-                        doc.asis('<button type="submit" id="button2" name="video_name" value="'+videoname+'">' + videoname + '</button>')
-                doc.asis('<textarea name="content" id="hide" method="post">data_page</textarea>')
+                        doc.asis('<button type="submit" id="button2" name="video_name" value="' +
+                                 videoname+'">' + videoname + '</button>')
+                doc.asis(
+                    '<textarea name="content" id="hide" method="post">data_page</textarea>')
     return doc.getvalue()
+
 
 def view_data_page(videoname):
     doc, tag, text, line = Doc().ttl()
     with tag('div', id='photo-container'):
-        doc.asis('<iframe width="1000" height="500" src="'+url_for('video_feed', video_name=videoname)+'" frameborder="0" allowfullscreen></iframe>')
+        doc.asis('<iframe width="1000" height="500" src="'+url_for('video_feed',
+                                                                   video_name=videoname)+'" frameborder="0" allowfullscreen></iframe>')
     return doc.getvalue()
+
 
 def learn_face():
     doc, tag, text, line = Doc().ttl()
@@ -170,11 +216,15 @@ def learn_face():
                 text("Choose an image with a single face to train facial recognition")
                 with tag('div', id='learn_face'):
                     doc.asis('<form method=post enctype=multipart/form-data>')
-                    doc.asis('<label for="file-upload" class="custom-file-upload"><i class="fa fa-cloud-upload"></i>Choose File</label></br>')
-                    doc.asis('<input type="file" name="file" id="file-upload" accept="image/png,image/jpeg" required></br></br>')
-                    doc.asis('<input type="text" name="name_in" placeholder="Eigen Face" required>')
+                    doc.asis(
+                        '<label for="file-upload" class="custom-file-upload"><i class="fa fa-cloud-upload"></i>Choose File</label></br>')
+                    doc.asis(
+                        '<input type="file" name="file" id="file-upload" accept="image/png,image/jpeg" required></br></br>')
+                    doc.asis(
+                        '<input type="text" name="name_in" placeholder="Eigen Face" required>')
                     doc.asis('</br></br>')
-                    doc.asis('<button type="submit" id="eval_button" value="Upload"> Evaluate </button>')
+                    doc.asis(
+                        '<button type="submit" id="eval_button" value="Upload"> Evaluate </button>')
                     doc.asis('</form>')
 
     return doc.getvalue()
