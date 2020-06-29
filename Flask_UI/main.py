@@ -1,12 +1,12 @@
 ##################################################
-## FileName: main.py
+# FileName: main.py
 ##################################################
-## Author: RDinmore, XWu
-## Date: 2020.06.22
-## Purpose: server main page
-## Libs: flask, datetime
-## LocalLibs: templates, database, camera, filestore
-## Path: Flask_UI/filestore
+# Author: RDinmore, XWu
+# Date: 2020.06.22
+# Purpose: server main page
+# Libs: flask, datetime
+# LocalLibs: templates, database, camera, filestore
+# Path: Flask_UI/filestore
 ##################################################
 
 from flask import Flask, render_template, request, Response, make_response, flash, request, redirect, url_for, send_from_directory
@@ -30,11 +30,13 @@ app.config['UPLOAD_FOLDER'] = cfg.UPLOAD_FOLDER
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=3)
 app.config['SECRET_KEY'] = cfg.SECRET_KEY
 
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route("/")
+
+@app.route("/", methods=['GET', 'POST'])
 def home():
     url_get = request.args.get('content')
     video_get = request.args.get('video_name')
@@ -46,24 +48,28 @@ def home():
     else:
         return get_page(url_get)
 
+
 def gen(camera):
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-@app.route('/video_feed/<video_name>',methods=['GET'])
+
+@app.route('/video_feed/<video_name>', methods=['GET'])
 def video_feed(video_name):
     video_url = 'https://ohmypy-summer2020.s3.amazonaws.com/videos/' + video_name + '.mp4'
     return Response(gen(VideoCamera(video_url)),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # this is a test for facial recognition
+
+
 @app.route('/test')
 def process():
-    #this will search in the s3 for any files with the name steve and return top path
+    # this will search in the s3 for any files with the name steve and return top path
     image_path = get_s3object("Steve")
-    #this transforms the image into a cv image for facedetect
+    # this transforms the image into a cv image for facedetect
     image = get_cvimage(image_path)
     output_array = image_binary(image, image_path)
 
@@ -72,10 +78,11 @@ def process():
     return eval_face(output_array["html"], image_name, output_array["num_face"])
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/?content=upload_files', methods=['GET', 'POST'])
 def upload_file():
-    name_in = '/' + request.form['name_in']
     if request.method == 'POST':
+        print(file.filename)
+
         # check if the post request has the file part
         if 'file' not in request.files:
             flash('No file part')
@@ -87,21 +94,29 @@ def upload_file():
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            file_type = '/' + get_fileext(file.filename)
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',filename=filename,name=name_in,filetype=file_type))
+            return redirect(url_for('uploaded_file',
+                                    filename=filename))
 
-@app.route('/uploads/<filename>/<name>/<filetype>')
-def uploaded_file(filename,name,filetype):
-    filename = app.config['UPLOAD_FOLDER'] + "/" + filename
 
-    image_file = gettemp_cvimage(filename)
-    image = facesquare(image_file)
-    output_array = image_binary(image, filename)
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)
 
-    insert_face(output_array["image"], name)
-    return eval_face(output_array["html"], name, output_array["num_face"])
+
+# @app.route('/uploads/<filename>/<name>/<filetype>')
+# def uploaded_file(filename, name, filetype):
+#     filename = app.config['UPLOAD_FOLDER'] + "/" + filename
+
+#     image_file = gettemp_cvimage(filename)
+#     image = facesquare(image_file)
+#     output_array = image_binary(image, filename)
+
+#     insert_face(output_array["image"], name)
+#     return eval_face(output_array["html"], name, output_array["num_face"])
+
 
 if __name__ == "__main__":
     app.run(debug=True)
