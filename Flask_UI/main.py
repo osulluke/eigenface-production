@@ -37,8 +37,12 @@ def allowed_file(filename):
 @app.route("/")
 def home():
     url_get = request.args.get('content')
+    video_get = request.args.get('video_name')
+
     if url_get == 'database':
         return data_page(get_data())
+    elif url_get == 'data_page':
+        return video_page(video_get)
     else:
         return get_page(url_get)
 
@@ -48,9 +52,10 @@ def gen(camera):
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-@app.route('/video_feed')
-def video_feed():
-    return Response(gen(VideoCamera('https://ohmypy-summer2020.s3.amazonaws.com/videos/LibertyMutualInsuranceCommercial.mp4')),
+@app.route('/video_feed/<video_name>',methods=['GET'])
+def video_feed(video_name):
+    video_url = 'https://ohmypy-summer2020.s3.amazonaws.com/videos/' + video_name + '.mp4'
+    return Response(gen(VideoCamera(video_url)),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # this is a test for facial recognition
@@ -100,4 +105,3 @@ def uploaded_file(filename,name,filetype):
 
 if __name__ == "__main__":
     app.run(debug=True)
-

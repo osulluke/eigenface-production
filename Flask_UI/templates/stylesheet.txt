@@ -11,6 +11,7 @@
   text-align: justify;
   border-radius: 6px;
   padding: 5px 5px;
+  line-height: 1;
 
   /* Position the tooltip */
   position: absolute;
@@ -70,29 +71,7 @@ a { text-decoration: none; color: black;}
 #eval_button{margin: 10px; width: 50%; height: 5%; text-align: center; box-shadow: 0px 1px 0px 0px #f0f7fa; border-radius:6px; cursor:pointer; font-size:15px; font-weight:bold; text-decoration:none;}
 
 input[type="file"] {display: none;}
-.alert {  padding: 20px;  background-color: #f44336;  color: white;} .closebtn {  margin-left: 15px;  color: white;  font-weight: bold;  float: right;  font-size: 22px;  line-height: 20px;  cursor: pointer;  transition: 0.3s;} .closebtn:hover {  color: black;}
-footer{font-size:8px; font-weight:bold; text-align: center; position: fixed; left:0; bottom:0; width: 100%
-
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-}
+.alert {  padding: 20px; font-size: 14px;  background-color: #f44336;  color: white;}
+.closebtn {  margin-left: 15px;  color: white;  font-weight: bold;  float: right;  font-size: 22px;  line-height: 20px;  cursor: pointer;  transition: 0.3s;}
+.closebtn:hover {  color: black;}
+footer{font-size:8px; font-weight:bold; text-align: center; position: fixed; left:0; bottom:0; width: 100%}
