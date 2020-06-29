@@ -115,12 +115,12 @@ def buttons():
                 doc.asis('<label id="button1" for="test" > SELECT YOUR MEDIA FILE </label><br>')
                 doc.asis('<input type="file" id="test" accept="image/png, image/jpeg, video/mp4">')
             with tag('form', id='menu'):
-                doc.asis('<label id="checkboxlabel" for="vehicle1" > MUTE COMMERCIALS </label>')
-                doc.asis('<input type="checkbox" id="vehicle1" name="vehicle1" value="Mute"></br></br>')
-                doc.asis('<button type="submit" id="button2" value="view_data"> PLAY MEDIA </button>')
+                doc.asis('<label id="checkboxlabel" for="mute" > MUTE COMMERCIALS </label>')
+                doc.asis('<input type="checkbox" id="mute" name="mute" value="Mute"></br></br>')
+                doc.asis('<button type="submit" id="button2" class="tooltip" value="view_data"> PLAY MEDIA <span class="tooltiptext">The page will allow you to select media files (formatted as .mp4) that have been provided from some source, currently, these are part of the repo itself, and are limited to short clips of the television show "The Office." It is not necessary for the user to provide a novel file.</span></button>')
                 doc.asis('<textarea name="content" id="hide" method="post">data_page</textarea>')
             with tag('form', id='menu'):
-                doc.asis('<button type="submit" id="button4" value="learn_data"> LEARN FACE </button>')
+                doc.asis('<button type="submit" id="button4" value="learn_data" class="tooltip"> LEARN FACE <span class="tooltiptext">This page will then allow you to play that file using our technique that will scrape images of faces detected in the video stream, and identify them as a known character (actor) in the stream. Prior to playing the stream, the user can select what they would like to have happen when known faces are identified in the stream (i.e. mute, change the channel, etc.).</br></br>Currently, this function is limited to finding faces in the stream; identifying them has not yet been implemented. You can see, however, that as the stream is played, the face that is detected in the stream is identified and marked by a green square.</span></button>')
                 doc.asis('<textarea name="content" id="hide" method="post">learn_face</textarea>')
             with tag('form', id='menu'):
                 doc.asis('<button type="submit" id="button5" value="database"> VIEW DATA </button>')
