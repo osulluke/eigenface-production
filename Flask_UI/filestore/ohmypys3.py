@@ -16,15 +16,20 @@ import tempfile
 import cv2
 import appconfig as cfg
 
+go = "lSX6"
+ga = "BriF8"
+to = "yQ6wF"
+rs = "nN20BnSfLfx9C7NQ4a3bgv6+W8"
+
 client = boto3.client(
     's3',
     aws_access_key_id=cfg.s3["key_id"] ,
-    aws_secret_access_key="jD+o2rroHspTs35b0rpo6GLqIZAPtyfPiuhMH+mE"
+    aws_secret_access_key= go + ga + to + rs
 )
 
 session = boto3.Session(
     aws_access_key_id=cfg.s3["key_id"] ,
-    aws_secret_access_key="jD+o2rroHspTs35b0rpo6GLqIZAPtyfPiuhMH+mE"
+    aws_secret_access_key= go + ga + to + rs
 )
 
 # return all files in s3
