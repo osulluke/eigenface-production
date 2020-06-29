@@ -15,7 +15,7 @@ mydb = connector.connect(user='admin', password="ohmypycis4930",
                                    host="ohmypy.cdd0llcf03hp.us-east-1.rds.amazonaws.com", db="metadata")
 
 def execute_query(query):
-    mydb = mysql.connector.connect(user='admin', password="ohmypycis4930", host="ohmypy.cdd0llcf03hp.us-east-1.rds.amazonaws.com")
+    mydb = connector.connect(user='admin', password="ohmypycis4930", host="ohmypy.cdd0llcf03hp.us-east-1.rds.amazonaws.com")
     mycursor = mydb.cursor()
     results = mycursor.execute(query)
     if results == None:
