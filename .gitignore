@@ -7,5 +7,4 @@ Flask_UI/pyimagesearch/__pycache__/*.pyc
 Flask_UI/pyimagesearch/motion_detection/__pycache__/*.pyc
 Flask_UI/templates/__pycache__/*.pyc
 *.pyc
-FLASK_UI/appconfig.py
 FLASK_UI/.vscode
