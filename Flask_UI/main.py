@@ -59,8 +59,8 @@ def gen(camera):
 @app.route('/video_feed/<video_name>', methods=['GET'])
 def video_feed(video_name):
     video_url = 'https://ohmypy-summer2020.s3.amazonaws.com/videos/' + video_name + '.mp4'
-    return Response(gen(VideoCamera(video_url)),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    return video_url #Response(gen(VideoCamera(video_url)),
+                    #mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # this is a test for facial recognition
 

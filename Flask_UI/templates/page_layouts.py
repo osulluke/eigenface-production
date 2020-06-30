@@ -201,8 +201,10 @@ def choose_video():
 def view_data_page(videoname):
     doc, tag, text, line = Doc().ttl()
     with tag('div', id='photo-container'):
-        doc.asis('<iframe width="1000" height="500" src="'+url_for('video_feed',
-                                                                   video_name=videoname)+'" frameborder="0" allowfullscreen></iframe>')
+        doc.asis('<video width="1000" height="500" controls>')
+        doc.asis('<source src='+ 'https://ohmypy-summer2020.s3.amazonaws.com/videos/' + videoname + '.mp4'+' type="video/mp4">')
+        doc.asis('</video>' )
+        #doc.asis('<iframe width="1000" height="500" src="'+ 'https://ohmypy-summer2020.s3.amazonaws.com/videos/LibertyMutualInsuranceCommercial.mp4 type="video/mp4"' +'" frameborder="0" allowfullscreen></iframe>' )
     return doc.getvalue()
 
 
