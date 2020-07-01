@@ -118,7 +118,7 @@ def select_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             if file_ext == 'jpg' or file_ext == 'png' or file_ext == 'jpeg':
                 return redirect(url_for('uploaded_file', filename=filename, name=name_in, filetype=file_type))
-    return feature_pending()
+    return redirect(url_for('feature_pending'))
 
 @app.route('/uploads/<filename>/<name>/<filetype>')
 def uploaded_file(filename,name,filetype):
