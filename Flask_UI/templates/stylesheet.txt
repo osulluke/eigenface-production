@@ -75,3 +75,20 @@ input[type="file"] {display: none;}
 .closebtn {  margin-left: 15px;  color: white;  font-weight: bold;  float: right;  font-size: 22px;  line-height: 20px;  cursor: pointer;  transition: 0.3s;}
 .closebtn:hover {  color: black;}
 footer{font-size:8px; font-weight:bold; text-align: center; position: fixed; left:0; bottom:0; width: 100%}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  background-color: white;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
