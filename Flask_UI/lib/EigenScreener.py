@@ -4,6 +4,7 @@ from FaceSpace import FaceSpace
 from StreamController import StreamController
 
 class EigenScreener:
+
     """
     This class is a "composition" of other objects that are used to identify faces, control
     database access, control the video stream, and test faces that are found in the stream.
@@ -15,7 +16,9 @@ class EigenScreener:
         face_space:         A FaceSpace() object
         stream_controller:  A StreamController() object
     """
+    
     def __init__(self):
+        vid_stream = ""
         data_connection = DataConnector()
         face_tester = FaceTester()
         face_space = FaceSpace()
