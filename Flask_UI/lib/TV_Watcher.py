@@ -1,3 +1,6 @@
+import cv2
+import sys
+
 class TV_Watcher:
     
     """
@@ -7,8 +10,14 @@ class TV_Watcher:
     will then be tested in order to ensure that an image does, in fact, contain a face, and this 
     array of faces will then be passed on to the next object.
 
+    Cascades downloaded from openCV GitHub repository: https://github.com/opencv/opencv/tree/master/data/haarcascades
+
     Attributes:
-        video_stream:            Video stream data; base data
+        video_stream:                    Video stream data; base data
+        frontal_face_detector_default:   Haar cascade detector for frontal faces (default version)
+        eye_cascade                      Haar cascade detector for eyes
+        front_cascade_alt                Haar cascade alternate face detector (1)
+        cascade_path_front_alt_2         Haar cascade alternate face detector (2)
 
     Methods:
         captureScreen(VideoStream):     Image; screen capture of video stream
@@ -21,6 +30,14 @@ class TV_Watcher:
         """
         Initialization of FaceTester object
         """
+
+        # Create the primary frontal face detector
+        self.front_cascade_default = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+
+        # Create alternate detectors; to be used to help filter scraped images
+        self.eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haaarcascade_eye.xml")
+        self.front_cascade_alt = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_alt.xml")
+        self.cascade_path_front_alt_2 = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_alt2.xml")
 
     def captureScreen(self, vid_stream):
         """
@@ -44,6 +61,8 @@ class TV_Watcher:
             Returns:
                 detected_faces (Image[]):   array containing all of the image slices where faces were detected
         """
+
+
 
     def filterOnlyFaces(self, im_array):
         """
