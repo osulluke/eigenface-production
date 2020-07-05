@@ -1,3 +1,4 @@
+from TV_Watcher import TV_Watcher
 from DataConnector import DataConnector
 from FaceProcessor import FaceProcessor
 from FaceSpace import FaceSpace
@@ -11,6 +12,7 @@ class EigenScreener:
 
     Attributes:
         vid_stream:         the base video stream a user desires to watch
+        tv_watcher:         A TV_Watcher() object
         data_connection:    A DataConnector() object
         face_processor:     A FaceProcessor() object
         face_space:         A FaceSpace() object
@@ -19,6 +21,7 @@ class EigenScreener:
     
     def __init__(self):
         vid_stream = ""
+        tv_watcher = TV_Watcher()
         data_connection = DataConnector()
         face_processor = FaceProcessor()
         face_space = FaceSpace()

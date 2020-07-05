@@ -1,6 +1,6 @@
 # **Design Document**
 
-## This is a description of the UML document that outlines the classes needed to complete the project. Reference the EigenFace.pdf file for the graphical depiction of this description.
+## This is a description of the UML document that outlines the classes needed to complete the project. Reference the EigenFace.pdf file for the graphical depiction of these descriptions.
 
 ## **Backend**
 
@@ -8,17 +8,25 @@ The backend consists of a database (either SQLite3 or MySQL) and a python class 
 
 ## **Middleware / Functionality**
 
-The meat of the functionality is contained in a few classes. These are **FaceTester**, **StreamController**, and the most important class **FaceSpace**.
+The meat of the functionality is contained in a few classes. These are **TV_Watcher**, **FaceTester**, **StreamController**, and the most important class, **FaceSpace**.
 
-### **FaceTester class**
+### **TV_Watcher class**
+
+First and foremost, this class will maintain a Television video stream that will serve as the base data from which to run the program.
+
+1. It will take screen shots on an interval (probably ~1/second).
+2. It will run a face detection algorithm on that image in order to form an array of images representing parts of the overall screen that contain 'faces'.
+3. It will then test each of these 'face' images to determine if there is actually a face present; this is important because the current face scanning algorithm scrapes parts of the overal scene that are not faces.
+4. It will then send the actual faces to the **FaceProcessor** object that will provide further functionality.
+
+### **FaceProcessor class**
 
 This class will maintain an array of faces and a connection to the database. The functions provided will do a few things.
 
-1. It will test images to determine if there is actually a face present; this is important because the current face scanning algorithm scrapes parts of the image that are not faces.
-2. It will need to 'orient' the face images so that the features generally occupy the same place in the image.
-3. It will convert images to greyscale.
-4. It will turn the image into a vector to prepare it to be passed to the FaceSpace class.
-5. It will send newly identified faces to the database.
+1. It will need to 'orient' the face images so that the features generally occupy the same place in the image.
+2. It will convert images to greyscale.
+3. It will turn the image into a vector to prepare it to be passed to the FaceSpace class.
+4. It will send newly identified faces to the database.
 
 ### **FaceSpace Class**
 
