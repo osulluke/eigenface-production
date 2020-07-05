@@ -1,5 +1,5 @@
 from DataConnector import DataConnector
-from FaceTester import FaceTester
+from FaceProcessor import FaceProcessor
 from FaceSpace import FaceSpace
 from StreamController import StreamController
 
@@ -12,7 +12,7 @@ class EigenScreener:
     Attributes:
         vid_stream:         the base video stream a user desires to watch
         data_connection:    A DataConnector() object
-        face_tester:        A FaceTester() object
+        face_processor:     A FaceProcessor() object
         face_space:         A FaceSpace() object
         stream_controller:  A StreamController() object
     """
@@ -20,7 +20,7 @@ class EigenScreener:
     def __init__(self):
         vid_stream = ""
         data_connection = DataConnector()
-        face_tester = FaceTester()
+        face_processor = FaceProcessor()
         face_space = FaceSpace()
         stream_controller = StreamController()
 

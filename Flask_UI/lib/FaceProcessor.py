@@ -1,4 +1,4 @@
-class FaceTester:
+class FaceProcessor:
 
     """
     This is a class that will test 'scraped' images
@@ -11,28 +11,15 @@ class FaceTester:
         databaseConnection:      connection to the DataConnecter object
 
     Methods:
-        testFace(Image) :        boolean
-        orientFace(Image):       Image
-        convertGrayScale(Image): Image
-        vectorize(Image):        Vector
-        foundNewFace(_id, Image):none
+        orientFace(Image):          Image
+        convertGrayScale(Image):    Image
+        vectorize(Image):           Vector
+        foundNewFace(_id, Image):   none
     """
 
     def __init__(self):
         """
-        Initialization of FaceTester object
-        """
-
-    def testFace(self, im):
-        """
-        Tests an image to see if there is actually a face present or not; the intent is to preven images that do not contain
-        faces from being inserted into the database.
-
-            Parameters:
-                im (Image): image to test 
-
-            Returns:
-                isFace (boolean): True/False value whether or not image is actually a face
+        Initialization of FaceProcessor object
         """
 
     def orientFace(self, im):
@@ -82,4 +69,4 @@ class FaceTester:
         """
 
 if __name__ == "__main__":
-    face_tester = FaceTester()
+    face_processor = FaceProcessor()
