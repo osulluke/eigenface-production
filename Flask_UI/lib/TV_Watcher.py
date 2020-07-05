@@ -1,3 +1,5 @@
+# Source: https://github.com/shantnu/FaceDetect; modeled after this use case
+
 import cv2
 import sys
 
@@ -18,6 +20,7 @@ class TV_Watcher:
         eye_cascade                      Haar cascade detector for eyes
         front_cascade_alt                Haar cascade alternate face detector (1)
         cascade_path_front_alt_2         Haar cascade alternate face detector (2)
+        detected_faces                   Image array of faces that were detected
 
     Methods:
         captureScreen(VideoStream):     Image; screen capture of video stream
@@ -35,9 +38,19 @@ class TV_Watcher:
         self.front_cascade_default = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
         # Create alternate detectors; to be used to help filter scraped images
-        self.eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haaarcascade_eye.xml")
+        self.eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_eye.xml")
         self.front_cascade_alt = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_alt.xml")
         self.cascade_path_front_alt_2 = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_alt2.xml")
+
+        # Variables to convert the scene to grayscale and collect face slices
+        self.gray_scene = ""
+        self.x_start = 0
+        self.x_end = 0
+        self.y_start = 0
+        self.y_end = 0
+
+        # Variables to hold detected faces
+        self.detected_faces = []
 
     def captureScreen(self, vid_stream):
         """
@@ -50,18 +63,36 @@ class TV_Watcher:
                 screenCap (Image):      Image representing a slice of video data
         """
 
-    def scanForFaces(self, im):
+    def scanForFaces(self, image_scene):
         """
         Runs a face detection algorithm on a scene (image) from the video stream and returns 
         an array containing all the "faces" that were detected.
 
             Parameters:
-                im (Image):                 image to scan for faces
+                imamge_scene (Image):       image of total scene to scan for faces
 
             Returns:
-                detected_faces (Image[]):   array containing all of the image slices where faces were detected
+                detected_faces (Image[]):   fills an array containing all of the image slices where faces were detected
         """
 
+        # Take an initial hack at scanning an image for faces; these parameters work pretty well
+        self.gray_scene = cv2.cvtColor(image_scene, cv2.COLOR_BGR2GRAY), # cv2 relies on grayscale images
+        faces = self.front_cascade_default.detectMultiScale(
+            self.gray_scene,
+            scaleFactor = 1.3,
+            minNeighbors = 6,
+            minSize = (70, 70),
+            flags = cv2.CASCADE_SCALE_IMAGE
+        )
+
+        # Loop over all the face rectangles found in the scene
+        for (x, y, w, h) in faces:
+            self.x_start = x
+            self.y_start = y
+            self.x_end = x + w
+            self.y_end = y + h
+            face = self.gray_scene[self.y_start:self.y_end, self.x_start:self.x_end]
+            self.detected_faces.append(face)
 
 
     def filterOnlyFaces(self, im_array):
