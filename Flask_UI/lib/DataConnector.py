@@ -1,4 +1,4 @@
-class DataConnecter:
+class DataConnector:
     
     """
     This class provides an interface to the image datastore (whether SQLite3 or MySQL).
@@ -14,7 +14,7 @@ class DataConnecter:
 
     def __init__(self):
         """
-        Initialization of DataConnecter object
+        Initialization of DataConnector object
         """
 
     def insertImage(self, _id, _image):
@@ -42,4 +42,4 @@ class DataConnecter:
         """
 
 if __name__ == "__main__":
-    data_connector = DataConnecter()
+    data_connector = DataConnector()
