@@ -74,3 +74,6 @@ class FaceSpace:
             Returns:
                 idVec (_id, bool, newFaceFlag): tuple representing the _id, probability, and whether it's a new face
         """
+
+if __name__ == "__main__":
+    face_space = FaceSpace()

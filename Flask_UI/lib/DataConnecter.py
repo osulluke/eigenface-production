@@ -40,3 +40,6 @@ class DataConnecter:
             Returns:
                 allImages (Image[]): an array of all the images in the database
         """
+
+if __name__ == "__main__":
+    data_connector = DataConnecter()

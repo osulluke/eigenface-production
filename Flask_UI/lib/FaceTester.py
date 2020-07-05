@@ -80,3 +80,6 @@ class FaceTester:
             Returns:
                 none
         """
+
+if __name__ == "__main__":
+    face_tester = FaceTester()
