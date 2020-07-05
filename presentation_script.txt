@@ -1,0 +1,15 @@
+Hey everyone, here's the script shell for our presentation. I've ordered it in what I think would be a "good" order to present, but this is not hard and fast; if you think it makes sense to go in a different order, fire away. Thanks.
+
+Remee - Database / Project Demo / Temp file storage (S3)
+
+
+Martin Lasprilla - Overall state / Some of the Eigen math
+
+
+Zihan Shu - Flask / front end
+
+
+Xinxin Wu - OpenCV (temp files; handling files in memory) / TV_Watcher / StreamController
+
+
+Luke - FaceSpace / FaceProcessor classes
