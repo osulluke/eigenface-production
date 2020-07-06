@@ -96,7 +96,7 @@ class TV_Watcher:
             self.y_start = y
             self.x_end = x + w
             self.y_end = y + h
-            face = self.gray_scene[self.y_start:self.y_end, self.x_start:self.x_end]
+            face = cv2.cvtColor(self.gray_scene[self.y_start:self.y_end, self.x_start:self.x_end], cv2.COLOR_RGB2GRAY)
             self.detected_faces.append(face)
 
     def filterOnlyFaces(self, im_array):
