@@ -4,8 +4,7 @@ Remee - Database / Project Demo / Temp file storage (S3)
 Hi, our group is Oh My Py. Our team consists of Luke, Martin, Xinxin, Zihan and myself Remee. A quick summary of our project is that it is a streaming facial recognition application in which the user will be able to control their media experience. We are going to go straight into the demo, this is our landing page, the user has options to select their own media file to stream. We are currently working on that feature so I will show you an example, on the play media. Here we are using s3 to stream live videos as they play our algorithm looks for faces. The next feature is learning a face, here you can select an image give it a name and the image vector will be entered into our database. Last feature is the ability to view the data from our mysql database, in the future we hope to have the ability to remove or rename the vectors to accomodate for any errors. I'll pass us on to Martin to speak about the project state
 
 Martin Lasprilla - Overall state / Some of the Eigen math
-
-
+Our project at the moment is mostly developed on the front end, including menu options that include video stream, face recognition, data produced, and other info. Although all the features that the end product will have are listed on the application, some features are not fully developed. Our team is still working on the algorithms and math involved in order to determine if a face should be recognized or not. Also, our team is working on connecting the data that is produced by the video stream. The programs currently being built will determine if data should be placed in the database or if it is an irrelevant face. However, playing media and selecting media is currently available.
 Zihan Shu - Flask / front end
 
 
