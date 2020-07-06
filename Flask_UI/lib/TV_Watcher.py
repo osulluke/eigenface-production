@@ -97,7 +97,10 @@ class TV_Watcher:
             self.x_end = x + w
             self.y_end = y + h
             face = cv2.cvtColor(self.gray_scene[self.y_start:self.y_end, self.x_start:self.x_end], cv2.COLOR_RGB2GRAY)
+            face = cv2.resize(face, (200,200), interpolation = cv2.INTER_AREA)
             self.detected_faces.append(face)
+
+        return
 
     def filterOnlyFaces(self, im_array):
         """
@@ -127,7 +130,7 @@ if __name__ == "__main__":
     video_stream = cv2.VideoCapture('../video/FinerThingsClub.mp4')
     while True:
         ret, frame = tv_watcher.captureScreen(video_stream)
-        if time.time() % 3 <= 1:
+        if time.time() % 1 <= 1:
             tv_watcher.scanForFaces(frame)
             print("# detected_faces = " + str(len(tv_watcher.detected_faces)))
 
@@ -138,10 +141,6 @@ if __name__ == "__main__":
                 cv2.imshow('frame', frame)
             except:
                 pass
-
-        if ret == False:
-            video_stream.release()
-            cv2.destroyAllWindows()
 
     for im in tv_watcher.detected_faces:
         cv2.imshow('frame', im)
