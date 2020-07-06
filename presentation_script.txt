@@ -10,7 +10,9 @@ Zihan Shu - Flask / front end
 
 
 Xinxin Wu - OpenCV (temp files; handling files in memory) / TV_Watcher / StreamController
-
+For displaying results, we used this page for displaying the face detection results.
+** (Show a video in Play Media) **
+The mechanism in it is we used openCV to read a video file frame by frame. Once we got a frame in this video, we would process it with the face detection algorithm, which will detect face and draw a rectangle on the face in that frame. After the algorithm finished drawing the box, we would convert this frame which has the 'face box' to a jpeg. After that, we send this jpeg file to the front end. As we processed the video frame by frame continuously, the front end would display a image stream. So, reading videos and sending frames are being processed simutaneously. For controlling the image stream, we are still working on it. We are expecting that the stream controller could control this image stream like a video. Moreover, we would like to add sound track to this image stream. So that's the key point in handling video, I will pass us on to Luke to speak about the FaceSpace and FaceProcessor. 
 
 Luke - FaceSpace / FaceProcessor classes
 
