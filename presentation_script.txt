@@ -13,3 +13,11 @@ Xinxin Wu - OpenCV (temp files; handling files in memory) / TV_Watcher / StreamC
 
 
 Luke - FaceSpace / FaceProcessor classes
+
+The FaceProcessor class will be a primary controller of data flowing through the system, in effect, providing a centralized manager for the frontend and backend to communicate, as well as for the major technical processing step embodied by the FaceSpace class to communicate through.
+
+** (Run script 'python EigenScreener.py') **
+
+The DataConnector class will provide an interface to the database store of images. Currently it functions using the file system, though the functions are callable from other classes, so development can continue with the interface as designed, even though the implementation details will change. The timeline for the completion of the database is ______, and is being tracked in GitHub.
+
+Finally, the FaceSpace class is where the 'heavy' lifting will take place. Upon instantiation, the class will build a Principal Components/Singular Value Decomposition of the face data present in the data store. As it is fed image vectors from the FaceProcessor, it projects them onto FaceSpace and determines the proximity to other average vectors in the space, sorting them in ascending order and placing them in order of most similar to least similar. Vectors that are in close proximity to known faces are "identified" and those that aren't are flagged and inserted into the database for future processing.
