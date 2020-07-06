@@ -1,7 +1,7 @@
 Hey everyone, here's the script shell for our presentation. I've ordered it in what I think would be a "good" order to present, but this is not hard and fast; if you think it makes sense to go in a different order, fire away. Thanks.
 
 Remee - Database / Project Demo / Temp file storage (S3)
-
+Hi, our group is Oh My Py. Our team consists of Luke, Martin, Xinxin, Zihan and myself Remee. A quick summary of our project is that it is a streaming facial recognition application in which the user will be able to control their media experience. We are going to go straight into the demo, this is our landing page, the user has options to select their own media file to stream. We are currently working on that feature so I will show you an example, on the play media. Here we are using s3 to stream live videos as they play our algorithm looks for faces. The next feature is learning a face, here you can select an image give it a name and the image vector will be entered into our database. Last feature is the ability to view the data from our mysql database, in the future we hope to have the ability to remove or rename the vectors to accomodate for any errors. I'll pass us on to Martin to speak about the project state
 
 Martin Lasprilla - Overall state / Some of the Eigen math
 
