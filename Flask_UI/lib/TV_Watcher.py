@@ -2,6 +2,7 @@
 
 import cv2
 import sys
+import time
 
 class TV_Watcher:
     
@@ -62,6 +63,9 @@ class TV_Watcher:
             Returns:
                 screenCap (Image):      Image representing a slice of video data
         """
+        ret, screenCap = vid_stream.read()
+
+        return ret, screenCap
 
     def scanForFaces(self, image_scene):
         """
@@ -76,7 +80,8 @@ class TV_Watcher:
         """
 
         # Take an initial hack at scanning an image for faces; these parameters work pretty well
-        self.gray_scene = cv2.cvtColor(image_scene, cv2.COLOR_BGR2GRAY), # cv2 relies on grayscale images
+        # self.gray_scene = cv2.cvtColor(image_scene, cv2.COLOR_BGR2GRAY), # cv2 relies on grayscale images; commented out b/c the 
+        self.gray_scene = image_scene
         faces = self.front_cascade_default.detectMultiScale(
             self.gray_scene,
             scaleFactor = 1.3,
@@ -93,7 +98,6 @@ class TV_Watcher:
             self.y_end = y + h
             face = self.gray_scene[self.y_start:self.y_end, self.x_start:self.x_end]
             self.detected_faces.append(face)
-
 
     def filterOnlyFaces(self, im_array):
         """
@@ -120,3 +124,28 @@ class TV_Watcher:
 
 if __name__ == "__main__":
     tv_watcher = TV_Watcher()
+    video_stream = cv2.VideoCapture('../video/FinerThingsClub.mp4')
+    while True:
+        ret, frame = tv_watcher.captureScreen(video_stream)
+        if time.time() % 3 <= 1:
+            tv_watcher.scanForFaces(frame)
+            print("# detected_faces = " + str(len(tv_watcher.detected_faces)))
+
+        if cv2.waitKey(30) & 0xFF == ord('q'): # https://www.geeksforgeeks.org/python-opencv-capture-video-from-camera/
+            break
+        else:
+            try:
+                cv2.imshow('frame', frame)
+            except:
+                pass
+
+        if ret == False:
+            video_stream.release()
+            cv2.destroyAllWindows()
+
+    for im in tv_watcher.detected_faces:
+        cv2.imshow('frame', im)
+        cv2.waitKey(10)
+
+    cv2.waitKey()
+    cv2.destroyAllWindows()
