@@ -7,12 +7,12 @@ Hey everyone, here's the script shell for our presentation. I've ordered it in w
 4. Play a video for face detection (Xinxin)
 5. UML Diagram (Luke)
 
-Remee - Database / Project Demo / Temp file storage (S3)
+Remee - Overall state / Database / Project Demo / Temp file storage (S3)
+Hi, our group is Oh My Py. Our team consists of Luke, Xinxin, Zihan and myself Remee. A quick summary of our project - it is a streaming media player with facial recognition.
+The video player allows users to control their media experience by giving them the ability to block commercials or certain faces. Currently we have most of the front end framework for our application built out. We are currently working on developing features for the media player, this includes building objects for streaming functions, focusing on performance, as well as the calculations for computing vector similarity.
 
-Hi, our group is Oh My Py. Our team consists of Luke, Martin, Xinxin, Zihan and myself Remee. A quick summary of our project is that it is a streaming facial recognition application in which the user will be able to control their media experience. We are going to go straight into the demo, this is our landing page, the user has options to select their own media file to stream. We are currently working on that feature so I will show you an example, on the play media. Here we are using s3 to stream live videos as they play our algorithm looks for faces. The next feature is learning a face, here you can select an image give it a name and the image vector will be entered into our database. Last feature is the ability to view the data from our mysql database, in the future we hope to have the ability to remove or rename the vectors to accomodate for any errors. I'll pass us on to Martin to speak about the project state
+This is our landing page, the user has options to select their own media file to stream. We are currently working on that feature so I will show you an example, on the play media. Here we are using s3 to stream live videos, as the video plays our algorithm looks for faces; captures them and puts them in a database to be used for future recognition. The next feature is learning a face, here you can select an image give it a name and the image vector calculated and entered into our database. The last feature is the ability to view the data from our mysql database, in the future we hope to have the ability to remove or rename the vectors to accomodate for any errors. I'll pass us on to Xinxin to speak on the video streaming process.
 
-Martin Lasprilla - Overall state / Some of the Eigen math
-Our project at the moment is mostly developed on the front end, including menu options that include video stream, face recognition, data produced, and other info. Although all the features that the end product will have are listed on the application, some features are not fully developed. Our team is still working on the algorithms and math involved in order to determine if a face should be recognized or not. Also, our team is working on connecting the data that is produced by the video stream. The programs currently being built will determine if data should be placed in the database or if it is an irrelevant face. However, playing media and selecting media is currently available.
 Zihan Shu - Flask / front end
 
 
@@ -34,4 +34,12 @@ The DataConnector class will provide an interface to the database store of image
 Finally, the FaceSpace class is where the 'heavy' lifting will take place. Upon instantiation, the class will build a Principal Components/Singular Value Decomposition of the face data present in the data store. As it is fed image vectors from the FaceProcessor, it projects them onto FaceSpace and determines the proximity to other average vectors in the space, sorting them in ascending order and placing them in order of most similar to least similar. Vectors that are in close proximity to known faces are "identified" and those that aren't are flagged and inserted into the database for future processing.
 
 Closer (Luke)
+
+
+
+
+
+
+Martin Lasprilla - Overall state / Some of the Eigen math (removed)
+Our project at the moment is mostly developed on the front end, including menu options that include video stream, face recognition, data produced, and other info. Although all the features that the end product will have are listed on the application, some features are not fully developed. Our team is still working on the algorithms and math involved in order to determine if a face should be recognized or not. Also, our team is working on connecting the data that is produced by the video stream. The programs currently being built will determine if data should be placed in the database or if it is an irrelevant face. However, playing media and selecting media is currently available.
 
