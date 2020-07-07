@@ -41,4 +41,4 @@ Finally, the FaceSpace class is where the 'heavy' lifting will take place. Upon 
 
 Closer (Luke)
 
-So, in closing, our application provides users the ability to automatically screen commercials and other undesired content from being shown based on a unique application of the Eigenface idea. It makes it very hard to defeat, and therefore, widely applicable to novel use cases.
+So, in closing, our application provides users the ability to automatically screen commercials and other undesired content from being shown based on a unique application of the Eigenface idea. It makes it very hard to defeat, and therefore, widely applicable to novel use cases where recognition of characters and individuals would be useful.
