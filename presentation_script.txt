@@ -13,15 +13,21 @@ The video player allows users to control their media experience by giving them t
 
 This is our landing page, the user has options to select their own media file to stream. We are currently working on that feature so I will show you an example, on the play media. Here we are using s3 to stream live videos, as the video plays our algorithm looks for faces; captures them and puts them in a database to be used for future recognition. The next feature is learning a face, here you can select an image give it a name and the image vector calculated and entered into our database. The last feature is the ability to view the data from our mysql database, in the future we hope to have the ability to remove or rename the vectors to accomodate for any errors. I'll pass us on to Xinxin to speak on the video streaming process.
 
-Zihan Shu - Flask / front end
-Our front-end is constructed by flask framework, it connects with our mysql database and Amazon S3 storage, it also creates a routing system to 4 pages. Basically we have 4 functions at the frontend, first we can select either a image or video file and upload it to the temp folder at the server side. Then we can browse some sample videos in the cloud (page_layouts line 210), it fetches videos from S3 storage and recognize the face from video stream in real time. Also, we have learn face function, in that page, we can choose a file in cloud and the algorithm will learn the face in it, then display all facial data in the view data page.
-
 Xinxin Wu - OpenCV (temp files; handling files in memory) / TV_Watcher / StreamController
 For displaying results, we used this page for displaying the face detection results.
 
 ** (Show a video in Play Media) **
 
-The mechanism in it is we used openCV to read a video file frame by frame. Once we got a frame in this video, we would process it with the face detection algorithm, which will detect face and draw a rectangle on the face in that frame. After the algorithm finished drawing the box, we would convert this frame which has the 'face box' to a jpeg. After that, we send this jpeg file to the front end. As we processed the video frame by frame continuously, the front end would display a image stream. So, reading videos and sending frames are being processed simutaneously. For controlling the image stream, we are still working on it. We are expecting that the stream controller could control this image stream like a video. Moreover, we would like to add sound track to this image stream. So that's the key point in handling video, I will pass us on to Luke to speak about the FaceSpace and FaceProcessor. 
+The mechanism in it is we used openCV to read a video file frame by frame. Once we got a frame in this video, we would process it with the face detection algorithm, which will detect face and draw a rectangle on the face in that frame. After the algorithm finished drawing the box, we would convert this frame which has the 'face box' to a jpeg. After that, we send this jpeg file to the front end. As we processed the video frame by frame continuously, the front end would display a image stream. So, reading videos and sending frames are being processed simutaneously. For controlling the image stream, we are still working on it. We are expecting that the stream controller could control this image stream like a video. Moreover, we would like to add sound track to this image stream. So that's the key point in handling video, I will pass us on to Luke to speak about the FaceSpace and FaceProcessor.
+
+** (Call up page_layouts.py line 210) **
+
+Zihan Shu - Flask / front end
+Our front-end is constructed by flask framework, it connects with our mysql database and Amazon S3 storage, it also creates a routing system to 4 pages. Basically we have 4 functions at the frontend, first we can select either a image or video file and upload it to the temp folder at the server side. Then we can browse some sample videos in the cloud (page_layouts line 210), it fetches videos from S3 storage and recognize the face from video stream in real time. 
+
+** (Open Learnface page) **
+
+Also, we have learn face function, in that page, we can choose a file in cloud and the algorithm will learn the face in it, then display all facial data in the view data page. And now I'll hand it over to Luke.
 
 Luke - FaceSpace / FaceProcessor classes
 
@@ -35,11 +41,4 @@ Finally, the FaceSpace class is where the 'heavy' lifting will take place. Upon 
 
 Closer (Luke)
 
-
-
-
-
-
-Martin Lasprilla - Overall state / Some of the Eigen math (removed)
-Our project at the moment is mostly developed on the front end, including menu options that include video stream, face recognition, data produced, and other info. Although all the features that the end product will have are listed on the application, some features are not fully developed. Our team is still working on the algorithms and math involved in order to determine if a face should be recognized or not. Also, our team is working on connecting the data that is produced by the video stream. The programs currently being built will determine if data should be placed in the database or if it is an irrelevant face. However, playing media and selecting media is currently available.
-
+So, in closing, our application provides users the ability to automatically screen commercials and other undesired content from being shown based on a unique application of the Eigenface idea. It makes it very hard to defeat, and therefore, widely applicable to novel use cases.
