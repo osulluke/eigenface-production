@@ -8,9 +8,31 @@ Hey everyone, here's the script shell for our presentation. I've ordered it in w
 5. UML Diagram (Luke)
 
 Remee - Overall state
-Hi, our group is Oh My Py. Our team consists of Luke, Xinxin, Zihan and myself Remee. A quick summary of our project - it is a streaming media player with facial recognition.
-The video player allows users to control their media experience by giving them the ability to block commercials or certain faces. Currently we have most of the front end framework for our application built out. We are currently working on developing features for the media player, this includes building objects for streaming functions, focusing on performance, as well as the calculations for computing vector similarity.
-This is our landing page, the user has options to select their own media file to stream. We are currently working on that feature so below, the play media will provide an example. Xinxin will speak about it shortly. We are using s3 to stream live videos as well as mysql to capture the data. We have implemented opencv to build our facial recognition that will be used to perform live facial recognition and also to learn faces. Lastly we have our database, we hope to have the ability to remove or rename the vectors to accommodate for any errors. I'll pass us on to Xinxin to speak on the video streaming process.
+Hi, our group is Oh My Py. Our team consists of Luke, Xinxin, Zihan and myself Remee. 
+A quick summary of our project - it is a streaming media player with facial recognition.
+The video player allows users to control their media experience by giving them the ability 
+to block commercials or certain faces. Currently we have most of the front end framework for 
+our application built out. We are currently working on developing features for the media player, 
+this includes building objects for streaming functions, focusing on performance, as well 
+as the calculations for computing vector similarity.
+
+/* highlight select media */
+This is our landing page, the user has options to select their own media file to stream. 
+We are currently working on that feature so below, 
+
+/* highlight play media*/
+the play media will provide an example. Xinxin will speak about it shortly. 
+We are using s3 to stream live videos as well as mysql to capture the data. 
+
+/* highlight learn face*/
+We have implemented opencv to build our facial recognition that 
+will be used to perform live facial recognition and also to learn faces. 
+
+/* highlight view data (/
+Lastly we have our database, we hope to have the ability to 
+remove or rename the vectors to accommodate for any errors. I'll pass us 
+on to Xinxin to speak on the video streaming process.
+
 
 
 Xinxin Wu - OpenCV (temp files; handling files in memory) / TV_Watcher / StreamController
