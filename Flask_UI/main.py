@@ -9,16 +9,15 @@
 ## Path: Flask_UI/filestore
 ##################################################
 
-from flask import Flask, render_template, request, Response, make_response, flash, request, redirect, url_for, send_from_directory
-import cv2
+from flask import Flask, Response, flash, request, redirect, url_for
 import os
 import appconfig as cfg
-from templates import *
+from templates import data_page, video_page, display_page, get_page, feature_page, eval_face
 from datetime import timedelta
 from camera import VideoCamera
-from filestore import *
-from facedetect import *
-from db_functions import *
+from filestore import get_s3object, get_cvimage, gettemp_cvimage
+from facedetect import facesquare, image_binary, get_fileext
+from db_functions import get_data, insert_face
 from werkzeug.utils import secure_filename
 import base64
 
@@ -73,29 +72,52 @@ def process():
     return eval_face(output_array["html"], image_name, output_array["num_face"])
 
 
+# learn face file upload handle
 @app.route('/', methods=['POST','GET'])
 def upload_file():
     name_in = '/' + request.form['name_in']
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            file_type = '/' + get_fileext(file.filename)
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',filename=filename,name=name_in,filetype=file_type))
+    uploaded_files = request.files.getlist("file")
+    filename = ""
+    output_array=[]
+    test = 1
+    route = 0
+
+    for file in uploaded_files:
+        if request.method == 'POST':
+            # check if the post request has the file part
+            if 'file' not in request.files:
+                break
+            # if user does not select file, browser also
+            # submit an empty part without filename
+            if file.filename == '':
+                route = 1
+                break
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                basedir = os.path.abspath(os.path.dirname(__file__))
+                file.save(os.path.join(basedir, app.config['UPLOAD_FOLDER'], filename))
+                image_file = gettemp_cvimage(app.config['UPLOAD_FOLDER'] + "/" + filename)
+
+                image = facesquare(image_file)
+                output_array = image_binary(image, app.config['UPLOAD_FOLDER'] + "/" + filename)
+
+                if image["num_face"] == 1:
+                    insert_face(image["face"], request.form['name_in'])
+                route = 2
+
+    if route == 0:
+        flash('No file part')
+        return redirect(request.url)
+    elif route == 1:
+        flash('No selected file')
+        return redirect(request.url)
+    elif route == 2:
+        return eval_face(output_array["html"], request.form['name_in'], output_array["num_face"])
 
 @app.route('/feature_pending')
 def feature_pending():
     return feature_page()
+
 
 @app.route('/upload_file',methods=['GET','POST'])
 def select_file():
@@ -113,15 +135,16 @@ def select_file():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             file_ext = get_fileext(file.filename)
-            file_type = '/' + file_ext
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             if file_ext == 'jpg' or file_ext == 'png' or file_ext == 'jpeg':
-                return redirect(url_for('uploaded_file', filename=filename, name=name_in, filetype=file_type))
+                return redirect(url_for('uploaded_file', filename=filename, name=name_in))
     return redirect(url_for('feature_pending'))
 
-@app.route('/uploads/<filename>/<name>/<filetype>')
-def uploaded_file(filename,name,filetype):
+
+# reroute after learn face
+@app.route('/uploads/<filename>/<name>')
+def uploaded_file(filename,name):
     filename = app.config['UPLOAD_FOLDER'] + "/" + filename
 
     image_file = gettemp_cvimage(filename)
@@ -130,6 +153,7 @@ def uploaded_file(filename,name,filetype):
 
     insert_face(output_array["image"], name)
     return eval_face(output_array["html"], name, output_array["num_face"])
+
 
 @app.route('/choose_file/<file_in>/<filetype>')
 def choose_file(file_in,filetype):
@@ -143,5 +167,6 @@ def choose_file(file_in,filetype):
     #return eval_face(output_array["html"], name, output_array["num_face"])
     return "1"
 
+# initiate site
 if __name__ == "__main__":
     app.run(debug=True)

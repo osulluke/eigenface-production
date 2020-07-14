@@ -17,6 +17,7 @@ import base64
 def get_fileext(filename):
     return filename.rsplit('.', 1)[1].lower()
 
+
 def facesquare(image):
     dir = os.path.dirname(__file__)
     cascPath = os.path.join(dir,"haarcascade_frontalface_default.xml")
@@ -57,6 +58,7 @@ def facesquare(image):
 
     return return_val
 
+
 def image_binary(cv_imagearray, image_path):
     output_arrray = facesquare(cv_imagearray["image"])
 
@@ -75,3 +77,11 @@ def image_binary(cv_imagearray, image_path):
         "num_face":output_count}
 
     return img
+
+
+def image_html(image_file):
+    retval, buffer = cv2.imencode('.jpg', image_file)
+    jpg_as_text = base64.b64encode(buffer)
+    jpg_as_text = str(jpg_as_text)[2:]
+    html = "<html><img id='return_image' src='data:image/" + get_fileext(image_file) + ";base64," + str(jpg_as_text) + "/></html>"
+    return html
