@@ -230,7 +230,7 @@ def learn_face():
                     doc.asis(
                         '<label for="file-upload" class="custom-file-upload"><i class="fa fa-cloud-upload"></i>Choose File</label></br>')
                     doc.asis(
-                        '<input type="file" name="file" id="file-upload" accept="image/png,image/jpeg" required></br></br>')
+                        '<input type="file" name="file" multiple="multiple" id="file-upload" accept="image/png,image/jpeg" required></br></br>')
                     doc.asis(
                         '<input type="text" name="name_in" placeholder="Eigen Face" required>')
                     doc.asis('</br></br>')
