@@ -1,4 +1,4 @@
-from db_functions import get_test, set_name
+from db_functions import get_test, set_name, insert_face
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
@@ -21,3 +21,4 @@ for index, row in df.iterrows():
 
     name = input("Enter name: ")
     set_name(id, name)
+    insert_face(row[1], name)
