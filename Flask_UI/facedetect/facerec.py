@@ -14,7 +14,10 @@ import cv2
 import os
 import base64
 import numpy
+import sys
 from PIL import Image
+
+numpy.set_printoptions(threshold=sys.maxsize)
 
 def get_fileext(filename):
     return filename.rsplit('.', 1)[1].lower()
@@ -53,7 +56,7 @@ def facesquare(image):
         face = image[starty:endy, startx:endx]
         cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-    im = Image.fromarray(face)
+    im = Image.fromarray(face,'RGB')
     gray_im = im.convert("L")  # also makes it grayscale / not required
     array = numpy.asarray(gray_im)
     pix = array.ravel()
