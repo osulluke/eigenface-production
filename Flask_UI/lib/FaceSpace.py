@@ -1,3 +1,5 @@
+import pandas as pd
+
 class FaceSpace:
     
     """
@@ -10,16 +12,34 @@ class FaceSpace:
         characterAverage[]:     Array of average character vectors
 
     Methods:
+        _convert_raw_data():        initialize data for training
         CreateFaceSpace():          matrix/SVD/PCA
         ProjectFace(Vector):        Vector
         EuclideanDistance(Vector):  [(_FaceID, Double)]
         ReturnFaceIdentity(Vector): (_FaceID, _probability, _newFaceFlag)
     """
 
-    def __init__(self):
+    def __init__(self, basic_data):
         """
         Initialization of FaceSpace object
         """
+        self.raw_data_frame = pd.read_csv(basic_data)
+        self.training_data_frame = ""
+        self._convert_raw_data()
+
+    def _convert_raw_data(self):
+        num_faces = self.raw_data_frame.shape[0] # Number of rows in the dataframe
+
+        # Loop over each row; replace with integer array
+        for row in range(0, num_faces):
+            s = self.raw_data_frame['face_vector'][row]
+            numeric_data = s[s.find("[")+1:s.find("]")]
+            numeric_data = ' '.join(numeric_data.split())
+            arr = [int(i) for i in numeric_data.split(' ')]
+            self.raw_data_frame['face_vector'][row] = arr
+
+        # Initialize training data set
+        self.training_data_frame = self.raw_data_frame
 
     def CreateFaceSpace(self):
         """
@@ -76,4 +96,4 @@ class FaceSpace:
         """
 
 if __name__ == "__main__":
-    face_space = FaceSpace()
+    face_space = FaceSpace("../../../faces/top10.csv")
