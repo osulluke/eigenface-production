@@ -63,12 +63,11 @@ class DataConnector:
         cursor = mydb.cursor()
         cursor.execute(sql_select_query)
         records = cursor.fetchall()
-        df = pd.DataFrame(records)
+        df = pd.DataFrame(records, dtype=float)
         df = pd.DataFrame([sub.split(",") for sub in df[0]])
 
         return df
 
 if __name__ == "__main__":
     data_connector = DataConnector()
-
-    print(data_connector.RetrieveImages())
+    data = data_connector.RetrieveImages()
