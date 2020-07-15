@@ -102,7 +102,8 @@ def upload_file():
                 output_array = image_binary(image, app.config['UPLOAD_FOLDER'] + "/" + filename)
 
                 if image["num_face"] == 1:
-                    insert_face(image["face"], request.form['name_in'])
+                    print(image["gray_im"])
+                    insert_face(image["gray_im"], request.form['name_in']+"_gray")
                 route = 2
 
     if route == 0:
