@@ -151,7 +151,7 @@ def uploaded_file(filename,name):
     image = facesquare(image_file)
     output_array = image_binary(image, filename)
 
-    insert_face(output_array["image"], name)
+    insert_face(image["gray_im"], name)
     return eval_face(output_array["html"], name, output_array["num_face"])
 
 
