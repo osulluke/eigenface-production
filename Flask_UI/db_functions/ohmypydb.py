@@ -160,3 +160,5 @@ def set_name(id, name):
     sql_select_query = "update none_data set full_name = '"+name+"' where id = "+str(id)+";"
     cursor = mydb.cursor()
     cursor.execute(sql_select_query)
+    mydb.commit()
+    cursor.close()
