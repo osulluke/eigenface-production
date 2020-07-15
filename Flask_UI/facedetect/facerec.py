@@ -13,6 +13,8 @@ from filestore import *
 import cv2
 import os
 import base64
+import numpy
+from PIL import Image
 
 def get_fileext(filename):
     return filename.rsplit('.', 1)[1].lower()
@@ -20,6 +22,7 @@ def get_fileext(filename):
 
 def facesquare(image):
     dir = os.path.dirname(__file__)
+
     cascPath = os.path.join(dir,"haarcascade_frontalface_default.xml")
     # Create the haar cascade
     faceCascade = cv2.CascadeClassifier(cascPath)
@@ -50,10 +53,16 @@ def facesquare(image):
         face = image[starty:endy, startx:endx]
         cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
+    im = Image.fromarray(face)
+    gray_im = im.convert("L")  # also makes it grayscale / not required
+    array = numpy.asarray(gray_im)
+    pix = array.ravel()
+
     return_val = {
         "face":face,
         "image":image,
-        "num_face":len(faces)
+        "num_face":len(faces),
+        "gray_im":pix
     }
 
     return return_val
