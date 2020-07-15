@@ -1,6 +1,7 @@
 import cv2
 import random
 import string
+from db_functions import face_df
 
 class DataConnector:
     
@@ -45,6 +46,7 @@ class DataConnector:
         return
 
     def RetrieveImages(self):
+        return face_df()
         """
         This function will retrieve all the images in the database in order to calculate
         or re-calculate the FaceSpace Matrix.
@@ -58,3 +60,5 @@ class DataConnector:
 
 if __name__ == "__main__":
     data_connector = DataConnector()
+
+    print(RetrieveImages())
