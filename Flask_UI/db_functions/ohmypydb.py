@@ -61,6 +61,18 @@ def get_face_id(face_vector, name_id):
         cursor.close()
         return get_face_id(face_vector, name_id)
 
+def test_face(face_vector):
+    sql_select_query = "SELECT face_vector FROM none_data WHERE face_vector = '" + face_vector + "'"
+    cursor = mydb.cursor()
+    cursor.execute(sql_select_query)
+    records = cursor.fetchall()
+    row_count = cursor.rowcount
+
+    if row_count == 0:
+        cursor = mydb.cursor()
+        cursor.execute("INSERT INTO none_data (face_vector) VALUES ('" + face_vector + "')")
+        mydb.commit()
+        cursor.close()
 
 def get_name_id(name):
     name = unquote(name)
@@ -104,3 +116,47 @@ def face_df():
     df = pd.DataFrame(records)
 
     return df
+
+
+def get_face(face_vector):
+    sql_select_query = "select n.full_name from name_data n join face_data f on f.name_id = n.name_id WHERE face_vector = '" + str(face_vector) + "'"
+    cursor = mydb.cursor()
+    cursor.execute(sql_select_query)
+    records = cursor.fetchall()
+    row_count = cursor.rowcount
+
+    if row_count == 0:
+        return 'Not Found, please add face to database'
+    else:
+        name = records[0][0]
+        return name
+
+
+def get_name(face_vector):
+    sql_select_query = "select r.full_name from none_data r WHERE r.face_vector = '" + str(face_vector) + "'"
+    cursor = mydb.cursor()
+    cursor.execute(sql_select_query)
+    records = cursor.fetchall()
+    row_count = cursor.rowcount
+
+    if row_count == 0:
+        return 'Not Found'
+    else:
+        name = records[0][0]
+        return name
+
+
+def get_test():
+    sql_select_query = "select * from none_data WHERE full_name is null or full_name = ''"
+    cursor = mydb.cursor()
+    cursor.execute(sql_select_query)
+    records = cursor.fetchall()
+    df = pd.DataFrame(records)
+
+    return df
+
+
+def set_name(id, name):
+    sql_select_query = "update none_data set full_name = '"+name+"' where id = "+str(id)+";"
+    cursor = mydb.cursor()
+    cursor.execute(sql_select_query)

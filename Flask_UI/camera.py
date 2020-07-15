@@ -23,11 +23,13 @@ class VideoCamera(object):
 
     def get_frame(self):
         success, image = self.video.read()
-        #self.i = self.i + 1
+        self.i = self.i + 1
 
-        #if fmod(self.i,50):
-        #    insert_face(image_array["face"], "Unknown")
+        if fmod(self.i,50):
+            image_array = facesquare_return(image)
+            #insert test images in database
+            #test_face(image_array["gray_im"])
+            compare_image = image_array["gray_im"]
 
-        image_array = facesquare(image)
         ret, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()
