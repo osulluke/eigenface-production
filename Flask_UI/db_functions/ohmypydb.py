@@ -104,3 +104,17 @@ def face_df():
     df = pd.DataFrame(records)
 
     return df
+
+
+def get_face(face_vector):
+    sql_select_query = "select n.full_name from name_data n join face_data f on f.name_id = n.name_id WHERE face_vector = '" + str(face_vector) + "'"
+    cursor = mydb.cursor()
+    cursor.execute(sql_select_query)
+    records = cursor.fetchall()
+    row_count = cursor.rowcount
+
+    if row_count == 0:
+        return 'Not Found, please add face to database'
+    else:
+        name = records[0][0]
+        return name

@@ -17,7 +17,7 @@ from datetime import timedelta
 from camera import VideoCamera
 from filestore import get_s3object, get_cvimage, gettemp_cvimage
 from facedetect import facesquare, image_binary, get_fileext
-from db_functions import get_data, insert_face
+from db_functions import get_data, insert_face, get_face
 from werkzeug.utils import secure_filename
 import base64
 
@@ -138,7 +138,7 @@ def select_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             if file_ext == 'jpg' or file_ext == 'png' or file_ext == 'jpeg':
-                return redirect(url_for('uploaded_file', filename=filename, name=name_in))
+                return redirect(url_for('recognize_face', filename=filename, name=name_in))
     return redirect(url_for('feature_pending'))
 
 
@@ -152,6 +152,19 @@ def uploaded_file(filename,name):
     output_array = image_binary(image, filename)
 
     insert_face(output_array["image"], name)
+    return eval_face(output_array["html"], name, output_array["num_face"])
+
+
+# reroute after learn face
+@app.route('/recognize_face/<filename>/<name>')
+def recognize_face(filename,name):
+    filename = app.config['UPLOAD_FOLDER'] + "/" + filename
+
+    image_file = gettemp_cvimage(filename)
+    image = facesquare(image_file)
+    output_array = image_binary(image, filename)
+
+    name = get_face(image["gray_im"])
     return eval_face(output_array["html"], name, output_array["num_face"])
 
 
