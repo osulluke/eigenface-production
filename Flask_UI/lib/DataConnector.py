@@ -64,6 +64,7 @@ class DataConnector:
         cursor.execute(sql_select_query)
         records = cursor.fetchall()
         df = pd.DataFrame(records)
+        df = pd.DataFrame([sub.split(",") for sub in df[0]])
 
         return df
 
