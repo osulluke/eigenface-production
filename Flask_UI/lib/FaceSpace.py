@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
+from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
+from sklearn.svm import SVC
 from DataConnector import DataConnector
 
 class FaceSpace:
@@ -23,36 +25,15 @@ class FaceSpace:
         ReturnFaceIdentity(Vector): (_FaceID, _probability, _newFaceFlag)
     """
 
-    def __init__(self, basic_data):
+    def __init__(self):
         """
         Initialization of FaceSpace object
         """
         self.data_connection = DataConnector()
-        #self.raw_data_frame = pd.read_csv(basic_data)
         self.training_data_frame = self.data_connection.RetrieveImages()
         self.X = self.training_data_frame.drop(0, axis = 1) # Break out the image data only
         self.Y = self.training_data_frame[0] # Break out the face IDs only
-        #self._convert_raw_data()
-        #self.X = self.training_data_frame['face_vector']
-        #self.y = self.training_data_frame['full_name']
-        #self.CreateFaceSpace()
-        """
-        def _convert_raw_data(self):
-        num_faces = self.raw_data_frame.shape[0] # Number of rows in the dataframe
-
-        # Loop over each row; replace with integer array
-        for row in range(0, num_faces):
-            s = self.raw_data_frame['face_vector'][row]
-            numeric_data = s[s.find("[")+1:s.find("]")]
-            numeric_data = ' '.join(numeric_data.split())
-            arr = [int(i) for i in numeric_data.split(' ')]
-            arr.insert(0, self.raw_data_frame['full_name'][row])
-            arr = np.array(arr, dtype=object)
-            self.raw_data_frame['face_vector'][row] = arr
-
-        # Initialize training data set
-        self.training_data_frame = self.raw_data_frame
-        """
+        self.CreateFaceSpace()
 
     def CreateFaceSpace(self):
         """
@@ -66,8 +47,10 @@ class FaceSpace:
             Returns:
                 faceSpace (matrix/SVD/PCA): this is the data that represents the notion of "faceSpace" (fundamental)
         """
-        self.X_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, self.Y)
-        self.pca = PCA().fit(self.X_train)
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, self.Y)
+        self.pca = PCA(n_components=110).fit(self.x_train)
+        self.x_train_pca = self.pca.transform(self.x_train)
+        self.face_classifier = SVC().fit(self.x_train_pca, self.y_train)
 
     def ProjectFace(self, vec):
         """
@@ -111,4 +94,7 @@ class FaceSpace:
         """
 
 if __name__ == "__main__":
-    face_space = FaceSpace("../../../faces/face_array.csv")
+    face_space = FaceSpace()
+    face_space.x_test_pca = face_space.pca.transform(face_space.x_test)
+    face_space.predictions = face_space.face_classifier.predict(face_space.x_test_pca)
+    print(classification_report(face_space.y_test, face_space.predictions))
