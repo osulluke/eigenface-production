@@ -77,7 +77,6 @@ def get_cvimage(filename):
     bucket = s3.Bucket(cfg.s3["bucket_name"])
     object = bucket.Object(filename)
     tmp = tempfile.NamedTemporaryFile()
-    print(tmp)
     with open(tmp.name, 'wb') as f:
         object.download_fileobj(f)
         img = cv2.imread(tmp.name)

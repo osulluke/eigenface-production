@@ -88,7 +88,7 @@ def insert_face(face_vector, name):
 
 
 def get_data():
-    sql_select_query = "select n.full_name, REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(cast(f.face_vector as char(10000) CHARACTER SET utf8),'\n',''),'...',''),'[  ','['),' ]',']'),'  ',' ') face_vector, f.count from name_data n join face_data f on f.name_id = n.name_id;"
+    sql_select_query = "select n.full_name, cast(f.face_vector as char(10000) CHARACTER SET utf8) face_vector, f.count from name_data n join face_data f on f.name_id = n.name_id;"
     cursor = mydb.cursor()
     cursor.execute(sql_select_query)
     records = cursor.fetchall()
@@ -97,7 +97,7 @@ def get_data():
     return df
 
 def face_df():
-    sql_select_query = "select n.full_name, REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(cast(f.face_vector as char(10000) CHARACTER SET utf8),'\n',''),'...',''),'[  ','['),' ]',']'),'  ',' ') as face_vector from name_data n join face_data f on f.name_id = n.name_id;"
+    sql_select_query = "select n.full_name, REPLACE(cast(f.face_vector as char(10000) CHARACTER SET utf8),'\n','') as face_vector from name_data n join face_data f on f.name_id = n.name_id;"
     cursor = mydb.cursor()
     cursor.execute(sql_select_query)
     records = cursor.fetchall()
