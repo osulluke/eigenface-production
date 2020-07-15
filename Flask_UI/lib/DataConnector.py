@@ -1,7 +1,20 @@
 import cv2
 import random
 import string
-from db_functions import face_df
+from mysql import connector
+import pandas as pd
+from urllib.parse import unquote
+
+config = {
+'user': 'admin',
+'password': 'ohmypycis4930',
+'host': "ohmypy.cdd0llcf03hp.us-east-1.rds.amazonaws.com",
+'port': '3306',
+'database': 'metadata',
+'raise_on_warnings': True}
+
+mydb = connector.connect(**config)
+
 
 class DataConnector:
     
@@ -46,19 +59,16 @@ class DataConnector:
         return
 
     def RetrieveImages(self):
-        return face_df()
-        """
-        This function will retrieve all the images in the database in order to calculate
-        or re-calculate the FaceSpace Matrix.
+        sql_select_query = "select concat(f.name_id,  ',', convert(f.face_vector USING utf8)) as face_vector from name_data n join face_data f on f.name_id = n.name_id;"
+        cursor = mydb.cursor()
+        cursor.execute(sql_select_query)
+        records = cursor.fetchall()
+        df = pd.DataFrame(records)
+        df = pd.DataFrame([sub.split(",") for sub in df[0]])
 
-            Parameters:
-                None
-
-            Returns:
-                allImages (Image[]): an array of all the images in the database
-        """
+        return df
 
 if __name__ == "__main__":
     data_connector = DataConnector()
 
-    print(RetrieveImages())
+    print(data_connector.RetrieveImages())

@@ -58,9 +58,10 @@ def facesquare(image):
 
     im = Image.fromarray(face,'RGB')
     gray_im = im.convert("L")  # also makes it grayscale / not required
-    gray_im = gray_im.resize((200, 200))
+    gray_im = gray_im.resize((64, 64))
     array = numpy.asarray(gray_im)
     pix = array.ravel()
+    pix = ','.join([str(x) for x in pix])
 
     return_val = {
         "face":face,
