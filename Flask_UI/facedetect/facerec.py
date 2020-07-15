@@ -13,12 +13,19 @@ from filestore import *
 import cv2
 import os
 import base64
+import numpy
+import sys
+from PIL import Image
+
+numpy.set_printoptions(threshold=sys.maxsize)
 
 def get_fileext(filename):
     return filename.rsplit('.', 1)[1].lower()
 
+
 def facesquare(image):
     dir = os.path.dirname(__file__)
+
     cascPath = os.path.join(dir,"haarcascade_frontalface_default.xml")
     # Create the haar cascade
     faceCascade = cv2.CascadeClassifier(cascPath)
@@ -49,13 +56,20 @@ def facesquare(image):
         face = image[starty:endy, startx:endx]
         cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
+    im = Image.fromarray(face,'RGB')
+    gray_im = im.convert("L")  # also makes it grayscale / not required
+    array = numpy.asarray(gray_im)
+    pix = array.ravel()
+
     return_val = {
         "face":face,
         "image":image,
-        "num_face":len(faces)
+        "num_face":len(faces),
+        "gray_im":pix
     }
 
     return return_val
+
 
 def image_binary(cv_imagearray, image_path):
     output_arrray = facesquare(cv_imagearray["image"])
@@ -75,3 +89,11 @@ def image_binary(cv_imagearray, image_path):
         "num_face":output_count}
 
     return img
+
+
+def image_html(image_file):
+    retval, buffer = cv2.imencode('.jpg', image_file)
+    jpg_as_text = base64.b64encode(buffer)
+    jpg_as_text = str(jpg_as_text)[2:]
+    html = "<html><img id='return_image' src='data:image/" + get_fileext(image_file) + ";base64," + str(jpg_as_text) + "/></html>"
+    return html
