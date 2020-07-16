@@ -1,1 +1,1 @@
-from .facerec import get_fileext, facesquare, image_binary, facesquare_return,get_whole_image
+from .facerec import get_fileext, facesquare, image_binary, facesquare_return,get_whole_image, video_face_rec

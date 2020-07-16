@@ -13,7 +13,7 @@ from flask import url_for
 import urllib.parse
 import os
 import sys
-from video import get_videos
+from lib import video_list
 import pandas as pd
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'mp4'}
@@ -182,7 +182,7 @@ def buttons():
 
 def choose_video():
     doc, tag, text, line = Doc().ttl()
-    videolist = get_videos.video_list()
+    videolist = video_list()
     with tag('div', id='container'):
         with tag('div', id='photo-container'):
             doc.asis('<span> This page will then allow you to play that file using our technique that will scrape images of faces detected in the video stream, and identify them as a known character (actor) in the stream.Prior to playing the stream, the user can select what they would like to have happen when known faces are identified in the stream (i.e.mute, change the channel, etc.). Currently, this function is limited to finding faces in the stream; identifying them has not yet been implemented.You can see, however, that as the stream is played, the face that is detected in the stream is identified and marked by a green square.</span></br></br>')

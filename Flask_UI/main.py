@@ -14,10 +14,8 @@ import os
 import appconfig as cfg
 from templates import data_page, video_page, display_page, get_page, feature_page, eval_face
 from datetime import timedelta
-from camera import VideoCamera
-from filestore import get_s3object, get_cvimage, gettemp_cvimage
-from facedetect import facesquare, image_binary, get_fileext
-from db_functions import get_data, insert_face, get_face
+from facedetect import facesquare, image_binary, get_fileext, video_face_rec
+from lib import get_data, insert_face, get_face, get_s3object, get_cvimage, gettemp_cvimage
 from werkzeug.utils import secure_filename
 import base64
 
@@ -55,7 +53,7 @@ def gen(camera):
 @app.route('/video_feed/<video_name>',methods=['GET'])
 def video_feed(video_name):
     video_url = 'https://ohmypy-summer2020.s3.amazonaws.com/videos/' + video_name + '.mp4'
-    return Response(gen(VideoCamera(video_url)),
+    return Response(gen(video_face_rec(video_url)),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # this is a test for facial recognition
