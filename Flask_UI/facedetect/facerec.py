@@ -9,14 +9,15 @@
 ## Path: Flask_UI/facedetect
 ##################################################
 
-from filestore import *
 import cv2
 import os
 import base64
 import numpy
 import sys
 from PIL import Image
-from db_functions import get_name
+from math import fmod
+from facedetect import *
+from lib import scrape_face, get_name
 
 numpy.set_printoptions(threshold=sys.maxsize)
 
@@ -198,3 +199,25 @@ def facesquare_return(image):
     }
 
     return return_val
+
+
+class video_face_rec(object):
+    def __init__(self, filename):
+        self.video = cv2.VideoCapture(filename)
+        self.i = 0
+
+    def __del__(self):
+        self.video.release()
+
+    def get_frame(self):
+        success, image = self.video.read()
+        self.i = self.i + 1
+
+        if fmod(self.i,50):
+            image_array = facesquare_return(image)
+            #insert test images in database
+            #scrape_face(image_array["gray_im"])
+            compare_image = image_array["gray_im"]
+
+        ret, jpeg = cv2.imencode('.jpg', image)
+        return jpeg.tobytes()

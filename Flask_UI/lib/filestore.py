@@ -15,11 +15,20 @@ import io
 import tempfile
 import cv2
 import appconfig as cfg
+import sys
+from lib import *
+sys.path.append("..")
 
 go = "lSX6"
 ga = "BriF8"
 to = "yQ6wF"
 rs = "nN20BnSfLfx9C7NQ4a3bgv6+W8"
+
+
+def video_list():
+    videolist = get_s3objectList("videos/")
+    return videolist["Key"]
+
 
 client = boto3.client(
     's3',
