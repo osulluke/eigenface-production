@@ -2,13 +2,13 @@ import cv2
 import sys
 import time
 
-from TV_Watcher import TV_Watcher
-from DataConnector import DataConnector
-from FaceProcessor import FaceProcessor
-from FaceSpace import FaceSpace
-from StreamController import StreamController
+from tv_watcher import tv_watcher
+from data_connector import data_connector
+from face_processor import face_processor
+from face_space import face_space
+from stream_controller import stream_controller
 
-class EigenScreener:
+class eigen_screener:
 
     """
     This class is a "composition" of other objects that are used to identify faces, control
@@ -25,14 +25,15 @@ class EigenScreener:
     
     def __init__(self):
         #self.vid_stream = cv2.VideoCapture(vid)
-        self.tv_watcher = TV_Watcher()
-        self.data_connection = DataConnector()
-        self.face_processor = FaceProcessor()
-        self.face_space = FaceSpace()
-        self.stream_controller = StreamController()
+        self.tv_watcher = tv_watcher()
+        self.data_connection = data_connector()
+        self.face_processor = face_processor()
+        self.face_space = face_space()
+        self.stream_controller = stream_controller()
+
 
 if __name__ == "__main__":
-    eigen_screener = EigenScreener()
+    eigen_screener = eigen_screener()
     
     video_stream = cv2.VideoCapture('../video/FinerThingsClub.mp4')
     while True:
