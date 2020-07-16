@@ -18,9 +18,14 @@ if __name__ == "__main__":
             break
         else:
             file_string = 'fake_database/' + img_string
-            im_array = file_vector(file_string)
-            trans_arr = face_space.pca.transform([im_array])
-            prediction = face_space.face_classifier.predict(trans_arr)
-            print("Prediction:", prediction, "\n")
+            try:
+                im_array = file_vector(file_string)
+                trans_arr = face_space.pca.transform([im_array])
+                prediction = face_space.face_classifier.predict(trans_arr)
+                face_prob = face_space.face_probability.predict_proba(trans_arr)
+                print("Prediction:", prediction, "\n")
+                print("Probability:", face_prob, "\n")
+            except:
+                print("File not found...\n")
 
     print("Thanks for checking this out...")

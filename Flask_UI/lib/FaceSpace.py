@@ -51,6 +51,7 @@ class FaceSpace:
         self.pca = PCA(n_components=110).fit(self.x_train)
         self.x_train_pca = self.pca.transform(self.x_train)
         self.face_classifier = SVC().fit(self.x_train_pca, self.y_train)
+        self.face_probability = SVC(probability=True).fit(self.x_train_pca, self.y_train)
 
     def ProjectFace(self, vec):
         """
