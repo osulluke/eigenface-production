@@ -4,7 +4,7 @@ import cv2
 import sys
 import time
 
-class TV_Watcher:
+class tv_watcher:
     
     """
     This is a class that will 'watch' the TV stream, take a screen shot every so often (~1/sec); as
@@ -126,7 +126,7 @@ class TV_Watcher:
         """
 
 if __name__ == "__main__":
-    tv_watcher = TV_Watcher()
+    tv_watcher = tv_watcher()
     video_stream = cv2.VideoCapture('../video/FinerThingsClub.mp4')
     while True:
         ret, frame = tv_watcher.captureScreen(video_stream)

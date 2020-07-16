@@ -1,4 +1,4 @@
-class StreamController:
+class stream_controller:
     
     """
     This class provides the connection to the front-end of the project, serving 
@@ -22,7 +22,7 @@ class StreamController:
         Initialization of StreamController object
         """
 
-    def pushFaceID(self, _ID, _timeStamp):
+    def push_face_id(self, _ID, _timeStamp):
         """
         Pushes a tuple containing the face_ID of a character and the timestamp it was seen
 
@@ -34,7 +34,7 @@ class StreamController:
                 none
         """
 
-    def sendControlMessage(self, message):
+    def send_control_message(self, message):
         """
         This function will send a control message to the front end so the display the user sees can be 
         adjusted according to their desires and what happens on the screen.
@@ -46,7 +46,7 @@ class StreamController:
                 None
         """
 
-    def commercialProbability(self):
+    def commercial_probability(self):
         """
         Uses methodology to calculate the probability that a commercial is being shown on the screen.
 
@@ -58,4 +58,4 @@ class StreamController:
         """
 
 if __name__ == "__main__":
-    stream_controller = StreamController()
+    stream_controller = stream_controller()

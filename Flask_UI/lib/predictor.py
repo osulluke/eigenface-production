@@ -1,6 +1,6 @@
 import numpy as np
 from PIL import Image
-from FaceSpace import FaceSpace
+from face_space import face_space
 
 def file_vector(string):
     im = Image.open(string).convert('L')
@@ -9,8 +9,9 @@ def file_vector(string):
 
     return im_array
 
+
 if __name__ == "__main__":
-    face_space = FaceSpace()
+    face_space = face_space()
     while True:
         print("Input an image string to test; exit with 'q': ")
         img_string = input()

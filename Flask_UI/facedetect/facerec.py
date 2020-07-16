@@ -21,6 +21,7 @@ from lib import scrape_face, get_name
 
 numpy.set_printoptions(threshold=sys.maxsize)
 
+
 def get_fileext(filename):
     return filename.rsplit('.', 1)[1].lower()
 

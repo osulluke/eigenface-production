@@ -16,7 +16,6 @@ import tempfile
 import cv2
 import appconfig as cfg
 import sys
-from lib import *
 sys.path.append("..")
 
 go = "lSX6"
