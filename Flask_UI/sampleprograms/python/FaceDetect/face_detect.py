@@ -13,6 +13,8 @@ print(file_name)
 
 # Create the haar cascade
 faceCascade = cv2.CascadeClassifier(cascPath)
+eyeCascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_eye.xml")
+altFaceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_alt.xml")
 
 # Read the image
 image = cv2.imread(imagePath)
@@ -21,9 +23,9 @@ gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 # Detect faces in the image
 faces = faceCascade.detectMultiScale(
     gray,
-    scaleFactor=1.1,
-    minNeighbors=5,
-    minSize=(30, 30),
+    scaleFactor = 1.3,
+    minNeighbors = 6,
+    minSize=(70, 70),
     flags = cv2.CASCADE_SCALE_IMAGE
 )
 
@@ -39,12 +41,20 @@ for (x, y, w, h) in faces:
     starty = y
     endx = x + w
     endy = y + h
-    face = image[starty:endy, startx:endx]
-    cv2.imshow("Face Only", face)
+    face = gray[starty:endy, startx:endx]
+    eyes = eyeCascade.detectMultiScale(
+        face,
+        minNeighbors = 12,
+        minSize = (70, 70))
+    alt_face = altFaceCascade.detectMultiScale(
+        face,
+        minSize = (70, 70))
+    #if len(alt_face) != None:
+        #cv2.imshow("Face Only", face)
     destination = 'img/faces/scraped-faces/' + file_name
     cv2.imwrite(destination, face)
-    cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        #cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
-cv2.imshow("Faces found", image)
-cv2.waitKey(1000) # Pause with image found for 1 second
-cv2.destroyAllWindows()
+#cv2.imshow("Faces found", image)
+#cv2.waitKey(1) # Pause with image found for 1 second
+#cv2.destroyAllWindows()

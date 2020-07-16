@@ -1,3 +1,11 @@
+import numpy as np
+import pandas as pd
+from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.model_selection import train_test_split
+from sklearn.decomposition import PCA
+from sklearn.svm import SVC
+from DataConnector import DataConnector
+
 class FaceSpace:
     
     """
@@ -10,6 +18,7 @@ class FaceSpace:
         characterAverage[]:     Array of average character vectors
 
     Methods:
+        _convert_raw_data():        initialize data for training
         CreateFaceSpace():          matrix/SVD/PCA
         ProjectFace(Vector):        Vector
         EuclideanDistance(Vector):  [(_FaceID, Double)]
@@ -20,6 +29,11 @@ class FaceSpace:
         """
         Initialization of FaceSpace object
         """
+        self.data_connection = DataConnector()
+        self.training_data_frame = self.data_connection.RetrieveImages()
+        self.X = self.training_data_frame.drop(0, axis = 1) # Break out the image data only
+        self.Y = self.training_data_frame[0] # Break out the face IDs only
+        self.CreateFaceSpace()
 
     def CreateFaceSpace(self):
         """
@@ -33,6 +47,11 @@ class FaceSpace:
             Returns:
                 faceSpace (matrix/SVD/PCA): this is the data that represents the notion of "faceSpace" (fundamental)
         """
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, self.Y)
+        self.pca = PCA(n_components=110).fit(self.x_train)
+        self.x_train_pca = self.pca.transform(self.x_train)
+        self.face_classifier = SVC().fit(self.x_train_pca, self.y_train)
+        self.face_probability = SVC(probability=True).fit(self.x_train_pca, self.y_train)
 
     def ProjectFace(self, vec):
         """
@@ -77,3 +96,6 @@ class FaceSpace:
 
 if __name__ == "__main__":
     face_space = FaceSpace()
+    face_space.x_test_pca = face_space.pca.transform(face_space.x_test)
+    face_space.predictions = face_space.face_classifier.predict(face_space.x_test_pca)
+    print(classification_report(face_space.y_test, face_space.predictions))

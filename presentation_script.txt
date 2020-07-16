@@ -3,8 +3,8 @@ Hey everyone, here's the script shell for our presentation. I've ordered it in w
 ** Open for Demo **
 1. Home Page (Remee)
 2. Home Page/test (Remee)
-3. templates/page_layouts.py (Zihan)
-4. Play a video for face detection (Xinxin)
+3. Play a video for face detection (Xinxin)
+4. templates/page_layouts.py (Zihan)
 5. UML Diagram (Luke)
 
 Remee - Overall state
