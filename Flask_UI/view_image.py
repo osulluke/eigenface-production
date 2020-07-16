@@ -19,6 +19,6 @@ for index, row in df.iterrows():
     cv2.imshow("Faces found", image)
     cv2.waitKey()
 
-    name = input("Enter name: ")
-    set_name(id, name)
-    insert_face(row[1], name)
+    #name = input("Enter name: ")
+    #set_name(id, name)
+    #insert_face(row[1], name)

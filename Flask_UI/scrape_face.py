@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 import re
-from facedetect import facesquare
+from facedetect import facesquare, get_whole_image
 from filestore import gettemp_cvimage
 from db_functions import insert_face
 
@@ -19,7 +19,7 @@ for subdir, dirs, files in os.walk(rootdir):
                 name = "B.J. Novak"
 
             image_file = gettemp_cvimage(filepath)
-            image = facesquare(image_file)
+            image = get_whole_image(image_file)
 
             if image["num_face"] == 1:
                 insert_face(image["gray_im"], name)

@@ -23,6 +23,45 @@ numpy.set_printoptions(threshold=sys.maxsize)
 def get_fileext(filename):
     return filename.rsplit('.', 1)[1].lower()
 
+def get_whole_image(image):
+    dir = os.path.dirname(__file__)
+
+    cascPath = os.path.join(dir,"haarcascade_frontalface_default.xml")
+    # Create the haar cascade
+    faceCascade = cv2.CascadeClassifier(cascPath)
+
+    # Read the image
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Detect faces in the image
+    faces = faceCascade.detectMultiScale(
+        gray,
+        scaleFactor=1.1,
+        minNeighbors=5,
+        minSize=(30, 30),
+        flags=cv2.CASCADE_SCALE_IMAGE
+    )
+
+    startx = 0
+    endx = 0
+    starty = 0
+    endy = 0
+    face = image
+    im = Image.fromarray(image,'RGB')
+    gray_im = im.convert("L")  # also makes it grayscale / not required
+    gray_im = gray_im.resize((64, 64))
+    array = numpy.asarray(gray_im)
+    pix = array.ravel()
+    pix = ','.join([str(x) for x in pix])
+
+    return_val = {
+        "face":face,
+        "image":image,
+        "num_face":len(faces),
+        "gray_im":pix
+    }
+
+    return return_val
 
 def facesquare(image):
     dir = os.path.dirname(__file__)
