@@ -4,7 +4,7 @@ from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
 from sklearn.svm import SVC
-from .data_connector import data_connector, retrieve_images
+from data_connector import data_connector, retrieve_images
 
 
 class face_space:
