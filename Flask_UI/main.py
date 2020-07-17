@@ -18,6 +18,7 @@ from facedetect import facesquare, image_binary, get_fileext, video_face_rec
 from lib import get_data, insert_face, get_face, get_s3object, get_cvimage, gettemp_cvimage
 from werkzeug.utils import secure_filename
 import base64
+import camera
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
@@ -44,17 +45,14 @@ def home():
     else:
         return get_page(url_get)
 
-def gen(camera):
-    while True:
-        frame = camera.get_frame()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+def gen(filename):
+    camera.video_process(filename)
 
 @app.route('/video_feed/<video_name>',methods=['GET'])
 def video_feed(video_name):
     video_url = 'https://ohmypy-summer2020.s3.amazonaws.com/videos/' + video_name + '.mp4'
-    return Response(gen(video_face_rec(video_url)),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    gen(video_url)
+    return redirect('/static/target.mp4')
 
 # this is a test for facial recognition
 @app.route('/test')
