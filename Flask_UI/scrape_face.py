@@ -2,8 +2,8 @@ import os
 from pathlib import Path
 import re
 from facedetect import facesquare, get_whole_image
-from filestore import gettemp_cvimage
-from db_functions import insert_face
+from lib import gettemp_cvimage
+from lib import insert_face
 
 dirname = Path(__file__).parents[2]
 rootdir = os.path.join(dirname ,'faces')
