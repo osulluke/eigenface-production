@@ -15,11 +15,19 @@ import io
 import tempfile
 import cv2
 import appconfig as cfg
+import sys
+sys.path.append("..")
 
 go = "lSX6"
 ga = "BriF8"
 to = "yQ6wF"
 rs = "nN20BnSfLfx9C7NQ4a3bgv6+W8"
+
+
+def video_list():
+    videolist = get_s3objectList("videos/")
+    return videolist["Key"]
+
 
 client = boto3.client(
     's3',
@@ -77,7 +85,6 @@ def get_cvimage(filename):
     bucket = s3.Bucket(cfg.s3["bucket_name"])
     object = bucket.Object(filename)
     tmp = tempfile.NamedTemporaryFile()
-
     with open(tmp.name, 'wb') as f:
         object.download_fileobj(f)
         img = cv2.imread(tmp.name)

@@ -1,0 +1,66 @@
+Hey everyone, here's the script shell for our presentation. I've ordered it in what I think would be a "good" order to present, but this is not hard and fast; if you think it makes sense to go in a different order, fire away. Thanks.
+
+** Open for Demo **
+1. Home Page (Remee)
+2. Home Page/test (Remee)
+3. Play a video for face detection (Xinxin)
+4. templates/page_layouts.py (Zihan)
+5. UML Diagram (Luke)
+
+Remee - Overall state
+Hi, our group is Oh My Py. Our team consists of Luke, Xinxin, Zihan and myself Remee. 
+A quick summary of our project - it is a streaming media player with facial recognition.
+The video player allows users to control their media experience by giving them the ability 
+to block commercials or certain faces. Currently we have most of the front end framework for 
+our application built out. We are currently working on developing features for the media player, 
+this includes building objects for streaming functions, focusing on performance, as well 
+as the calculations for computing vector similarity.
+
+/* highlight select media */
+This is our landing page, the user has options to select their own media file to stream. 
+We are currently working on that feature so below, 
+
+/* highlight play media*/
+the play media will provide an example. Xinxin will speak about it shortly. 
+We are using s3 to stream live videos as well as mysql to capture the data. 
+
+/* highlight learn face*/
+We have implemented opencv to build our facial recognition that 
+will be used to perform live facial recognition and also to learn faces. 
+
+/* highlight view data (/
+Lastly we have our database, we hope to have the ability to 
+remove or rename the vectors to accommodate for any errors. I'll pass us 
+on to Xinxin to speak on the video streaming process.
+
+
+
+Xinxin Wu - OpenCV (temp files; handling files in memory) / TV_Watcher / StreamController
+For displaying results, we used this page for displaying the face detection results.
+
+** (Show a video in Play Media) **
+
+The mechanism in it is we used openCV to read a video file frame by frame. Once we got a frame in this video, we would process it with the face detection algorithm, which will detect face and draw a rectangle on the face in that frame. After the algorithm finished drawing the box, we would convert this frame which has the 'face box' to a jpeg. After that, we send this jpeg file to the front end. As we processed the video frame by frame continuously, the front end would display a image stream. So, reading videos and sending frames are being processed simutaneously. For controlling the image stream, we are still working on it. We are expecting that the stream controller could control this image stream like a video. Moreover, we would like to add sound track to this image stream. So that's the key point in handling video, I will pass us on to Luke to speak about the FaceSpace and FaceProcessor.
+
+** (Call up page_layouts.py line 210) **
+
+Zihan Shu - Flask / front end
+Our front-end is constructed by flask framework, it connects with our mysql database and Amazon S3 storage, it also creates a routing system to 4 pages. Basically we have 4 functions at the frontend, first we can select either a image or video file and upload it to the temp folder at the server side. Then we can browse some sample videos in the cloud (page_layouts line 210), it fetches videos from S3 storage and recognize the face from video stream in real time. 
+
+** (Open Learnface page) **
+
+Also, we have learn face function, in that page, we can choose a file in cloud and the algorithm will learn the face in it, then display all facial data in the view data page. And now I'll hand it over to Luke.
+
+Luke - FaceSpace / FaceProcessor classes
+
+The FaceProcessor class will be a primary controller of data flowing through the system, in effect, providing a centralized manager for the frontend and backend to communicate, as well as for the major technical processing step embodied by the FaceSpace class to communicate through.
+
+** (Run script 'python EigenScreener.py') **
+
+The DataConnector class will provide an interface to the database store of images. Currently it functions using the file system, though the functions are callable from other classes, so development can continue with the interface as designed, even though the implementation details will change. The timeline for the completion of the database is ______, and is being tracked in GitHub.
+
+Finally, the FaceSpace class is where the 'heavy' lifting will take place. Upon instantiation, the class will build a Principal Components/Singular Value Decomposition of the face data present in the data store. As it is fed image vectors from the FaceProcessor, it projects them onto FaceSpace and determines the proximity to other average vectors in the space, sorting them in ascending order and placing them in order of most similar to least similar. Vectors that are in close proximity to known faces are "identified" and those that aren't are flagged and inserted into the database for future processing.
+
+Closer (Luke)
+
+So, in closing, our application provides users the ability to automatically screen commercials and other undesired content from being shown based on a unique application of the Eigenface idea. It makes it very hard to defeat, and therefore, widely applicable to novel use cases where recognition of characters and individuals would be useful.
