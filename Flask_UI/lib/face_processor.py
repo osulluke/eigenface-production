@@ -1,4 +1,4 @@
-class FaceProcessor:
+class face_processor:
 
     """
     This is a class that will test 'scraped' images
@@ -11,7 +11,7 @@ class FaceProcessor:
         databaseConnection:      connection to the DataConnecter object
 
     Methods:
-        orientFace(Image):          Image
+        orient_face(Image):          Image
         convertGrayScale(Image):    Image
         vectorize(Image):           Vector
         foundNewFace(_id, Image):   none
@@ -22,7 +22,7 @@ class FaceProcessor:
         Initialization of FaceProcessor object
         """
 
-    def orientFace(self, im):
+    def orient_face(self, im):
         """
         Re-orients a face image so that the features are generally algined; need eyes, nose, mouth, etc to all
         generally be in the same place in the image of a face.
@@ -69,4 +69,4 @@ class FaceProcessor:
         """
 
 if __name__ == "__main__":
-    face_processor = FaceProcessor()
+    face_processor = face_processor()

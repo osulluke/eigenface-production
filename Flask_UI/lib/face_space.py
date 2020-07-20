@@ -4,7 +4,9 @@ from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
 from sklearn.svm import SVC
-from .data_connector import data_connector, retrieve_images
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.preprocessing import Normalizer
+from data_connector import data_connector, retrieve_images
 
 
 class face_space:
@@ -32,7 +34,9 @@ class face_space:
         """
         self.data_connection = data_connector()
         self.training_data_frame = retrieve_images()
+        #self.training_data_frame = self.training_data_frame.set_index(0) # Preprocessing step to normalize data
         self.X = self.training_data_frame.drop(0, axis = 1) # Break out the image data only
+        self.X.iloc[:,:] = Normalizer(norm='max').fit_transform(self.X) # Normalize the pixels
         self.Y = self.training_data_frame[0] # Break out the face IDs only
         self.create_face_space()
 
@@ -49,10 +53,11 @@ class face_space:
             Returns:
                 faceSpace (matrix/SVD/PCA): this is the data that represents the notion of "faceSpace" (fundamental)
         """
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, self.Y)
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, self.Y, train_size=.85)
         self.pca = PCA(n_components=110).fit(self.x_train)
         self.x_train_pca = self.pca.transform(self.x_train)
-        self.face_classifier = SVC().fit(self.x_train_pca, self.y_train)
+        #self.face_classifier = SVC().fit(self.x_train_pca, self.y_train)
+        self.face_classifier = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train, self.y_train)
         self.face_probability = SVC(probability=True).fit(self.x_train_pca, self.y_train)
 
 
@@ -103,5 +108,5 @@ class face_space:
 if __name__ == "__main__":
     face_space = face_space()
     face_space.x_test_pca = face_space.pca.transform(face_space.x_test)
-    face_space.predictions = face_space.face_classifier.predict(face_space.x_test_pca)
+    face_space.predictions = face_space.face_classifier.predict(face_space.x_test)
     print(classification_report(face_space.y_test, face_space.predictions))
