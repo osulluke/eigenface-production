@@ -16,21 +16,21 @@ for index, row in df.iterrows():
     shape = (64,64)
 
     image_arr = np.asarray(y)
-    image_arr = image_arr.reshape(shape)
-    im = Image.fromarray(image_arr,'L')
-    image = image_arr.astype(np.uint8)
+    #image_arr = image_arr.reshape(shape)
+    #im = Image.fromarray(image_arr,'L')
+    #image = image_arr.astype(np.uint8)
 
-    shape = (4096,1)
-    image_arr = image_arr.reshape(shape)
+    #shape = (4096,1)
+    #image_arr = image_arr.reshape(shape)
 
-    im = im.resize((64, 64))
-    im_array = np.array(im).ravel()
-    im_array = im_array / im_array.max()
+    #im = im.resize((64, 64))
+    #im_array = np.array(im).ravel()
+    #im_array = im_array / im_array.max()
 
-    trans_arr = [im_array]
+    trans_arr = [image_arr]
     prediction = face_space.face_classifier.predict(trans_arr)
     print(prediction)
     name = "Prediction: " + get_name_string(prediction[0])
 
-    cv2.imshow(name, image)
+    #cv2.imshow(name, image)
     cv2.waitKey()
