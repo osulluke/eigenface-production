@@ -12,7 +12,6 @@ i = 0
 face_space = face_space()
 
 for index, row in df.iterrows():
-    id = row[0]
     y = [int(i) for i in row[1].split(',')]
     shape = (64,64)
 
@@ -23,9 +22,14 @@ for index, row in df.iterrows():
 
     shape = (4096,1)
     image_arr = image_arr.reshape(shape)
-    trans_arr = face_space.pca.transform(image_arr)
+
+    im = im.resize((64, 64))
+    im_array = np.array(im).ravel()
+    im_array = im_array / im_array.max()
+
+    trans_arr = [im_array]
     prediction = face_space.face_classifier.predict(trans_arr)
-    face_prob = face_space.face_probability.predict_proba(trans_arr)
+    print(prediction)
     name = "Prediction: " + get_name_string(prediction[0])
 
     cv2.imshow(name, image)
