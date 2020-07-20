@@ -66,7 +66,7 @@ def process():
     output_array = image_binary(image, image_path)
 
     image_name = 'Steve Carell'
-    insert_face(output_array["image"], image_name)
+    insert_face(output_array["gray_im"], image_name)
     return eval_face(output_array["html"], image_name, output_array["num_face"])
 
 
