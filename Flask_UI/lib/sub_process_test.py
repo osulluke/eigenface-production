@@ -10,7 +10,7 @@ i = 0
 eigen_screener = eigen_screener()
 
 while True:    
-    time.sleep(2)
+    time.sleep(1)
     print("i = ", str(i))
     i += 1
     im = ImageGrab.grab()
@@ -24,3 +24,5 @@ while True:
         print("Prediction: ", eigen_screener.face_space.face_classifier.predict(face_arr))
         
     eigen_screener.tv_watcher.detected_faces.clear()
+    # Code to determine if commerical or not
+    # Code to activate or deactivate the mute (Selenium call)

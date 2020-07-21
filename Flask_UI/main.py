@@ -27,7 +27,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = cfg.UPLOAD_FOLDER
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=3)
 app.config['SECRET_KEY'] = cfg.SECRET_KEY
-app.face_watcher = subprocess.Popen(["python", "sub_process_test.py"])
+app.face_watcher = subprocess.Popen(["python3", "sub_process_test.py"])
 
 def allowed_file(filename):
     return '.' in filename and \
