@@ -7,12 +7,6 @@ Flask_UI/pyimagesearch/__pycache__/*.pyc
 Flask_UI/pyimagesearch/motion_detection/__pycache__/*.pyc
 Flask_UI/templates/__pycache__/*.pyc
 *.pyc
-*.mp4
 *.mp3
 .gitignore
-<<<<<<< HEAD
 Flask_UI/appconfig.py
-||||||| dc89c2c
-=======
-FLASK_UI/.vscode
->>>>>>> f639855f143d5a4540757cb351a57baba6374c15
