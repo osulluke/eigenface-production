@@ -18,8 +18,8 @@ for index, row in df.iterrows():
     image_arr = np.asarray(y)
     #image_arr = image_arr.reshape(shape)
     #im = Image.fromarray(image_arr,'L')
-    #image = image_arr.astype(np.uint8)
-
+    image = image_arr.astype(np.uint8)
+    image = image.reshape(shape)
     #shape = (4096,1)
     #image_arr = image_arr.reshape(shape)
 
@@ -32,5 +32,5 @@ for index, row in df.iterrows():
     print(prediction)
     name = "Prediction: " + get_name_string(prediction[0])
 
-    #cv2.imshow(name, image)
+    cv2.imshow(name, image)
     cv2.waitKey()
