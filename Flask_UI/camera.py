@@ -11,7 +11,7 @@
 import cv2
 from math import fmod
 from facedetect import *
-from db_functions import *
+#from db_functions import *
 import cv2 as cv
 import time
 import subprocess as sp

@@ -239,3 +239,13 @@ def learn_face():
                     doc.asis('</form>')
 
     return doc.getvalue()
+
+def basic_video():
+    doc, tag, text, line = Doc().ttl()
+    doc.asis(header())
+    with tag('div', id='basic_vid'):
+        doc.asis('<video width="420" height="340" controls><source src="../output_0.mp4" type="video/mp4"></video>')
+
+    doc.asis(footer())
+
+    return doc.getvalue()

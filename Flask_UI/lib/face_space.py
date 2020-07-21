@@ -58,6 +58,7 @@ class face_space:
         self.x_train_pca = self.pca.transform(self.x_train)
         #self.face_classifier = SVC().fit(self.x_train_pca, self.y_train)
         self.face_classifier = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train, self.y_train)
+        self.face_classifier_ld = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train_pca, self.y_train)
         self.face_probability = SVC(probability=True).fit(self.x_train_pca, self.y_train)
 
 
@@ -109,4 +110,6 @@ if __name__ == "__main__":
     face_space = face_space()
     face_space.x_test_pca = face_space.pca.transform(face_space.x_test)
     face_space.predictions = face_space.face_classifier.predict(face_space.x_test)
+    face_space.predictions_ld = face_space.face_classifier_ld.predict(face_space.x_test_pca)
     print(classification_report(face_space.y_test, face_space.predictions))
+    print(classification_report(face_space.y_test, face_space.predictions_ld))

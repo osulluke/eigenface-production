@@ -12,7 +12,7 @@
 from flask import Flask, Response, flash, request, redirect, url_for
 import os
 import appconfig as cfg
-from templates import data_page, video_page, display_page, get_page, feature_page, eval_face
+from templates import data_page, video_page, display_page, get_page, feature_page, eval_face, basic_video
 from datetime import timedelta
 from facedetect import facesquare, image_binary, get_fileext, video_face_rec
 from lib import get_data, insert_face, get_face, get_s3object, get_cvimage, gettemp_cvimage
@@ -175,6 +175,11 @@ def choose_file(file_in,filetype):
     #insert_face(output_array["image"], name)
     #return eval_face(output_array["html"], name, output_array["num_face"])
     return "1"
+
+@app.route("/basic_video", methods=['GET'])
+def play_vid():
+
+    return basic_video()
 
 # initiate site
 if __name__ == "__main__":
