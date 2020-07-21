@@ -244,7 +244,10 @@ def basic_video():
     doc, tag, text, line = Doc().ttl()
     doc.asis(header())
     with tag('div', id='basic_vid'):
-        doc.asis('<video width="420" height="340" controls><source src="../output_0.mp4" type="video/mp4"></video>')
+        doc.asis('<video width="1245" height="700" controls><source src="static/videos/screencast.webm" type="video/webm"></video>')
+        doc.asis('<br>')
+        doc.asis('<video width="1245" height="700" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
+        doc.asis('<br>')
 
     doc.asis(footer())
 
