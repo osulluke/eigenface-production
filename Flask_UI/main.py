@@ -19,6 +19,7 @@ from lib import get_data, insert_face, get_face, get_s3object, get_cvimage, gett
 from werkzeug.utils import secure_filename
 import base64
 import camera
+import time, subprocess
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
@@ -26,6 +27,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = cfg.UPLOAD_FOLDER
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=3)
 app.config['SECRET_KEY'] = cfg.SECRET_KEY
+app.face_watcher = subprocess.Popen(["python", "sub_process_test.py"])
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -178,9 +180,10 @@ def choose_file(file_in,filetype):
 
 @app.route("/basic_video", methods=['GET'])
 def play_vid():
-
+    
     return basic_video()
 
 # initiate site
 if __name__ == "__main__":
     app.run(debug=True)
+    app.face_watcher.kill()
