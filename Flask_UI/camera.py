@@ -93,7 +93,7 @@ def multi_process(file_name):
     combine_output_files(num_processes)
 
 def video_process(file_name):
-    clean_output_files(".")
+    ##clean_output_files(".")
     time_start=time.time()
     cap = cv.VideoCapture(file_name)
     frame_count = int(cap.get(cv.CAP_PROP_FRAME_COUNT))
