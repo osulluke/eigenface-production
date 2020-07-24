@@ -5,7 +5,16 @@ import cv2
 from face_space import face_space
 from tv_watcher import tv_watcher
 from eigen_screener import eigen_screener
+<<<<<<< HEAD
 from data_connector import get_name_string
+||||||| 4d2253c
+=======
+from selenium import webdriver
+from selenium.webdriver.common.by import BY
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+>>>>>>> 313801529d70b2b6c4f0c2b7247524d56237beb5
 i = 0
 
 eigen_screener = eigen_screener()
@@ -32,4 +41,30 @@ while True:
         
     eigen_screener.tv_watcher.detected_faces.clear()
     # Code to determine if commerical or not
+
     # Code to activate or deactivate the mute (Selenium call)
+    driver = webdriver.Chrome()
+    driver.set_script_timeout(15)
+
+    # Getting our html link
+    url = "http://link"
+    driver.get(url)
+
+    video = EC.visibility_of_element_loated(By.TAG_NAME, 'video')
+    # Ensuring that the commercial is initializing 
+    driver.execute_async_script(
+        var video = argument[0],
+            callback = arguments[arguments.length -1]
+        video.addEventListener('loadstart', listener)
+
+        function listener(){
+            callback()
+        }, video
+    )
+    # Getting commercial from Luke code that determine if commercial is true or not
+    if(commercial = "true"){
+        driver.execute_script("argument[0].muted = true;", video)
+    }
+    elif(commercial = "false"){
+        driver.execute_script("argument[0].muted = false;", video)
+    }
