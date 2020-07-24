@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GridSearchCV
 from sklearn.decomposition import PCA
 from sklearn.svm import SVC
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
@@ -36,7 +37,9 @@ class face_space:
         self.training_data_frame = retrieve_images()
         #self.training_data_frame = self.training_data_frame.set_index(0) # Preprocessing step to normalize data
         self.X = self.training_data_frame.drop(0, axis = 1) # Break out the image data only
-        self.X.iloc[:,:] = Normalizer(norm='max').fit_transform(self.X) # Normalize the pixels
+        self.X = (self.X.astype('int32')) / (255.0)
+        #self.X.iloc[:,:] = Normalizer(norm='max').fit_transform(self.X) # Normalize the pixels
+        #self.X = self.X / 255.0
         self.Y = self.training_data_frame[0] # Break out the face IDs only
         self.create_face_space()
 
@@ -54,13 +57,17 @@ class face_space:
                 faceSpace (matrix/SVD/PCA): this is the data that represents the notion of "faceSpace" (fundamental)
         """
         self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, self.Y, train_size=.85)
-        self.pca = PCA(n_components=110).fit(self.x_train)
+        self.pca = PCA(n_components=135).fit(self.x_train)
         self.x_train_pca = self.pca.transform(self.x_train)
-        #self.face_classifier = SVC().fit(self.x_train_pca, self.y_train)
+        param_grid = {'C': [1e3, 5e3, 1e4, 5e4, 1e5],
+              'gamma': [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.1], }
+        #self.face_classifier = GridSearchCV(SVC(kernel='rbf', class_weight='balanced'), param_grid ).fit(self.x_train_pca, self.y_train)
         self.face_classifier = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train, self.y_train)
         self.face_classifier_ld = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train_pca, self.y_train)
         self.face_probability = SVC(probability=True).fit(self.x_train_pca, self.y_train)
 
+    def aggregate_prediction(self, im):
+        pass
 
     def project_face(self, vec):
         """
@@ -110,6 +117,7 @@ if __name__ == "__main__":
     face_space = face_space()
     face_space.x_test_pca = face_space.pca.transform(face_space.x_test)
     face_space.predictions = face_space.face_classifier.predict(face_space.x_test)
+    #face_space.predictions = face_space.face_classifier.predict(face_space.x_test_pca)
     face_space.predictions_ld = face_space.face_classifier_ld.predict(face_space.x_test_pca)
     print(classification_report(face_space.y_test, face_space.predictions))
     print(classification_report(face_space.y_test, face_space.predictions_ld))

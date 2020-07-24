@@ -97,7 +97,7 @@ class tv_watcher:
             self.x_end = x + w
             self.y_end = y + h
             face = cv2.cvtColor(self.gray_scene[self.y_start:self.y_end, self.x_start:self.x_end], cv2.COLOR_RGB2GRAY)
-            face = cv2.resize(face, (200,200), interpolation = cv2.INTER_AREA)
+            face = cv2.resize(face, (64,64), interpolation = cv2.INTER_AREA)
             self.detected_faces.append(face)
 
         return
