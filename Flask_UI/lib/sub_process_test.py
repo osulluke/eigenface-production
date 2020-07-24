@@ -5,16 +5,12 @@ import cv2
 from face_space import face_space
 from tv_watcher import tv_watcher
 from eigen_screener import eigen_screener
-<<<<<<< HEAD
 from data_connector import get_name_string
-||||||| 4d2253c
-=======
 from selenium import webdriver
 from selenium.webdriver.common.by import BY
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
->>>>>>> 313801529d70b2b6c4f0c2b7247524d56237beb5
 i = 0
 
 eigen_screener = eigen_screener()
