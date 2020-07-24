@@ -7,9 +7,9 @@ from tv_watcher import tv_watcher
 from eigen_screener import eigen_screener
 from data_connector import get_name_string
 from selenium import webdriver
-from selenium.webdriver.common.by import BY
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+#from selenium.webdriver.common.by import BY
+#from selenium.webdriver.support.ui import WebDriverWait
+#from selenium.webdriver.support import expected_conditions as EC
 
 i = 0
 
@@ -39,20 +39,20 @@ while True:
     # Code to determine if commerical or not
 
     # Code to activate or deactivate the mute (Selenium call)
-    driver = webdriver.Chrome()
-    driver.set_script_timeout(15)
-
-    # Getting our html link
-    url = "http://link"
-    driver.get(url)
-
-    video = EC.visibility_of_element_loated(By.TAG_NAME, 'video')
-    # Ensuring that the commercial is initializing 
-    
-    # Getting commercial from Luke code that determine if commercial is true or not
-    if(commercial == "true"):
-        driver.execute_script("argument[0].muted = true;", video)
-    
-    elif(commercial == "false"):
-        driver.execute_script("argument[0].muted = false;", video)
-   
+    #driver = webdriver.Chrome()
+    #driver.set_script_timeout(15)
+#
+    ## Getting our html link
+    #url = "http://link"
+    #driver.get(url)
+#
+    #video = EC.visibility_of_element_loated(By.TAG_NAME, 'video')
+    ## Ensuring that the commercial is initializing 
+    #
+    ## Getting commercial from Luke code that determine if commercial is true or not
+    #if(commercial == "true"):
+    #    driver.execute_script("argument[0].muted = true;", video)
+    #
+    #elif(commercial == "false"):
+    #    driver.execute_script("argument[0].muted = false;", video)
+   #
