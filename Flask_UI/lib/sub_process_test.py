@@ -52,19 +52,11 @@ while True:
 
     video = EC.visibility_of_element_loated(By.TAG_NAME, 'video')
     # Ensuring that the commercial is initializing 
-    driver.execute_async_script(
-        var video = argument[0],
-            callback = arguments[arguments.length -1]
-        video.addEventListener('loadstart', listener)
-
-        function listener(){
-            callback()
-        }, video
-    )
+    
     # Getting commercial from Luke code that determine if commercial is true or not
-    if(commercial = "true"){
+    if(commercial == "true"):
         driver.execute_script("argument[0].muted = true;", video)
-    }
-    elif(commercial = "false"){
+    
+    elif(commercial == "false"):
         driver.execute_script("argument[0].muted = false;", video)
-    }
+   
