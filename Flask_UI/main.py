@@ -12,10 +12,10 @@
 from flask import Flask, Response, flash, request, redirect, url_for
 import os
 import appconfig as cfg
-from templates import data_page, video_page, display_page, get_page, feature_page, eval_face, basic_video
+from templates import *#data_page, video_page, display_page, get_page, feature_page, eval_face, basic_video
 from datetime import timedelta
 from facedetect import facesquare, image_binary, get_fileext, video_face_rec
-from lib import get_data, insert_face, get_face, get_s3object, get_cvimage, gettemp_cvimage
+from lib import get_data, insert_face, get_face, get_s3object, get_cvimage, gettemp_cvimage, sub_process_test#, face_space
 from werkzeug.utils import secure_filename
 import base64
 import camera

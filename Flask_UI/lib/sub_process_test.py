@@ -2,10 +2,10 @@ import time
 from PIL import ImageGrab
 import numpy as np
 import cv2
-from face_space import face_space
-from tv_watcher import tv_watcher
-from eigen_screener import eigen_screener
-from data_connector import get_name_string
+#from face_space import face_space
+#from tv_watcher import tv_watcher
+from .eigen_screener import eigen_screener
+#from data_connector import get_name_string
 from selenium import webdriver
 #from selenium.webdriver.common.by import BY
 #from selenium.webdriver.support.ui import WebDriverWait

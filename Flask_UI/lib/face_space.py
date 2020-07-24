@@ -7,7 +7,7 @@ from sklearn.decomposition import PCA
 from sklearn.svm import SVC
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.preprocessing import Normalizer
-from data_connector import data_connector, retrieve_images
+from .data_connector import data_connector, retrieve_images
 
 
 class face_space:
