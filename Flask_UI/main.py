@@ -12,14 +12,16 @@
 from flask import Flask, Response, flash, request, redirect, url_for
 import os
 import appconfig as cfg
-from templates import *#data_page, video_page, display_page, get_page, feature_page, eval_face, basic_video
+from templates import data_page, video_page, display_page, get_page, feature_page, eval_face, basic_video
 from datetime import timedelta
 from facedetect import facesquare, image_binary, get_fileext, video_face_rec
-from lib import get_data, insert_face, get_face, get_s3object, get_cvimage, gettemp_cvimage, sub_process_test#, face_space
+from lib import get_data, insert_face, get_face, get_s3object, get_cvimage, gettemp_cvimage, face_space
+from lib.sub_process_test import run_face_screener
 from werkzeug.utils import secure_filename
 import base64
 import camera
 import time, subprocess
+from multiprocessing import Process
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
@@ -27,7 +29,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = cfg.UPLOAD_FOLDER
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=3)
 app.config['SECRET_KEY'] = cfg.SECRET_KEY
-app.face_watcher = subprocess.Popen(["python3", "sub_process_test.py"])
+face_detection = Process(target=run_face_screener)
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -185,5 +187,6 @@ def play_vid():
 
 # initiate site
 if __name__ == "__main__":
-    app.run(debug=True)
-    app.face_watcher.kill()
+    face_detection.start() # Begin the face detection algorithm
+    app.run(debug=True) # Start the webserver
+    face_detection.kill() # End the face detection algorithm
