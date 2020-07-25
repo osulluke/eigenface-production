@@ -4,6 +4,10 @@ from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from sklearn.decomposition import PCA
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.preprocessing import Normalizer
@@ -65,6 +69,10 @@ class face_space:
         self.face_classifier = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train, self.y_train)
         self.face_classifier_ld = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train_pca, self.y_train)
         self.face_probability = SVC(probability=True).fit(self.x_train_pca, self.y_train)
+        self.face_neighbors = KNeighborsClassifier(n_neighbors=1, metric='euclidean').fit(self.x_train, self.y_train)
+        self.gnb = GaussianNB().fit(self.x_train_pca, self.y_train)
+        self.dec_tree = tree.DecisionTreeClassifier().fit(self.x_train_pca, self.y_train)
+        self.rfc = RandomForestClassifier(n_estimators=18).fit(self.x_train_pca, self.y_train)
 
     def aggregate_prediction(self, im):
         pass
@@ -119,5 +127,9 @@ if __name__ == "__main__":
     face_space.predictions = face_space.face_classifier.predict(face_space.x_test)
     #face_space.predictions = face_space.face_classifier.predict(face_space.x_test_pca)
     face_space.predictions_ld = face_space.face_classifier_ld.predict(face_space.x_test_pca)
+    face_space.knn_predictions = face_space.face_neighbors.predict(face_space.x_test)
+    face_space.gnb_predictions = face_space.gnb.predict(face_space.x_test)
     print(classification_report(face_space.y_test, face_space.predictions))
     print(classification_report(face_space.y_test, face_space.predictions_ld))
+    print(classification_report(face_space.y_test, face_space.knn_predictions))
+    print(classification_report(face_space.y_test, face_space.gnb_predictions))

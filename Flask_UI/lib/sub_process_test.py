@@ -13,29 +13,44 @@ from selenium import webdriver
 
 def run_face_screener():
     i = 0
+    NORMALIZER = 255.0
     global eigen_screener 
     eigen_screener = eigen_screener()
 
     while True:
         time.sleep(0.5)
-        print("i = ", str(i))
-        i += 1
+        #print("i = ", str(i))
+        #i += 1
         im = ImageGrab.grab()
         im = np.array(im)
         eigen_screener.tv_watcher.scanForFaces(im)
 
+
+        print('*****************************')
         for face in eigen_screener.tv_watcher.detected_faces:
             t_face = np.resize(face, (64,64))
             face_arr = np.array(t_face).ravel()
-            NORMALIZER = 255.0
             face_arr = [face_arr / NORMALIZER]
-            face_pca = eigen_screener.face_space.pca.transform(face_arr)
-            prediction = eigen_screener.face_space.face_classifier.predict(face_arr)[0]
-            probability = eigen_screener.face_space.face_probability.predict(face_pca)
-            character_name = get_name_string(prediction)
-            print("Prediction:", character_name, "ID:", prediction)
-            print("Probability:", get_name_string(probability[0]), "ID:", probability)
             
+            face_pca = eigen_screener.face_space.pca.transform(face_arr)
+            prediction = eigen_screener.face_space.face_classifier.predict(face_arr)
+            probability = eigen_screener.face_space.face_probability.predict(face_pca)
+            gaussian = eigen_screener.face_space.gnb.predict(face_pca)
+            tree = eigen_screener.face_space.dec_tree.predict(face_pca)
+            rfc = eigen_screener.face_space.rfc.predict(face_pca)
+
+            #print("Prediction:", get_name_string(prediction[0]), "ID:", prediction)
+            #print("Probability:", get_name_string(probability[0]), "ID:", probability)
+            #print("Gaussian:", get_name_string(gaussian[0]), "ID:", gaussian)
+            
+            print(get_name_string(prediction[0]))
+            print(get_name_string(probability[0]))
+            print(get_name_string(gaussian[0]))
+            print(get_name_string(tree[0]))
+            print(get_name_string(rfc[0]))
+            print('-----------------------------')
+
+        #print()
         eigen_screener.tv_watcher.detected_faces.clear()
         # Code to determine if commerical or not
 
