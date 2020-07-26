@@ -117,3 +117,10 @@ As new vectors (faces) are added to **T**, we will re-compute the Eigenbasis **V
    * Linear Algebra Libraries:
      * [Armadillo](http://arma.sourceforge.net/)
      * [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page)
+     
+ ## **Contributions**
+Remee Agbayani: Front end menu, database, s3 video player
+Moise Jean: Sellinum player controls
+Luke OSullivan: Documentation, app structure/design, eigen implementation, project manager, git master
+Zihan Shu: Presentation
+Xinxin Wu: OpenCV implementation, video player
