@@ -119,8 +119,12 @@ As new vectors (faces) are added to **T**, we will re-compute the Eigenbasis **V
      * [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page)
      
  ## **Contributions**
-Remee Agbayani: Front end menu, database, s3 video player
-Moise Jean: Sellinum player controls
-Luke OSullivan: Documentation, app structure/design, eigen implementation, project manager, git master
-Zihan Shu: Presentation
-Xinxin Wu: OpenCV implementation, video player
+**Remee Agbayani:** Front end menu, stylesheet, database, s3 video player, facial recognition import, OpenCV facial recognition to player
+
+**Moise Jean:** Sellinum player controls
+
+**Luke OSullivan:** Documentation, app structure/design, eigen implementation, project manager, git master, class creation, program compliation, submissions
+
+**Zihan Shu:** Presentation
+
+**Xinxin Wu:** OpenCV implementation, video player
