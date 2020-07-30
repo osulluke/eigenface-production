@@ -24,10 +24,10 @@ def run_face_screener():
     while True:
         try:
             #mute_button = firefox_driver.findElement(By.id("muteButton"))
-            luke_video = firefox_driver.find_element_by_id('luke_video')
+            video_player = firefox_driver.find_element_by_id('video_player')
             print("luke video found")
             #luke_video.mute = True
-            firefox_driver.execute_script("arguments[0].muted = true;", luke_video)
+            firefox_driver.execute_script("arguments[0].muted = true;", video_player)
             test = firefox_driver.find_element(By.TAG_NAME, 'video')
         except:
             print("\n***BUTTON NOT FOUND***\n")

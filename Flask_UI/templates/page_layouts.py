@@ -205,16 +205,8 @@ def video_page(videoname):
 
 def view_data_page(videoname):
     doc, tag, text, line = Doc().ttl()
-    doc, tag, text, line = Doc().ttl()
     with tag('div', id='photo-container'):
-        video_url = 'https://ohmypy-summer2020.s3.amazonaws.com/videos/' + videoname + '.mp4'
-        #doc.asis('<div style="background-color:white"></br></br>')
-        #doc.asis('<input type="checkbox" for="cb1"><label for="cb1">Block Face</label><input type="checkbox" for="cb2"><label for="cb2">Block Commercials</label><input type="checkbox" for="cb3"><label for="cb3">Replace Face</label></br>')
-        #doc.asis('<audio controls autoplay><source src="' + video_url + '"></audio></br>')
-        #doc.asis('<span><strong>This is a mock controller. In the future release the video will be able to be controlled to adjust your media output.</strong></br></br></br>')
-        #doc.asis('</div>')
-        with tag('div', id='photo-container'):
-            doc.asis('<iframe width="100%" height="100%" src="'+url_for('video_feed', video_name=videoname)+'" frameborder="0" allowfullscreen></iframe>')
+        doc.asis(basic_video("https://ohmypy-summer2020.s3.amazonaws.com/videos/"+videoname+".mp4"))
     return doc.getvalue()
 
 
@@ -240,28 +232,14 @@ def learn_face():
 
     return doc.getvalue()
 
-def basic_video():
+def basic_video(file_location):
     doc, tag, text, line = Doc().ttl()
     doc.asis(header())
     with tag('div', id='basic_vid'):
-        #doc.asis('<video width="1245" height="700" controls><source src="static/videos/screencast.webm" type="video/webm"></video>')
         doc.asis('<br>')
-        doc.asis('<video id="luke_video" width="1245" height="700" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
+        doc.asis('<video controls id="video_player" width="1245" height="700" controls><source src="'+file_location+'" type="video/mp4"></video>')
         doc.asis('<br>')
-        doc.asis('<div id="video-controls" class="controls" data-state="hidden">')
-        doc.asis('<button id="playpause" type="button" data-state="play">Play/Pause</button>')
-        doc.asis('<button id="stop" type="button" data-state="stop">Stop</button>')
-        doc.asis('<div class="progress">')
-        doc.asis('<progress id="progress" value="0" min="0">')
-        doc.asis('<span id="progress-bar"></span>')
-        doc.asis('</progress>')
-        doc.asis('</div>')
-        doc.asis('<button id="muteButton" type="button" data-state="mute">Mute/Unmute</button>')
-        doc.asis('<button id="volinc" type="button" data-state="volup">Vol+</button>')
-        doc.asis('<button id="voldec" type="button" data-state="voldown">Vol-</button>')
-        doc.asis('<button id="fs" type="button" data-state="go-fullscreen">Fullscreen</button>')
-        doc.asis('</div>')
-
+        
     doc.asis(footer())
 
     return doc.getvalue()
