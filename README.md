@@ -125,6 +125,6 @@ As new vectors (faces) are added to **T**, we will re-compute the Eigenbasis **V
 
 **Luke OSullivan:** Documentation, app structure/design, eigen implementation, project manager, git master, class creation, program compliation, submissions
 
-**Zihan Shu:** Presentation
+**Zihan Shu:** Presentation, frontend design, frontend video player
 
 **Xinxin Wu:** OpenCV implementation, video player
