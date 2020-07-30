@@ -246,7 +246,7 @@ def basic_video():
     with tag('div', id='basic_vid'):
         #doc.asis('<video width="1245" height="700" controls><source src="static/videos/screencast.webm" type="video/webm"></video>')
         doc.asis('<br>')
-        doc.asis('<video width="1245" height="700" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
+        doc.asis('<video id="luke_video" width="1245" height="700" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
         doc.asis('<br>')
         doc.asis('<div id="video-controls" class="controls" data-state="hidden">')
         doc.asis('<button id="playpause" type="button" data-state="play">Play/Pause</button>')
@@ -256,7 +256,7 @@ def basic_video():
         doc.asis('<span id="progress-bar"></span>')
         doc.asis('</progress>')
         doc.asis('</div>')
-        doc.asis('<button id="mute" type="button" data-state="muteButton">Mute/Unmute</button>')
+        doc.asis('<button id="muteButton" type="button" data-state="mute">Mute/Unmute</button>')
         doc.asis('<button id="volinc" type="button" data-state="volup">Vol+</button>')
         doc.asis('<button id="voldec" type="button" data-state="voldown">Vol-</button>')
         doc.asis('<button id="fs" type="button" data-state="go-fullscreen">Fullscreen</button>')

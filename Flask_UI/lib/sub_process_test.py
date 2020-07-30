@@ -9,6 +9,8 @@ from .data_connector import get_name_string
 from selenium import webdriver
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.common.by import By
+#firefox_options = webdriver.firefoxOptions()
+#firefox_options.add_argument("--mute-audio")
 #from selenium.webdriver.support.ui import WebDriverWait
 #from selenium.webdriver.support import expected_conditions as EC
 
@@ -16,12 +18,16 @@ def run_face_screener():
     NORMALIZER = 255.0
     global eigen_screener 
     eigen_screener = eigen_screener()
-    firefox_driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
+    firefox_driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())#, firefoxOtions=firefox_options)
     firefox_driver.get('http://127.0.0.1:5000/')
 
     while True:
         try:
             #mute_button = firefox_driver.findElement(By.id("muteButton"))
+            luke_video = firefox_driver.find_element_by_id('luke_video')
+            print("luke video found")
+            #luke_video.mute = True
+            firefox_driver.execute_script("arguments[0].muted = true;", luke_video)
             test = firefox_driver.find_element(By.TAG_NAME, 'video')
         except:
             print("\n***BUTTON NOT FOUND***\n")
