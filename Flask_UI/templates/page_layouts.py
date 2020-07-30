@@ -239,7 +239,7 @@ def basic_video(file_location):
         #doc.asis('<video width="1245" height="700" controls><source src="static/videos/screencast.webm" type="video/webm"></video>')
         doc.asis('<br>')
          doc.asis('<video controls autoplay muted width="1245" height="700" controls><source src="'+file_location+'" type="video/mp4"></video>')
-        doc.asis('<video width="1245" height="700" id="luke_video" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
+        #doc.asis('<video width="1245" height="700" id="luke_video" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
         doc.asis('<br>')
         
     doc.asis(footer())
