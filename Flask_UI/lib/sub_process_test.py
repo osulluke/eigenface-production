@@ -7,20 +7,27 @@ import cv2
 from .eigen_screener import eigen_screener
 from .data_connector import get_name_string
 from selenium import webdriver
-#from selenium.webdriver.common.by import BY
+from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.common.by import By
 #from selenium.webdriver.support.ui import WebDriverWait
 #from selenium.webdriver.support import expected_conditions as EC
 
 def run_face_screener():
-    i = 0
     NORMALIZER = 255.0
     global eigen_screener 
     eigen_screener = eigen_screener()
+    firefox_driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
+    firefox_driver.get('http://127.0.0.1:5000/')
 
     while True:
+        try:
+            #mute_button = firefox_driver.findElement(By.id("muteButton"))
+            test = firefox_driver.find_element(By.TAG_NAME, 'video')
+        except:
+            print("\n***BUTTON NOT FOUND***\n")
+            pass
         time.sleep(0.5)
-        #print("i = ", str(i))
-        #i += 1
+        print(firefox_driver.current_url)
         im = ImageGrab.grab()
         im = np.array(im)
         eigen_screener.tv_watcher.scanForFaces(im)
