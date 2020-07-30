@@ -156,11 +156,6 @@ def buttons():
 
     with tag('div', id='container'):
         with tag('div', id='photo-container'):
-            doc.asis('<form method=post id="menu1"  action="/upload_file" enctype=multipart/form-data>')
-            doc.asis('<label id="button1" for="test"  class="tooltip"> SELECT YOUR MEDIA FILE <span class="tooltiptext">The page will allow you to select media files (formatted as .mp4) that have been provided from some source, currently, these are part of the repo itself, and are limited to short clips of the television show "The Office." It is not necessary for the user to provide a novel file.</span></label><br>')
-            doc.asis('<textarea name="content" id="hide" method="post">upload_file</textarea>')
-            doc.asis('<input type="file" onchange="form.submit()" name="file" id="test" accept="image/png, image/jpeg, video/mp4">')
-            doc.asis('</form>')
             with tag('form', id='menu'):
                 doc.asis('<button type="submit" id="button2" value="view_data" class="tooltip"> PLAY MEDIA <span class="tooltiptext">This page will then allow you to play that file using our technique that will scrape images of faces detected in the video stream, and identify them as a known character (actor) in the stream. Prior to playing the stream, the user can select what they would like to have happen when known faces are identified in the stream (i.e. mute, change the channel, etc.).</br></br>Currently, this function is limited to finding faces in the stream; identifying them has not yet been implemented. You can see, however, that as the stream is played, the face that is detected in the stream is identified and marked by a green square.</span></button>')
                 doc.asis('<textarea name="content" id="hide" method="post">choose_video</textarea>')
@@ -234,12 +229,16 @@ def learn_face():
 
 def basic_video(file_location):
     doc, tag, text, line = Doc().ttl()
-    doc.asis(header())
     with tag('div', id='basic_vid'):
+<<<<<<< HEAD
         doc.asis('<br>')
         doc.asis('<video controls id="video_player" width="1245" height="700" controls><source src="'+file_location+'" type="video/mp4"></video>')
         doc.asis('<br>')
         
     doc.asis(footer())
 
+=======
+        doc.asis('<video controls id="video_player" width="1245" height="700" controls><source src="'+file_location+'" type="video/mp4"></video>')
+        #doc.asis('<video width="1245" height="700" id="luke_video" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
+>>>>>>> 77db9789d0ff49896d6f8403440f56818bab9046
     return doc.getvalue()
