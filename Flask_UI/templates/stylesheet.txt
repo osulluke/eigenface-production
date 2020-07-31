@@ -99,7 +99,7 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
-#basic_vid{
+#basic_vid,#video_player{
   display: block;
   margin: 0 auto;
 }
