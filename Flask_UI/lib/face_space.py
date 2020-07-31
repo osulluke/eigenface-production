@@ -117,8 +117,7 @@ class face_space:
             else:
                 return "UNKNOWN"
         except:
-            return "UNKNOWN"
-            pass
+            return ""
 
 
 if __name__ == "__main__":
