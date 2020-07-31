@@ -12,7 +12,7 @@
 from flask import Flask,  flash, request, redirect
 import os
 import appconfig as cfg
-from templates import data_page, video_page, display_page, get_page, eval_face, basic_video
+from templates import data_page, video_page, display_page, get_page, eval_face, basic_video,test_video
 from datetime import timedelta
 from facedetect import facesquare, image_binary, get_fileext, video_face_rec
 from lib import *
@@ -106,6 +106,11 @@ def uploaded_file(filename,name):
 @app.route("/basic_video", methods=['GET'])
 def play_vid():
     return basic_video()
+
+
+@app.route("/test_video", methods=['GET'])
+def play_vid():
+    return test_video()
 
 
 # initiate site
