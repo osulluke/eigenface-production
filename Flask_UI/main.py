@@ -16,7 +16,7 @@ from templates import data_page, video_page, display_page, get_page, feature_pag
 from datetime import timedelta
 from facedetect import facesquare, image_binary, get_fileext, video_face_rec
 from lib import *
-#from lib.sub_process_test import run_face_screener
+from lib.sub_process_test import run_face_screener
 from werkzeug.utils import secure_filename
 from multiprocessing import Process
 
@@ -26,7 +26,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = cfg.UPLOAD_FOLDER
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=3)
 app.config['SECRET_KEY'] = cfg.SECRET_KEY
-#face_detection = Process(target=run_face_screener)
+face_detection = Process(target=run_face_screener)
 
 
 def allowed_file(filename):
@@ -109,6 +109,6 @@ def play_vid():
 
 # initiate site
 if __name__ == "__main__":
-    #face_detection.start() # Begin the face detection algorithm
+    face_detection.start() # Begin the face detection algorithm
     app.run(debug=True) # Start the webserver
-    #face_detection.kill() # End the face detection algorithm
+    face_detection.kill() # End the face detection algorithm
