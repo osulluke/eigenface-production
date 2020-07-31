@@ -52,6 +52,7 @@ def data_page(datatable):
     doc.asis(footer())
     return doc.getvalue()
 
+
 def display_page(directory_in):
     doc, tag, text, line = Doc().ttl()
     doc.asis(header())
@@ -59,12 +60,14 @@ def display_page(directory_in):
     doc.asis(footer())
     return doc.getvalue()
 
+
 def display_image(directory_in):
     doc, tag, text, line = Doc().ttl()
     with tag('div', id='photo-container'):
         doc.asis('<iframe width="1000" height="500" src="' + url_for('video_feed',
                                                                      video_name=directory_in) + '" frameborder="0" allowfullscreen></iframe>')
     return doc.getvalue()
+
 
 def feature_page():
     doc, tag, text, line = Doc().ttl()
@@ -99,6 +102,7 @@ def eval_face(response, image_name, output_count):
     doc.asis(footer())
     return doc.getvalue()
 
+
 def info_page():
     doc, tag, text, line = Doc().ttl()
     with tag('div'):
@@ -116,6 +120,7 @@ def info_page():
 
     return doc.getvalue()
 
+
 def footer():
     doc, tag, text, line = Doc().ttl()
 
@@ -127,9 +132,10 @@ def footer():
                         text("Developed for CIS4390")
                         doc.asis("<br>")
                         text(
-                            "Developers: Remee A., Martin L., Luke O., Zihan S., Xinxin W.")
+                            "Developers: Remee A., Moise J., Luke O., Zihan S., Xinxin W.")
 
     return doc.getvalue()
+
 
 def header():
     doc, tag, text, line = Doc().ttl()
@@ -151,6 +157,7 @@ def header():
         doc.asis('</a>')
 
     return doc.getvalue()
+
 
 def buttons():
     doc, tag, text, line = Doc().ttl()
@@ -176,6 +183,7 @@ def buttons():
 
     return doc.getvalue()
 
+
 def choose_video():
     doc, tag, text, line = Doc().ttl()
     videolist = video_list()
@@ -191,12 +199,14 @@ def choose_video():
                     '<textarea name="content" id="hide" method="post">data_page</textarea>')
     return doc.getvalue()
 
+
 def video_page(videoname):
     doc, tag, text, line = Doc().ttl()
     doc.asis(header())
     doc.asis(view_data_page(videoname))
     doc.asis(footer())
     return doc.getvalue()
+
 
 def view_data_page(videoname):
     doc, tag, text, line = Doc().ttl()
