@@ -34,28 +34,31 @@ def run_face_screener():
 
         # Identify faces that have been captured
         for face in eigen_screener.tv_watcher.detected_faces:
-            t_face = np.resize(face, (64,64))
-            face_arr = np.array(t_face).ravel()
-            face_arr = [face_arr / NORMALIZER]
-            
-            face_pca = eigen_screener.face_space.pca.transform(face_arr)
-            prediction = eigen_screener.face_space.face_classifier.predict(face_arr)
-            probability = eigen_screener.face_space.face_probability.predict(face_pca)
-            gaussian = eigen_screener.face_space.gnb.predict(face_pca)
-            tree = eigen_screener.face_space.dec_tree.predict(face_pca)
-            rfc = eigen_screener.face_space.rfc.predict(face_pca)
-            
-            print(get_name_string(prediction[0]))
-            print(get_name_string(probability[0]))
-            print(get_name_string(gaussian[0]))
-            print(get_name_string(tree[0]))
-            print(get_name_string(rfc[0]))
-            print('-----------------------------')
+            #t_face = np.resize(face, (64,64))
+            #face_arr = np.array(t_face).ravel()
+            #face_arr = [face_arr / NORMALIZER]
+            #
+            #face_pca = eigen_screener.face_space.pca.transform(face_arr)
+            #
+            #prediction = eigen_screener.face_space.face_classifier.predict(face_arr)
+            #probability = eigen_screener.face_space.face_classifier_svc_pca.predict(face_pca)
+            #gaussian = eigen_screener.face_space.face_classifier_gnb_pca.predict(face_pca)
+            #tree = eigen_screener.face_space.face_classifier_dec_tree_pca.predict(face_pca)
+            #rfc = eigen_screener.face_space.face_classifier_rfc_pca.predict(face_pca)
+            #
+            #print(get_name_string(prediction[0]))
+            #print(get_name_string(probability[0]))
+            #print(get_name_string(gaussian[0]))
+            #print(get_name_string(tree[0]))
+            #print(get_name_string(rfc[0]))
+            #print('-----------------------------')
 
-            if random.randint(0, 10) < 12:
-                state = "COMMERCIAL"    
-            else:
-                state = "SHOW"
+            eigen_screener.face_space.aggregate_prediction(face)
+
+        if random.randint(0, 10) < 3:
+            state = "COMMERCIAL"    
+        else:
+            state = "SHOW"
 
         eigen_screener.tv_watcher.detected_faces.clear()
 

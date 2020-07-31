@@ -11,7 +11,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.preprocessing import Normalizer
-from .data_connector import data_connector, retrieve_images
+from .data_connector import data_connector, retrieve_images, get_name_string
 
 
 class face_space:
@@ -37,11 +37,12 @@ class face_space:
         """
         Initialization of FaceSpace object
         """
+        self.NORMALIZER = 255.0
         self.data_connection = data_connector()
         self.training_data_frame = retrieve_images()
         #self.training_data_frame = self.training_data_frame.set_index(0) # Preprocessing step to normalize data
         self.X = self.training_data_frame.drop(0, axis = 1) # Break out the image data only
-        self.X = (self.X.astype('int32')) / (255.0)
+        self.X = (self.X.astype('int32')) / (self.NORMALIZER)
         #self.X.iloc[:,:] = Normalizer(norm='max').fit_transform(self.X) # Normalize the pixels
         #self.X = self.X / 255.0
         self.Y = self.training_data_frame[0] # Break out the face IDs only
@@ -60,22 +61,55 @@ class face_space:
             Returns:
                 faceSpace (matrix/SVD/PCA): this is the data that represents the notion of "faceSpace" (fundamental)
         """
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, self.Y, train_size=.85)
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, self.Y, train_size=.70)
         self.pca = PCA(n_components=135).fit(self.x_train)
         self.x_train_pca = self.pca.transform(self.x_train)
         param_grid = {'C': [1e3, 5e3, 1e4, 5e4, 1e5],
               'gamma': [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.1], }
-        #self.face_classifier = GridSearchCV(SVC(kernel='rbf', class_weight='balanced'), param_grid ).fit(self.x_train_pca, self.y_train)
-        self.face_classifier = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train, self.y_train)
-        self.face_classifier_ld = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train_pca, self.y_train)
-        self.face_probability = SVC(probability=True).fit(self.x_train_pca, self.y_train)
-        self.face_neighbors = KNeighborsClassifier(n_neighbors=1, metric='euclidean').fit(self.x_train, self.y_train)
-        self.gnb = GaussianNB().fit(self.x_train_pca, self.y_train)
-        self.dec_tree = tree.DecisionTreeClassifier().fit(self.x_train_pca, self.y_train)
-        self.rfc = RandomForestClassifier(n_estimators=18).fit(self.x_train_pca, self.y_train)
+        self.face_classifier_lda = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train, self.y_train)
+        self.face_classifier_lda_pca = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train_pca, self.y_train)
+        self.face_classifier_svc_pca = SVC().fit(self.x_train_pca, self.y_train)
+        self.face_classifier_svc_grid_pca = GridSearchCV(SVC(kernel='rbf', class_weight='balanced'), param_grid ).fit(self.x_train_pca, self.y_train)
+        self.face_classifier_gnb_pca = GaussianNB().fit(self.x_train_pca, self.y_train)
+        self.face_classifier_dec_tree_pca = tree.DecisionTreeClassifier().fit(self.x_train_pca, self.y_train)
+        self.face_classifier_rfc_pca = RandomForestClassifier(n_estimators=18).fit(self.x_train_pca, self.y_train)
+        self.face_classifier_knn = KNeighborsClassifier(n_neighbors=1, metric='euclidean').fit(self.x_train, self.y_train)
 
-    def aggregate_prediction(self, im):
-        pass
+    def aggregate_prediction(self, face_image):
+        # Transform the face into a workable array
+        transform_face = np.resize(face_image, (64,64))
+        face_array = np.array(transform_face).ravel()
+        face_array = [face_array / self.NORMALIZER]
+
+        # Project the face image into "principal compoenents" / Eigenfaces
+        face_PCA = self.pca.transform(face_array)
+
+        # Make predictions using LDAs
+        face_lda = self.face_classifier_lda.predict(face_array)
+        face_lda_pca = self.face_classifier_lda_pca.predict(face_PCA)
+
+        # Make preditions using SVC
+        face_svc = self.face_classifier_svc_pca.predict(face_PCA)
+        face_svc_grid = self.face_classifier_svc_grid_pca.predict(face_PCA)
+
+        # Make predictions using GNB
+        face_gnb = self.face_classifier_gnb_pca.predict(face_PCA)
+
+        # Make predictions decision tree
+        face_tree = self.face_classifier_dec_tree_pca.predict(face_PCA)
+
+        # Make predictions random forest
+        face_forest = self.face_classifier_rfc_pca.predict(face_PCA)
+
+        # Make predictions using KNN
+        face_knn = self.face_classifier_knn.predict(face_array)
+
+        predictions = [face_lda, face_lda_pca, face_svc, face_svc_grid, face_gnb, face_tree, face_forest, face_forest, face_knn]
+
+        for p in predictions:
+            print(get_name_string(p[0]))
+        print('-----------------------------')
+
 
     def project_face(self, vec):
         """
