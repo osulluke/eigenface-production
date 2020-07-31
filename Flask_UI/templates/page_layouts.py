@@ -234,3 +234,10 @@ def basic_video(file_location):
         #doc.asis('<video width="1245" height="700" id="video_player" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
         doc.asis('<video controls id="video_player" width="1245" height="700" controls><source src="static/videos/'+file_location+'" type="video/mp4"></video>')
     return doc.getvalue()
+
+def test_video():
+    doc, tag, text, line = Doc().ttl()
+    with tag('div', id='basic_vid'):
+        #doc.asis('<video width="1245" height="700" id="video_player" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
+        doc.asis('<video controls id="video_player" width="1245" height="700" controls><source src="https://www.youtube.com/embed/ITibUm7mf_A" type="video/mp4"></video>')
+    return doc.getvalue()
