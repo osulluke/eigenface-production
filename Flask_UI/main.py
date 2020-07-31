@@ -12,10 +12,11 @@
 from flask import Flask,  flash, request, redirect
 import os
 import appconfig as cfg
-from templates import data_page, video_page, display_page, get_page, feature_page, eval_face, basic_video
+from templates import data_page, video_page, display_page, get_page, eval_face, basic_video
 from datetime import timedelta
 from facedetect import facesquare, image_binary, get_fileext, video_face_rec
 from lib import *
+from data_file import get_vector_data, insert_face
 from lib.sub_process_test import run_face_screener
 from werkzeug.utils import secure_filename
 from multiprocessing import Process
@@ -40,7 +41,7 @@ def home():
     video_get = request.args.get('video_name')
 
     if url_get == 'database':
-        return data_page(get_data())
+        return data_page(get_vector_data())
     elif url_get == 'data_page':
         return video_page(video_get)
     elif url_get == "uploads":

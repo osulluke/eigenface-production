@@ -69,21 +69,6 @@ def display_image(directory_in):
     return doc.getvalue()
 
 
-def feature_page():
-    doc, tag, text, line = Doc().ttl()
-    doc.asis(header())
-    with tag('div', id='container'):
-        with tag('div', id='photo-container'):
-            text("Feature under development, please press button below to view example")
-            doc.asis('<form action="/">')
-            doc.asis('<button type="submit" id="button2" value="view_data" class="tooltip"> PLAY MEDIA <span class="tooltiptext">This page will then allow you to play that file using our technique that will scrape images of faces detected in the video stream, and identify them as a known character (actor) in the stream. Prior to playing the stream, the user can select what they would like to have happen when known faces are identified in the stream (i.e. mute, change the channel, etc.).</br></br>Currently, this function is limited to finding faces in the stream; identifying them has not yet been implemented. You can see, however, that as the stream is played, the face that is detected in the stream is identified and marked by a green square.</span></button>')
-            doc.asis('<textarea name="content" id="hide" method="post">choose_video</textarea>')
-            doc.asis('</form>')
-
-    doc.asis(footer())
-    return doc.getvalue()
-
-
 def eval_face(response, image_name, output_count):
     doc, tag, text, line = Doc().ttl()
     doc.asis(header())
@@ -94,10 +79,15 @@ def eval_face(response, image_name, output_count):
             doc.asis(response)
             doc.asis('</br>')
             doc.asis('</br>')
-            text("Name: " + urllib.parse.unquote_plus(image_name))
-            doc.asis('</br>')
-            text("Face count: " + str(output_count))
-            doc.asis('</br>')
+            if output_count == 1:
+                text("Name: " + urllib.parse.unquote_plus(image_name))
+                doc.asis('</br>')
+                text("Face count: " + str(output_count))
+                doc.asis('</br>')
+            elif output_count > 1:
+                text("Unable to add image, too many faces recognized")
+            else:
+                text("Unable to add image, no face recognized")
             doc.asis('</br>')
     doc.asis(footer())
     return doc.getvalue()
@@ -165,14 +155,14 @@ def buttons():
     with tag('div', id='container'):
         with tag('div', id='photo-container'):
             with tag('form', id='menu'):
-                doc.asis('<button type="submit" id="button2" value="view_data" class="tooltip"> PLAY MEDIA <span class="tooltiptext">This page will then allow you to play that file using our technique that will scrape images of faces detected in the video stream, and identify them as a known character (actor) in the stream. Prior to playing the stream, the user can select what they would like to have happen when known faces are identified in the stream (i.e. mute, change the channel, etc.).</br></br>Currently, this function is limited to finding faces in the stream; identifying them has not yet been implemented. You can see, however, that as the stream is played, the face that is detected in the stream is identified and marked by a green square.</span></button>')
+                doc.asis('<button type="submit" id="button2" value="view_data" class="tooltip"> PLAY MEDIA <span class="tooltiptext">This will allow you to select a video to be played with muted commercials.</span></button>')
                 doc.asis('<textarea name="content" id="hide" method="post">choose_video</textarea>')
             with tag('form', id='menu'):
-                doc.asis('<button type="submit" id="button4" value="learn_data" class="tooltip"> LEARN FACE <span class="tooltiptext">In terms of the capabilities of the program, it will be initially trained on an image set derived from main characters in the show "The Office." As the program runs, however, and more faces are discovered, they should allow the model that identifies faces to be updated with these new faces so they can be categorized appropriately (as new characters, or commercial actors). On this page</br></br>, this is simply a mechanism to directly provide the model itself a novel face for incorporation into the model. Ultimately this will be a function that operates automatically during stream playback.</span></button>')
+                doc.asis('<button type="submit" id="button4" value="learn_data" class="tooltip"> LEARN FACE <span class="tooltiptext">This tool is to add faces to the data set for our facial recognition program.</span></button>')
                 doc.asis(
                     '<textarea name="content" id="hide" method="post">learn_face</textarea>')
             with tag('form', id='menu'):
-                doc.asis('<button type="submit" id="button5" value="database" class="tooltip"> VIEW DATA <span class="tooltiptext">This provides a view that our data API is actually working with; it will eventually provide more visibility in order to ensure data is uniform (correctly dimensioned, colored greyscale, etc).</span></button>')
+                doc.asis('<button type="submit" id="button5" value="database" class="tooltip"> VIEW DATA <span class="tooltiptext">This is a truncated view of the data being used for our facial recognition algorithm.</span></button>')
                 doc.asis(
                     '<textarea name="content" id="hide" method="post">database</textarea>')
             with tag('form', id='menu'):
@@ -189,7 +179,7 @@ def choose_video():
     videolist = video_list()
     with tag('div', id='container'):
         with tag('div', id='photo-container'):
-            doc.asis('<span> This page will then allow you to play that file using our technique that will scrape images of faces detected in the video stream, and identify them as a known character (actor) in the stream.Prior to playing the stream, the user can select what they would like to have happen when known faces are identified in the stream (i.e.mute, change the channel, etc.). Currently, this function is limited to finding faces in the stream; identifying them has not yet been implemented.You can see, however, that as the stream is played, the face that is detected in the stream is identified and marked by a green square.</span></br></br>')
+            doc.asis('<span>Please select a media file to play. As the video plays, commercials will be muted automatically.</span></br></br>')
             with tag('form', id='menu'):
                 for videoname in videolist:
                     if len(videoname) > 0:
@@ -220,7 +210,7 @@ def learn_face():
     with tag('div', id='container'):
         with tag('div', id='photo-container'):
             with tag('div'):
-                doc.asis('<span>In terms of the capabilities of the program, it will be initially trained on an image set derived from main characters in the show "The Office." As the program runs, however, and more faces are discovered, they should allow the model that identifies faces to be updated with these new faces so they can be categorized appropriately (as new characters, or commercial actors).On this page, this is simply a mechanism to directly provide the model itself a novel face for incorporation into the model.Ultimately this will be a function that operates automatically during stream playback.</span></br></br>')
+                doc.asis('<span>This page allows you to add a face to be recognized during video play back. The image vector will be added to our training set.</span></br></br>')
                 doc.asis("<strong>Choose an image with a single face to train facial recognition</strong>")
                 with tag('div', id='learn_face'):
                     doc.asis('<form method=post enctype=multipart/form-data>')

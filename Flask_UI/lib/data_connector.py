@@ -72,22 +72,6 @@ def retrieve_images():
     return df
 
 
-def insert_face_vector(face_vector, name):
-    name = unquote(name)
-    name_id = get_name_id(str(name))
-    get_face_id(str(face_vector), name_id)
-    return 1
-
-
-def get_test():
-    sql_select_query = "select * from face_data" # WHERE full_name is null or full_name = ''"
-    cursor = mydb.cursor()
-    cursor.execute(sql_select_query)
-    records = cursor.fetchall()
-    df = pd.DataFrame(records)
-    return df
-
-
 def get_name_id(name):
     name = unquote(name)
     sql_select_query = "SELECT MIN(name_id) FROM name_data WHERE full_name = '" + name + "'"
@@ -155,20 +139,6 @@ def get_name_string(name_id):
     else:
         name = records[0][0]
         return name
-
-
-def insert_face(face_vector, name):
-    #name = unquote(name)
-    #name_id = get_name_id(str(name))
-    #get_face_id(str(face_vector), name_id)
-    return 1
-
-
-def get_data():
-    dirname = Path(__file__).parents[1]
-    rootdir = os.path.join(dirname, 'static/data/get_data.csv')
-    df = pd.read_csv(rootdir)
-    return df
 
 
 def get_name(face_vector):
