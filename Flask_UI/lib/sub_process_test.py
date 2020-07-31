@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 import random
 
 def run_face_screener():
+    DELAY = 0.40
     NORMALIZER = 255.0
     global eigen_screener 
     eigen_screener = eigen_screener()
@@ -19,7 +20,7 @@ def run_face_screener():
     firefox_driver.get('http://127.0.0.1:5000/')
 
     while True:
-        time.sleep(0.5)
+        time.sleep(DELAY)
         try:
             video_player = firefox_driver.find_element_by_id('video_player') # Access video player element
         except:
@@ -30,44 +31,31 @@ def run_face_screener():
         im = np.array(im)
         eigen_screener.tv_watcher.scanForFaces(im)
 
-        print('*****************************')
-
         # Identify faces that have been captured
+        print('*****************************')
         for face in eigen_screener.tv_watcher.detected_faces:
-            #t_face = np.resize(face, (64,64))
-            #face_arr = np.array(t_face).ravel()
-            #face_arr = [face_arr / NORMALIZER]
-            #
-            #face_pca = eigen_screener.face_space.pca.transform(face_arr)
-            #
-            #prediction = eigen_screener.face_space.face_classifier.predict(face_arr)
-            #probability = eigen_screener.face_space.face_classifier_svc_pca.predict(face_pca)
-            #gaussian = eigen_screener.face_space.face_classifier_gnb_pca.predict(face_pca)
-            #tree = eigen_screener.face_space.face_classifier_dec_tree_pca.predict(face_pca)
-            #rfc = eigen_screener.face_space.face_classifier_rfc_pca.predict(face_pca)
-            #
-            #print(get_name_string(prediction[0]))
-            #print(get_name_string(probability[0]))
-            #print(get_name_string(gaussian[0]))
-            #print(get_name_string(tree[0]))
-            #print(get_name_string(rfc[0]))
-            #print('-----------------------------')
+            print(eigen_screener.face_space.aggregate_prediction(face))
+        
+        eigen_screener.tv_watcher.detected_faces.clear()
 
-            eigen_screener.face_space.aggregate_prediction(face)
-
+        # Determine the state of the show
         if random.randint(0, 10) < 3:
             state = "COMMERCIAL"    
         else:
             state = "SHOW"
 
-        eigen_screener.tv_watcher.detected_faces.clear()
-
         # Mute the show based 'state' of the show (COMMERCIAL or SHOW)
         if video_player != "":
             if state == "SHOW":
-                firefox_driver.execute_script("arguments[0].muted = false;", video_player) # Unmute the player
+                try:
+                    firefox_driver.execute_script("arguments[0].muted = false;", video_player) # Unmute the player
+                except:
+                    pass
             elif state == "COMMERCIAL":
-                firefox_driver.execute_script("arguments[0].muted = true;", video_player) # Mute the player
+                try:
+                    firefox_driver.execute_script("arguments[0].muted = true;", video_player) # Mute the player
+                except:
+                    pass
 
 if __name__ == "__main__":
     run_face_screener()

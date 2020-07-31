@@ -12,6 +12,7 @@ from sklearn.svm import SVC
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.preprocessing import Normalizer
 from .data_connector import data_connector, retrieve_images, get_name_string
+from collections import Counter
 
 
 class face_space:
@@ -28,9 +29,7 @@ class face_space:
     Methods:
         _convert_raw_data():        initialize data for training
         CreateFaceSpace():          matrix/SVD/PCA
-        ProjectFace(Vector):        Vector
-        EuclideanDistance(Vector):  [(_FaceID, Double)]
-        ReturnFaceIdentity(Vector): (_FaceID, _probability, _newFaceFlag)
+        aggregate_prediction():     determines the best prediction for a give face
     """
 
     def __init__(self):
@@ -38,13 +37,11 @@ class face_space:
         Initialization of FaceSpace object
         """
         self.NORMALIZER = 255.0
+        self.PREDICTION_THRESHOLD = 3
         self.data_connection = data_connector()
         self.training_data_frame = retrieve_images()
-        #self.training_data_frame = self.training_data_frame.set_index(0) # Preprocessing step to normalize data
         self.X = self.training_data_frame.drop(0, axis = 1) # Break out the image data only
         self.X = (self.X.astype('int32')) / (self.NORMALIZER)
-        #self.X.iloc[:,:] = Normalizer(norm='max').fit_transform(self.X) # Normalize the pixels
-        #self.X = self.X / 255.0
         self.Y = self.training_data_frame[0] # Break out the face IDs only
         self.create_face_space()
 
@@ -104,55 +101,24 @@ class face_space:
         # Make predictions using KNN
         face_knn = self.face_classifier_knn.predict(face_array)
 
+        # Create an array of all the predictions
+        counter = Counter()
         predictions = [face_lda, face_lda_pca, face_svc, face_svc_grid, face_gnb, face_tree, face_forest, face_forest, face_knn]
 
+        # Determine the most common predictions
         for p in predictions:
-            print(get_name_string(p[0]))
-        print('-----------------------------')
+            name = get_name_string(p[0])
+            counter[name] += 1
 
-
-    def project_face(self, vec):
-        """
-        This function will take a vector (a vectorized image) and project it into "FaceSpace". This function is where
-        we will make use of the first 125-150 "Principal Components" which are generally used to identify faces.
-
-            Parameters:
-                vec (Vector): vector (of image) to be projected into FaceSpace
-
-            Returns:
-                projVec (Vector): vector projection of image into FaceSpace
-        """
-
-
-    def euclidean_distance(self, proj_vec):
-        """
-        Calculates the n-dimentional distance between the input vector and the average
-        of all characters' vectors in FaceSpace. This will return an array of tuples 
-        containing the ID of the character and the distance of projVec sorted in ascending
-        order; the smallest distances will be the face that is most similar to the face
-        represented by projVec.
-
-            Parameters:
-                proj_vec (Vector): vector projection of new face into FaceSpace
-
-            Returns:
-                dist_vec (Array (_id, _dist)): array of tuples (_id, _dist)
-        """
-
-
-    def return_face_identity(self, _id, _vec):
-        """
-        This function looks at the distance between known faces and uses some logic (TBD) to determine 
-        whether or not a face has been identified; if it is new, it sends a message back to the FaceTester
-        class to mark the face as such.
-
-            Parameters:
-                _id (int):     id# of image vector
-                _vec (Vector): vector of image
-
-            Returns:
-                idVec (_id, bool, newFaceFlag): tuple representing the _id, probability, and whether it's a new face
-        """
+        most_common = counter.most_common(2)
+        try:
+            if most_common[0][1] - most_common[1][1] >= self.PREDICTION_THRESHOLD:
+                return most_common[0][0]
+            else:
+                return "UNKNOWN"
+        except:
+            return "UNKNOWN"
+            pass
 
 
 if __name__ == "__main__":
