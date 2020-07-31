@@ -109,7 +109,7 @@ def play_vid():
 
 
 @app.route("/test_video", methods=['GET'])
-def play_vid():
+def test_vid():
     return test_video()
 
 
