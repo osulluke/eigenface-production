@@ -26,7 +26,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = cfg.UPLOAD_FOLDER
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=3)
 app.config['SECRET_KEY'] = cfg.SECRET_KEY
-#face_detection = Process(target=run_face_screener)
+face_detection = Process(target=run_face_screener)
 
 
 def allowed_file(filename):
