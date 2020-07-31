@@ -2,44 +2,37 @@ import time
 from PIL import ImageGrab
 import numpy as np
 import cv2
-#from face_space import face_space
-#from tv_watcher import tv_watcher
 from .eigen_screener import eigen_screener
 from .data_connector import get_name_string
 from selenium import webdriver
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.common.by import By
-#firefox_options = webdriver.firefoxOptions()
-#firefox_options.add_argument("--mute-audio")
-#from selenium.webdriver.support.ui import WebDriverWait
-#from selenium.webdriver.support import expected_conditions as EC
+import random
 
 def run_face_screener():
     NORMALIZER = 255.0
     global eigen_screener 
     eigen_screener = eigen_screener()
+    video_player = ""
+    state = "SHOW"
     firefox_driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())#, firefoxOtions=firefox_options)
     firefox_driver.get('http://127.0.0.1:5000/')
 
     while True:
-        try:
-            #mute_button = firefox_driver.findElement(By.id("muteButton"))
-            video_player = firefox_driver.find_element_by_id('video_player')
-            print("luke video found")
-            #luke_video.mute = True
-            firefox_driver.execute_script("arguments[0].muted = true;", video_player)
-            test = firefox_driver.find_element(By.TAG_NAME, 'video')
-        except:
-            print("\n***BUTTON NOT FOUND***\n")
-            pass
         time.sleep(0.5)
-        print(firefox_driver.current_url)
+        try:
+            video_player = firefox_driver.find_element_by_id('video_player') # Access video player element
+        except:
+            print("\n***VIDEO PLAYER NOT FOUND***\n") # print message if no video play is present
+
+        # Get the current screen shot and capture faces
         im = ImageGrab.grab()
         im = np.array(im)
         eigen_screener.tv_watcher.scanForFaces(im)
 
-
         print('*****************************')
+
+        # Identify faces that have been captured
         for face in eigen_screener.tv_watcher.detected_faces:
             t_face = np.resize(face, (64,64))
             face_arr = np.array(t_face).ravel()
@@ -51,10 +44,6 @@ def run_face_screener():
             gaussian = eigen_screener.face_space.gnb.predict(face_pca)
             tree = eigen_screener.face_space.dec_tree.predict(face_pca)
             rfc = eigen_screener.face_space.rfc.predict(face_pca)
-
-            #print("Prediction:", get_name_string(prediction[0]), "ID:", prediction)
-            #print("Probability:", get_name_string(probability[0]), "ID:", probability)
-            #print("Gaussian:", get_name_string(gaussian[0]), "ID:", gaussian)
             
             print(get_name_string(prediction[0]))
             print(get_name_string(probability[0]))
@@ -63,28 +52,19 @@ def run_face_screener():
             print(get_name_string(rfc[0]))
             print('-----------------------------')
 
-        #print()
-        eigen_screener.tv_watcher.detected_faces.clear()
-        # Code to determine if commerical or not
+            if random.randint(0, 10) < 12:
+                state = "COMMERCIAL"    
+            else:
+                state = "SHOW"
 
-        # Code to activate or deactivate the mute (Selenium call)
-        #driver = webdriver.Chrome()
-        #driver.set_script_timeout(15)
-    #
-        ## Getting our html link
-        #url = "http://link"
-        #driver.get(url)
-    #
-        #video = EC.visibility_of_element_loated(By.TAG_NAME, 'video')
-        ## Ensuring that the commercial is initializing 
-        #
-        ## Getting commercial from Luke code that determine if commercial is true or not
-        #if(commercial == "true"):
-        #    driver.execute_script("argument[0].muted = true;", video)
-        #
-        #elif(commercial == "false"):
-        #    driver.execute_script("argument[0].muted = false;", video)
-    #
+        eigen_screener.tv_watcher.detected_faces.clear()
+
+        # Mute the show based 'state' of the show (COMMERCIAL or SHOW)
+        if video_player != "":
+            if state == "SHOW":
+                firefox_driver.execute_script("arguments[0].muted = false;", video_player) # Unmute the player
+            elif state == "COMMERCIAL":
+                firefox_driver.execute_script("arguments[0].muted = true;", video_player) # Mute the player
 
 if __name__ == "__main__":
     run_face_screener()

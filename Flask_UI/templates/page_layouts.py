@@ -231,5 +231,5 @@ def basic_video(file_location):
     doc, tag, text, line = Doc().ttl()
     with tag('div', id='basic_vid'):
         doc.asis('<video controls id="video_player" width="1245" height="700" controls><source src="'+file_location+'" type="video/mp4"></video>')
-        #doc.asis('<video width="1245" height="700" id="luke_video" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
+        #doc.asis('<video width="1245" height="700" id="video_player" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
     return doc.getvalue()
