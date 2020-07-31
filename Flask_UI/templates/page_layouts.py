@@ -14,6 +14,7 @@ import urllib.parse
 import os
 import sys
 from lib import video_list
+from pathlib import Path
 import pandas as pd
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'mp4'}
@@ -182,8 +183,7 @@ def choose_video():
         with tag('div', id='photo-container'):
             doc.asis('<span> This page will then allow you to play that file using our technique that will scrape images of faces detected in the video stream, and identify them as a known character (actor) in the stream.Prior to playing the stream, the user can select what they would like to have happen when known faces are identified in the stream (i.e.mute, change the channel, etc.). Currently, this function is limited to finding faces in the stream; identifying them has not yet been implemented.You can see, however, that as the stream is played, the face that is detected in the stream is identified and marked by a green square.</span></br></br>')
             with tag('form', id='menu'):
-                for video in videolist:
-                    videoname = (video[7:])[:-4]
+                for videoname in videolist:
                     if len(videoname) > 0:
                         doc.asis('<button type="submit" id="button2" name="video_name" value="' +
                                  videoname+'">' + videoname + '</button>')
@@ -201,7 +201,7 @@ def video_page(videoname):
 def view_data_page(videoname):
     doc, tag, text, line = Doc().ttl()
     with tag('div', id='photo-container'):
-        doc.asis(basic_video("https://ohmypy-summer2020.s3.amazonaws.com/videos/"+videoname+".mp4"))
+        doc.asis(basic_video(videoname))
     return doc.getvalue()
 
 
@@ -227,9 +227,10 @@ def learn_face():
 
     return doc.getvalue()
 
+
 def basic_video(file_location):
     doc, tag, text, line = Doc().ttl()
     with tag('div', id='basic_vid'):
-        doc.asis('<video controls id="video_player" width="1245" height="700" controls><source src="'+file_location+'" type="video/mp4"></video>')
-        #doc.asis('<video width="1245" height="700" id="luke_video" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
+        #doc.asis('<video width="1245" height="700" id="video_player" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
+        doc.asis('<video controls id="video_player" width="1245" height="700" controls><source src="static/videos/'+file_location+'" type="video/mp4"></video>')
     return doc.getvalue()

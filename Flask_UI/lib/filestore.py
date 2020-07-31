@@ -17,6 +17,8 @@ import cv2
 import appconfig as cfg
 import sys
 sys.path.append("..")
+import os
+from pathlib import Path
 
 go = "lSX6"
 ga = "BriF8"
@@ -25,8 +27,10 @@ rs = "nN20BnSfLfx9C7NQ4a3bgv6+W8"
 
 
 def video_list():
-    videolist = get_s3objectList("videos/")
-    return videolist["Key"]
+    dirname = Path(__file__).parents[1]
+    rootdir = os.path.join(dirname, 'static/videos')
+    videolist = os.listdir(rootdir)
+    return videolist
 
 
 client = boto3.client(

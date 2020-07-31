@@ -9,18 +9,15 @@
 ## Path: Flask_UI/filestore
 ##################################################
 
-from flask import Flask, Response, flash, request, redirect, url_for
+from flask import Flask,  flash, request, redirect, url_for
 import os
 import appconfig as cfg
 from templates import data_page, video_page, display_page, get_page, feature_page, eval_face, basic_video
 from datetime import timedelta
 from facedetect import facesquare, image_binary, get_fileext, video_face_rec
-from lib import get_data, insert_face, get_face, get_s3object, get_cvimage, gettemp_cvimage, face_space
+from lib import *
 from lib.sub_process_test import run_face_screener
 from werkzeug.utils import secure_filename
-import base64
-import camera
-import time, subprocess
 from multiprocessing import Process
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -31,9 +28,11 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=3)
 app.config['SECRET_KEY'] = cfg.SECRET_KEY
 face_detection = Process(target=run_face_screener)
 
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @app.route("/")
 def home():
@@ -49,27 +48,10 @@ def home():
     else:
         return get_page(url_get)
 
-def gen(filename):
-    camera.video_process(filename)
-
 @app.route('/video_feed/<video_name>',methods=['GET'])
 def video_feed(video_name):
     video_url = 'https://ohmypy-summer2020.s3.amazonaws.com/videos/' + video_name + '.mp4'
-    gen(video_url)
     return redirect('/static/target.mp4')
-
-# this is a test for facial recognition
-@app.route('/test')
-def process():
-    #this will search in the s3 for any files with the name steve and return top path
-    image_path = get_s3object("Steve")
-    #this transforms the image into a cv image for facedetect
-    image = get_cvimage(image_path)
-    output_array = image_binary(image, image_path)
-
-    image_name = 'Steve Carell'
-    insert_face(output_array["gray_im"], image_name)
-    return eval_face(output_array["html"], image_name, output_array["num_face"])
 
 
 # learn face file upload handle
@@ -167,18 +149,6 @@ def recognize_face(filename,name):
     name = get_face(image["gray_im"])
     return eval_face(output_array["html"], name, output_array["num_face"])
 
-
-@app.route('/choose_file/<file_in>/<filetype>')
-def choose_file(file_in,filetype):
-    filename = app.config['UPLOAD_FOLDER'] + "/" + file_in
-
-    image_file = gettemp_cvimage(filename)
-    image = facesquare(image_file)
-    output_array = image_binary(image, filename)
-
-    #insert_face(output_array["image"], name)
-    #return eval_face(output_array["html"], name, output_array["num_face"])
-    return "1"
 
 @app.route("/basic_video", methods=['GET'])
 def play_vid():

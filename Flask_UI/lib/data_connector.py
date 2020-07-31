@@ -4,6 +4,8 @@ import string
 from mysql import connector
 import pandas as pd
 from urllib.parse import unquote
+import os
+from pathlib import Path
 
 config = {
 'user': 'admin',
@@ -67,7 +69,6 @@ def retrieve_images():
     records = cursor.fetchall()
     df = pd.DataFrame(records)
     df = pd.DataFrame([sub.split(",") for sub in df[0]])
-
     return df
 
 
@@ -84,8 +85,8 @@ def get_test():
     cursor.execute(sql_select_query)
     records = cursor.fetchall()
     df = pd.DataFrame(records)
-
     return df
+
 
 def get_name_id(name):
     name = unquote(name)
@@ -157,19 +158,16 @@ def get_name_string(name_id):
 
 
 def insert_face(face_vector, name):
-    name = unquote(name)
-    name_id = get_name_id(str(name))
-    get_face_id(str(face_vector), name_id)
+    #name = unquote(name)
+    #name_id = get_name_id(str(name))
+    #get_face_id(str(face_vector), name_id)
     return 1
 
 
 def get_data():
-    sql_select_query = "select n.full_name, LEFT(CONVERT(f.face_vector USING utf8),200) face_vector, f.count from name_data n join face_data f on f.name_id = n.name_id;"
-    cursor = mydb.cursor()
-    cursor.execute(sql_select_query)
-    records = cursor.fetchall()
-    df = pd.DataFrame(records)
-
+    dirname = Path(__file__).parents[1]
+    rootdir = os.path.join(dirname, 'static/data/get_data.csv')
+    df = pd.read_csv(rootdir)
     return df
 
 
@@ -204,4 +202,4 @@ def scrape_face(face_vector):
 if __name__ == "__main__":
     data_connector = data_connector()
 
-    print(retrieve_images)
+    print(retrieve_images())
