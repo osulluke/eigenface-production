@@ -37,7 +37,7 @@ class face_space:
         Initialization of FaceSpace object
         """
         self.NORMALIZER = 255.0
-        self.PREDICTION_THRESHOLD = 3
+        self.PREDICTION_THRESHOLD = 2
         self.data_connection = data_connector()
         self.training_data_frame = retrieve_images()
         self.X = self.training_data_frame.drop(0, axis = 1) # Break out the image data only
@@ -58,7 +58,7 @@ class face_space:
             Returns:
                 faceSpace (matrix/SVD/PCA): this is the data that represents the notion of "faceSpace" (fundamental)
         """
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, self.Y, train_size=.70)
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, self.Y, train_size=.75)
         self.pca = PCA(n_components=135).fit(self.x_train)
         self.x_train_pca = self.pca.transform(self.x_train)
         param_grid = {'C': [1e3, 5e3, 1e4, 5e4, 1e5],
