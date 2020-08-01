@@ -11,6 +11,7 @@ import random
 from collections import deque
 
 def run_face_screener():
+    commercial_actors = ['liberty_mutual_1', 'my_pillow_1', 'my_pillow_2', 'my_pillow_3', 'glen_lerner', 'kevin_rowe']
     DELAY = 0.40
     NORMALIZER = 255.0
     global eigen_screener 
@@ -18,7 +19,7 @@ def run_face_screener():
     video_player = ""
     state = "SHOW"
     face_que = deque()
-    firefox_driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())#, firefoxOtions=firefox_options)
+    firefox_driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
     firefox_driver.get('http://127.0.0.1:5000/')
 
     while True:
@@ -26,7 +27,7 @@ def run_face_screener():
         try:
             video_player = firefox_driver.find_element_by_id('video_player') # Access video player element
         except:
-            print("\n***VIDEO PLAYER NOT FOUND***\n") # print message if no video play is present
+            pass#print("\n***VIDEO PLAYER NOT FOUND***\n") # print message if no video play is present
 
         # Get the current screen shot and capture faces
         im = ImageGrab.grab()
@@ -36,39 +37,38 @@ def run_face_screener():
         # Identify faces that have been captured; place them in que
         print('*****************************')
         for face in eigen_screener.tv_watcher.detected_faces:
-            prediction = eigen_screener.face_space.aggregate_prediction(face)
-            print(prediction)
+            prediction = eigen_screener.face_space.aggregate_prediction(face) # Calculate aggregate prediction
+            print(prediction) # Display identified actor
             if prediction != "UNKNOWN" and len(face_que) > 0:
                 try:
-                    face_que.remove("UNKNOWN")
+                    face_que.pop()
                 except:
                     pass
-            add_to_queue(prediction, face_que)
+            add_to_queue(prediction, face_que) # Push identified faces to face que
 
         eigen_screener.tv_watcher.detected_faces.clear()
 
         # Determine the state of the show
-        state = check_commercial(face_que)
+        state = check_commercial(face_que, commercial_actors)
 
         # Mute the show based 'state' of the show (COMMERCIAL or SHOW)
-        if video_player != "":
+        if video_player != "": # Ensure the video_player exists in the webpage
             control_video(state, firefox_driver, video_player)
 
-def check_commercial(face_deque):
-    num = face_deque.count("UNKNOWN")
-    print("# of UNKNOWN =", num)
-    if num > 4:
+def check_commercial(face_deque, commercial_actors):
+    commercial_actor_present = any(actor in commercial_actors for actor in face_deque)
+    if commercial_actor_present:
+        print("--- Commercial ---")
         return "COMMERCIAL"
     else:
+        print("*** Show ***")
         return "SHOW"
 
 def add_to_queue(face, deque):
-    if len(deque) >= 10:
+    if len(deque) >= 4:
         deque.pop()
     else:
         deque.appendleft(face)
-    
-    print("len(face_que) =", len(deque))
 
     return
 

@@ -45,7 +45,6 @@ class face_space:
         self.Y = self.training_data_frame[0] # Break out the face IDs only
         self.create_face_space()
 
-
     def create_face_space(self):
         """
         Called with __init__(self); runs code that will build the face space "matrix"; can also be
@@ -118,7 +117,6 @@ class face_space:
                 return "UNKNOWN"
         except:
             return ""
-
 
 if __name__ == "__main__":
     face_space = face_space()
