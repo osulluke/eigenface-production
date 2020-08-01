@@ -121,7 +121,7 @@ As new vectors (faces) are added to **T**, we will re-compute the Eigenbasis **V
  ## **Contributions**
 **Remee Agbayani:** Front end menu, stylesheet, database, s3 video player, facial recognition import, OpenCV facial recognition to player
 
-**Moise Jean:** Sellinum player controls
+**Moise Jean:** Sellinum player controls, software testing
 
 **Luke OSullivan:** Documentation, app structure/design, eigen implementation, project manager, git master, class creation, program compliation, submissions
 
