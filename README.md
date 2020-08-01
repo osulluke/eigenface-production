@@ -1,4 +1,4 @@
-# **EigenFace Filter (Oh My Py)**
+# **Eigenface Filter (Oh My Py)**
 
 ## **Project Link**
 
@@ -36,19 +36,19 @@ Because watching an entire 30-minute episode of a TV program is unrealistic for 
 2. Open a show clip; watch for a short time (about 30-60 seconds).
 3. Go "back" to the *Play Media* page and select a commercial clip (appropriately labeled). Watch this clip until it becomes muted to demonstrate the program's capability.
 4. Once the program mutes the video stream, go back to *Play Media* and select a different show clip, then watch until the show is un-muted.
-5. Repeat the above as required (show - commercial - show - ... -).
+5. Repeat the above as required (show - commercial - show - ... ).
 
-During the operation, on the command line, user messages are produced that provide feedback as to who is being identified and whether or not the program is recognizing *Show* or *Commercial*.
+During the operation, on the command line, user messages are produced that provide feedback as to who is being identified and whether or not the program is recognizing *Show* or *Commercial*, but the bottom line to the user is whether or not the show is allowed regular volume, and whether annoying commercials are automatically muted.
 
 Stop / close the program by "Ctrl+C" on the Ubuntu command line.
 
 ## **Contributions**
-**Remee Agbayani:** Front end menu, stylesheet, database, s3 video player, facial recognition import, OpenCV facial recognition to player
+**Remee Agbayani:** Front end menu, stylesheet, database, s3 video player, facial recognition import, OpenCV facial recognition to player.
 
-**Moise Jean:** Sellinum player controls, software testing
+**Moise Jean:** Sellinum player controls, software testing.
 
-**Luke O'Sullivan:** Documentation, app structure/design, eigen implementation, project manager, git master, class creation, program compliation, submissions
+**Luke O'Sullivan:** Documentation, app structure/design, eigen implementation, project manager, git master, class creation, program compliation, submissions.
 
-**Zihan Shu:** Presentation, frontend design, frontend video player
+**Zihan Shu:** Presentation, frontend design, frontend video player.
 
-**Xinxin Wu:** OpenCV implementation, video player
+**Xinxin Wu:** OpenCV implementation, video player.
