@@ -32,6 +32,8 @@ The entire app will install all required libraries, query our cloud database, bu
 
 Because watching an entire 30-minute episode of a TV program is unrealistic for our purposes in this class, there are a number of links provided to short clips of the TV show *The Office*, as well as links to commercials which represent commercial breaks. In order to best use the program and see the software in operation, it will be most useful to follow this procedure:
 
+*Update (1 Aug): it is still possible to use the listed steps below, but we thought it better to provide a short clip with embedded commercials - so, selecting the "ShortClip.mp4" link will provide a 'one-stop' shop to see the application operate.*
+
 1. Click on the blue button from the homepage labeled *Play Media*. This will take you to a page that will enable you to play different show clips and different commercial clips.
 2. Open a show clip; watch for a short time (about 30-60 seconds).
 3. Go "back" to the *Play Media* page and select a commercial clip (appropriately labeled). Watch this clip until it becomes muted to demonstrate the program's capability.
