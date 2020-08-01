@@ -2,11 +2,11 @@ import cv2
 import sys
 import time
 
-from tv_watcher import tv_watcher
-from data_connector import data_connector
-from face_processor import face_processor
-from face_space import face_space
-from stream_controller import stream_controller
+from .tv_watcher import tv_watcher
+from .data_connector import data_connector
+from .face_processor import face_processor
+from .face_space import face_space
+from .stream_controller import stream_controller
 
 class eigen_screener:
 

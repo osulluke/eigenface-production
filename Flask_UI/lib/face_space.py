@@ -4,10 +4,15 @@ from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from sklearn.decomposition import PCA
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.preprocessing import Normalizer
-from data_connector import data_connector, retrieve_images
+from .data_connector import data_connector, retrieve_images, get_name_string
+from collections import Counter
 
 
 class face_space:
@@ -24,22 +29,19 @@ class face_space:
     Methods:
         _convert_raw_data():        initialize data for training
         CreateFaceSpace():          matrix/SVD/PCA
-        ProjectFace(Vector):        Vector
-        EuclideanDistance(Vector):  [(_FaceID, Double)]
-        ReturnFaceIdentity(Vector): (_FaceID, _probability, _newFaceFlag)
+        aggregate_prediction():     determines the best prediction for a give face
     """
 
     def __init__(self):
         """
         Initialization of FaceSpace object
         """
+        self.NORMALIZER = 255.0
+        self.PREDICTION_THRESHOLD = 2
         self.data_connection = data_connector()
         self.training_data_frame = retrieve_images()
-        #self.training_data_frame = self.training_data_frame.set_index(0) # Preprocessing step to normalize data
         self.X = self.training_data_frame.drop(0, axis = 1) # Break out the image data only
-        self.X = (self.X.astype('int32')) / (255.0)
-        #self.X.iloc[:,:] = Normalizer(norm='max').fit_transform(self.X) # Normalize the pixels
-        #self.X = self.X / 255.0
+        self.X = (self.X.astype('int32')) / (self.NORMALIZER)
         self.Y = self.training_data_frame[0] # Break out the face IDs only
         self.create_face_space()
 
@@ -56,61 +58,66 @@ class face_space:
             Returns:
                 faceSpace (matrix/SVD/PCA): this is the data that represents the notion of "faceSpace" (fundamental)
         """
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, self.Y, train_size=.85)
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, self.Y, train_size=.75)
         self.pca = PCA(n_components=135).fit(self.x_train)
         self.x_train_pca = self.pca.transform(self.x_train)
         param_grid = {'C': [1e3, 5e3, 1e4, 5e4, 1e5],
               'gamma': [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.1], }
-        #self.face_classifier = GridSearchCV(SVC(kernel='rbf', class_weight='balanced'), param_grid ).fit(self.x_train_pca, self.y_train)
-        self.face_classifier = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train, self.y_train)
-        self.face_classifier_ld = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train_pca, self.y_train)
-        self.face_probability = SVC(probability=True).fit(self.x_train_pca, self.y_train)
+        self.face_classifier_lda = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train, self.y_train)
+        self.face_classifier_lda_pca = LinearDiscriminantAnalysis(solver='svd').fit(self.x_train_pca, self.y_train)
+        self.face_classifier_svc_pca = SVC().fit(self.x_train_pca, self.y_train)
+        self.face_classifier_svc_grid_pca = GridSearchCV(SVC(kernel='rbf', class_weight='balanced'), param_grid ).fit(self.x_train_pca, self.y_train)
+        self.face_classifier_gnb_pca = GaussianNB().fit(self.x_train_pca, self.y_train)
+        self.face_classifier_dec_tree_pca = tree.DecisionTreeClassifier().fit(self.x_train_pca, self.y_train)
+        self.face_classifier_rfc_pca = RandomForestClassifier(n_estimators=18).fit(self.x_train_pca, self.y_train)
+        self.face_classifier_knn = KNeighborsClassifier(n_neighbors=1, metric='euclidean').fit(self.x_train, self.y_train)
 
-    def aggregate_prediction(self, im):
-        pass
+    def aggregate_prediction(self, face_image):
+        # Transform the face into a workable array
+        transform_face = np.resize(face_image, (64,64))
+        face_array = np.array(transform_face).ravel()
+        face_array = [face_array / self.NORMALIZER]
 
-    def project_face(self, vec):
-        """
-        This function will take a vector (a vectorized image) and project it into "FaceSpace". This function is where
-        we will make use of the first 125-150 "Principal Components" which are generally used to identify faces.
+        # Project the face image into "principal compoenents" / Eigenfaces
+        face_PCA = self.pca.transform(face_array)
 
-            Parameters:
-                vec (Vector): vector (of image) to be projected into FaceSpace
+        # Make predictions using LDAs
+        face_lda = self.face_classifier_lda.predict(face_array)
+        face_lda_pca = self.face_classifier_lda_pca.predict(face_PCA)
 
-            Returns:
-                projVec (Vector): vector projection of image into FaceSpace
-        """
+        # Make preditions using SVC
+        face_svc = self.face_classifier_svc_pca.predict(face_PCA)
+        face_svc_grid = self.face_classifier_svc_grid_pca.predict(face_PCA)
 
+        # Make predictions using GNB
+        face_gnb = self.face_classifier_gnb_pca.predict(face_PCA)
 
-    def euclidean_distance(self, proj_vec):
-        """
-        Calculates the n-dimentional distance between the input vector and the average
-        of all characters' vectors in FaceSpace. This will return an array of tuples 
-        containing the ID of the character and the distance of projVec sorted in ascending
-        order; the smallest distances will be the face that is most similar to the face
-        represented by projVec.
+        # Make predictions decision tree
+        face_tree = self.face_classifier_dec_tree_pca.predict(face_PCA)
 
-            Parameters:
-                proj_vec (Vector): vector projection of new face into FaceSpace
+        # Make predictions random forest
+        face_forest = self.face_classifier_rfc_pca.predict(face_PCA)
 
-            Returns:
-                dist_vec (Array (_id, _dist)): array of tuples (_id, _dist)
-        """
+        # Make predictions using KNN
+        face_knn = self.face_classifier_knn.predict(face_array)
 
+        # Create an array of all the predictions
+        counter = Counter()
+        predictions = [face_lda, face_lda_pca, face_svc, face_svc_grid, face_gnb, face_tree, face_forest, face_forest, face_knn]
 
-    def return_face_identity(self, _id, _vec):
-        """
-        This function looks at the distance between known faces and uses some logic (TBD) to determine 
-        whether or not a face has been identified; if it is new, it sends a message back to the FaceTester
-        class to mark the face as such.
+        # Determine the most common predictions
+        for p in predictions:
+            name = get_name_string(p[0])
+            counter[name] += 1
 
-            Parameters:
-                _id (int):     id# of image vector
-                _vec (Vector): vector of image
-
-            Returns:
-                idVec (_id, bool, newFaceFlag): tuple representing the _id, probability, and whether it's a new face
-        """
+        most_common = counter.most_common(2)
+        try:
+            if most_common[0][1] - most_common[1][1] >= self.PREDICTION_THRESHOLD:
+                return most_common[0][0]
+            else:
+                return "UNKNOWN"
+        except:
+            return ""
 
 
 if __name__ == "__main__":
@@ -119,5 +126,9 @@ if __name__ == "__main__":
     face_space.predictions = face_space.face_classifier.predict(face_space.x_test)
     #face_space.predictions = face_space.face_classifier.predict(face_space.x_test_pca)
     face_space.predictions_ld = face_space.face_classifier_ld.predict(face_space.x_test_pca)
+    face_space.knn_predictions = face_space.face_neighbors.predict(face_space.x_test)
+    face_space.gnb_predictions = face_space.gnb.predict(face_space.x_test)
     print(classification_report(face_space.y_test, face_space.predictions))
     print(classification_report(face_space.y_test, face_space.predictions_ld))
+    print(classification_report(face_space.y_test, face_space.knn_predictions))
+    print(classification_report(face_space.y_test, face_space.gnb_predictions))

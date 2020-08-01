@@ -14,6 +14,7 @@ import urllib.parse
 import os
 import sys
 from lib import video_list
+from pathlib import Path
 import pandas as pd
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'mp4'}
@@ -51,6 +52,7 @@ def data_page(datatable):
     doc.asis(footer())
     return doc.getvalue()
 
+
 def display_page(directory_in):
     doc, tag, text, line = Doc().ttl()
     doc.asis(header())
@@ -58,25 +60,12 @@ def display_page(directory_in):
     doc.asis(footer())
     return doc.getvalue()
 
+
 def display_image(directory_in):
     doc, tag, text, line = Doc().ttl()
     with tag('div', id='photo-container'):
         doc.asis('<iframe width="1000" height="500" src="' + url_for('video_feed',
                                                                      video_name=directory_in) + '" frameborder="0" allowfullscreen></iframe>')
-    return doc.getvalue()
-
-def feature_page():
-    doc, tag, text, line = Doc().ttl()
-    doc.asis(header())
-    with tag('div', id='container'):
-        with tag('div', id='photo-container'):
-            text("Feature under development, please press button below to view example")
-            doc.asis('<form action="/">')
-            doc.asis('<button type="submit" id="button2" value="view_data" class="tooltip"> PLAY MEDIA <span class="tooltiptext">This page will then allow you to play that file using our technique that will scrape images of faces detected in the video stream, and identify them as a known character (actor) in the stream. Prior to playing the stream, the user can select what they would like to have happen when known faces are identified in the stream (i.e. mute, change the channel, etc.).</br></br>Currently, this function is limited to finding faces in the stream; identifying them has not yet been implemented. You can see, however, that as the stream is played, the face that is detected in the stream is identified and marked by a green square.</span></button>')
-            doc.asis('<textarea name="content" id="hide" method="post">choose_video</textarea>')
-            doc.asis('</form>')
-
-    doc.asis(footer())
     return doc.getvalue()
 
 
@@ -90,13 +79,19 @@ def eval_face(response, image_name, output_count):
             doc.asis(response)
             doc.asis('</br>')
             doc.asis('</br>')
-            text("Name: " + urllib.parse.unquote_plus(image_name))
-            doc.asis('</br>')
-            text("Face count: " + str(output_count))
-            doc.asis('</br>')
+            if output_count == 1:
+                text("Name: " + urllib.parse.unquote_plus(image_name))
+                doc.asis('</br>')
+                text("Face count: " + str(output_count))
+                doc.asis('</br>')
+            elif output_count > 1:
+                text("Unable to add image, too many faces recognized")
+            else:
+                text("Unable to add image, no face recognized")
             doc.asis('</br>')
     doc.asis(footer())
     return doc.getvalue()
+
 
 def info_page():
     doc, tag, text, line = Doc().ttl()
@@ -115,6 +110,7 @@ def info_page():
 
     return doc.getvalue()
 
+
 def footer():
     doc, tag, text, line = Doc().ttl()
 
@@ -126,9 +122,10 @@ def footer():
                         text("Developed for CIS4390")
                         doc.asis("<br>")
                         text(
-                            "Developers: Remee A., Martin L., Luke O., Zihan S., Xinxin W.")
+                            "Developers: Remee A., Moise J., Luke O., Zihan S., Xinxin W.")
 
     return doc.getvalue()
+
 
 def header():
     doc, tag, text, line = Doc().ttl()
@@ -151,25 +148,21 @@ def header():
 
     return doc.getvalue()
 
+
 def buttons():
     doc, tag, text, line = Doc().ttl()
 
     with tag('div', id='container'):
         with tag('div', id='photo-container'):
-            doc.asis('<form method=post id="menu1"  action="/upload_file" enctype=multipart/form-data>')
-            doc.asis('<label id="button1" for="test"  class="tooltip"> SELECT YOUR MEDIA FILE <span class="tooltiptext">The page will allow you to select media files (formatted as .mp4) that have been provided from some source, currently, these are part of the repo itself, and are limited to short clips of the television show "The Office." It is not necessary for the user to provide a novel file.</span></label><br>')
-            doc.asis('<textarea name="content" id="hide" method="post">upload_file</textarea>')
-            doc.asis('<input type="file" onchange="form.submit()" name="file" id="test" accept="image/png, image/jpeg, video/mp4">')
-            doc.asis('</form>')
             with tag('form', id='menu'):
-                doc.asis('<button type="submit" id="button2" value="view_data" class="tooltip"> PLAY MEDIA <span class="tooltiptext">This page will then allow you to play that file using our technique that will scrape images of faces detected in the video stream, and identify them as a known character (actor) in the stream. Prior to playing the stream, the user can select what they would like to have happen when known faces are identified in the stream (i.e. mute, change the channel, etc.).</br></br>Currently, this function is limited to finding faces in the stream; identifying them has not yet been implemented. You can see, however, that as the stream is played, the face that is detected in the stream is identified and marked by a green square.</span></button>')
+                doc.asis('<button type="submit" id="button2" value="view_data" class="tooltip"> PLAY MEDIA <span class="tooltiptext">This will allow you to select a video to be played with muted commercials.</span></button>')
                 doc.asis('<textarea name="content" id="hide" method="post">choose_video</textarea>')
             with tag('form', id='menu'):
-                doc.asis('<button type="submit" id="button4" value="learn_data" class="tooltip"> LEARN FACE <span class="tooltiptext">In terms of the capabilities of the program, it will be initially trained on an image set derived from main characters in the show "The Office." As the program runs, however, and more faces are discovered, they should allow the model that identifies faces to be updated with these new faces so they can be categorized appropriately (as new characters, or commercial actors). On this page</br></br>, this is simply a mechanism to directly provide the model itself a novel face for incorporation into the model. Ultimately this will be a function that operates automatically during stream playback.</span></button>')
+                doc.asis('<button type="submit" id="button4" value="learn_data" class="tooltip"> LEARN FACE <span class="tooltiptext">This tool is to add faces to the data set for our facial recognition program.</span></button>')
                 doc.asis(
                     '<textarea name="content" id="hide" method="post">learn_face</textarea>')
             with tag('form', id='menu'):
-                doc.asis('<button type="submit" id="button5" value="database" class="tooltip"> VIEW DATA <span class="tooltiptext">This provides a view that our data API is actually working with; it will eventually provide more visibility in order to ensure data is uniform (correctly dimensioned, colored greyscale, etc).</span></button>')
+                doc.asis('<button type="submit" id="button5" value="database" class="tooltip"> VIEW DATA <span class="tooltiptext">This is a truncated view of the data being used for our facial recognition algorithm.</span></button>')
                 doc.asis(
                     '<textarea name="content" id="hide" method="post">database</textarea>')
             with tag('form', id='menu'):
@@ -180,21 +173,22 @@ def buttons():
 
     return doc.getvalue()
 
+
 def choose_video():
     doc, tag, text, line = Doc().ttl()
     videolist = video_list()
     with tag('div', id='container'):
         with tag('div', id='photo-container'):
-            doc.asis('<span> This page will then allow you to play that file using our technique that will scrape images of faces detected in the video stream, and identify them as a known character (actor) in the stream.Prior to playing the stream, the user can select what they would like to have happen when known faces are identified in the stream (i.e.mute, change the channel, etc.). Currently, this function is limited to finding faces in the stream; identifying them has not yet been implemented.You can see, however, that as the stream is played, the face that is detected in the stream is identified and marked by a green square.</span></br></br>')
+            doc.asis('<span>Please select a media file to play. As the video plays, commercials will be muted automatically.</span></br></br>')
             with tag('form', id='menu'):
-                for video in videolist:
-                    videoname = (video[7:])[:-4]
+                for videoname in videolist:
                     if len(videoname) > 0:
                         doc.asis('<button type="submit" id="button2" name="video_name" value="' +
                                  videoname+'">' + videoname + '</button>')
                 doc.asis(
                     '<textarea name="content" id="hide" method="post">data_page</textarea>')
     return doc.getvalue()
+
 
 def video_page(videoname):
     doc, tag, text, line = Doc().ttl()
@@ -203,18 +197,11 @@ def video_page(videoname):
     doc.asis(footer())
     return doc.getvalue()
 
+
 def view_data_page(videoname):
     doc, tag, text, line = Doc().ttl()
-    doc, tag, text, line = Doc().ttl()
     with tag('div', id='photo-container'):
-        video_url = 'https://ohmypy-summer2020.s3.amazonaws.com/videos/' + videoname + '.mp4'
-        #doc.asis('<div style="background-color:white"></br></br>')
-        #doc.asis('<input type="checkbox" for="cb1"><label for="cb1">Block Face</label><input type="checkbox" for="cb2"><label for="cb2">Block Commercials</label><input type="checkbox" for="cb3"><label for="cb3">Replace Face</label></br>')
-        #doc.asis('<audio controls autoplay><source src="' + video_url + '"></audio></br>')
-        #doc.asis('<span><strong>This is a mock controller. In the future release the video will be able to be controlled to adjust your media output.</strong></br></br></br>')
-        #doc.asis('</div>')
-        with tag('div', id='photo-container'):
-            doc.asis('<iframe width="100%" height="100%" src="'+url_for('video_feed', video_name=videoname)+'" frameborder="0" allowfullscreen></iframe>')
+        doc.asis(basic_video(videoname))
     return doc.getvalue()
 
 
@@ -223,7 +210,7 @@ def learn_face():
     with tag('div', id='container'):
         with tag('div', id='photo-container'):
             with tag('div'):
-                doc.asis('<span>In terms of the capabilities of the program, it will be initially trained on an image set derived from main characters in the show "The Office." As the program runs, however, and more faces are discovered, they should allow the model that identifies faces to be updated with these new faces so they can be categorized appropriately (as new characters, or commercial actors).On this page, this is simply a mechanism to directly provide the model itself a novel face for incorporation into the model.Ultimately this will be a function that operates automatically during stream playback.</span></br></br>')
+                doc.asis('<span>This page allows you to add a face to be recognized during video play back. The image vector will be added to our training set.</span></br></br>')
                 doc.asis("<strong>Choose an image with a single face to train facial recognition</strong>")
                 with tag('div', id='learn_face'):
                     doc.asis('<form method=post enctype=multipart/form-data>')
@@ -240,15 +227,17 @@ def learn_face():
 
     return doc.getvalue()
 
-def basic_video():
+
+def basic_video(file_location):
     doc, tag, text, line = Doc().ttl()
-    doc.asis(header())
     with tag('div', id='basic_vid'):
-        #doc.asis('<video width="1245" height="700" controls><source src="static/videos/screencast.webm" type="video/webm"></video>')
-        doc.asis('<br>')
-        doc.asis('<video width="1245" height="700" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
-        doc.asis('<br>')
+        #doc.asis('<video width="1245" height="700" id="video_player" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
+        doc.asis('<video controls id="video_player" width="1245" height="700" controls><source src="static/videos/'+file_location+'" type="video/mp4"></video>')
+    return doc.getvalue()
 
-    doc.asis(footer())
-
+def test_video():
+    doc, tag, text, line = Doc().ttl()
+    with tag('div', id='basic_vid'):
+        #doc.asis('<video width="1245" height="700" id="video_player" controls><source src="static/videos/DwightBetraysMichael.mp4" type="video/mp4"></video>')
+        doc.asis('<video controls id="video_player" width="1245" height="700" controls><source src="https://www.youtube.com/embed/ITibUm7mf_A" type="video/mp4"></video>')
     return doc.getvalue()
