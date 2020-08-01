@@ -35,7 +35,7 @@ class eigen_screener:
 if __name__ == "__main__":
     eigen_screener = eigen_screener()
     
-    video_stream = cv2.VideoCapture('../video/FinerThingsClub.mp4')
+    video_stream = cv2.VideoCapture('../static/videos/LibertyMutualInsuranceCommercial.mp4')
     while True:
         ret, frame = eigen_screener.tv_watcher.captureScreen(video_stream)
         if time.time() % 3 <= 1:
